@@ -37,3 +37,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### TODO Remember to git ignore sensitive files and log files###
