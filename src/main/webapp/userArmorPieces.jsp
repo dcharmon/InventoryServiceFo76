@@ -31,6 +31,11 @@
             <td>${piece.armorSlotId}</td>
             <td>${piece.createdAt}</td>
             <td>
+                <a class="btn btn-warning btn-xs"
+                   href="${pageContext.request.contextPath}/editUserArmorPiece?id=${piece.id}">
+                    Edit
+                </a>
+
                 <a class="btn btn-danger btn-xs"
                    href="${pageContext.request.contextPath}/deleteUserArmorPiece?id=${piece.id}"
                    onclick="return confirm('Delete this armor piece?');">
