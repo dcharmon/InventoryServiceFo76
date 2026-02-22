@@ -16,6 +16,7 @@ import java.util.List;
  * @param <T> the type parameter
  */
 public class GenericDao<T> {
+
     private Class<T> type;
     private final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -31,13 +32,12 @@ public class GenericDao<T> {
     /**
      * Gets an entity by id
      *
-     * @param <T> the type parameter
-     * @param id  entity id to search by
+     * @param id entity id to search by
      * @return an entity
      */
-    public <T>T getById(int id) {
+    public T getById(int id) {
         Session session = getSession();
-        T entity = (T)session.get(type, id);
+        T entity = session.get(type, id);
         session.close();
         return entity;
     }
@@ -51,7 +51,9 @@ public class GenericDao<T> {
     public int insert(T entity) {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
-        int id = (int) session.save(entity);
+
+        int id = ((Number) session.save(entity)).intValue();
+
         transaction.commit();
         session.close();
         return id;
@@ -65,11 +67,12 @@ public class GenericDao<T> {
     public void update(T entity) {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
+
         session.merge(entity);
+
         transaction.commit();
         session.close();
     }
-
 
     /**
      * Deletes the entity.
@@ -79,7 +82,9 @@ public class GenericDao<T> {
     public void delete(T entity) {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
+
         session.delete(entity);
+
         transaction.commit();
         session.close();
     }
@@ -95,11 +100,58 @@ public class GenericDao<T> {
 
         CriteriaQuery<T> query = builder.createQuery(type);
         Root<T> root = query.from(type);
+        query.select(root);
+
         List<T> list = session.createQuery(query).getResultList();
         session.close();
         return list;
     }
 
+    /**
+     * Gets entities by a property equal to a value.
+     *
+     * @param propertyName entity property name (Java field name)
+     * @param value value to match
+     * @return matching entities
+     */
+    public List<T> getByPropertyEqual(String propertyName, Object value) {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        CriteriaQuery<T> query = builder.createQuery(type);
+        Root<T> root = query.from(type);
+        query.select(root).where(builder.equal(root.get(propertyName), value));
+
+        List<T> list = session.createQuery(query).getResultList();
+        session.close();
+        return list;
+    }
+
+    /**
+     * Gets entities by a property like a value (for String fields).
+     *
+     * @param propertyName entity property name (Java field name)
+     * @param value pattern to match (example: "lea" will match "%lea%")
+     * @return matching entities
+     */
+    public List<T> getByPropertyLike(String propertyName, String value) {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        CriteriaQuery<T> query = builder.createQuery(type);
+        Root<T> root = query.from(type);
+
+        query.select(root).where(
+                builder.like(
+                        builder.lower(root.get(propertyName)),
+                        "%" + value.toLowerCase() + "%"
+                )
+        );
+
+        List<T> list = session.createQuery(query).getResultList();
+        session.close();
+        return list;
+    }
 
     /**
      * Returns an open session from the SessionFactory
@@ -108,5 +160,4 @@ public class GenericDao<T> {
     private Session getSession() {
         return SessionFactoryProvider.getSessionFactory().openSession();
     }
-
 }
