@@ -19,6 +19,11 @@
             View User Armor Pieces
         </a>
     </li>
+    <li>
+        <a href="${pageContext.request.contextPath}/addUserArmorPiece">
+            Add Armor Piece
+        </a>
+    </li>
 </ul>
 
 </body>
