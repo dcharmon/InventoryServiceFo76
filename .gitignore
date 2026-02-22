@@ -38,4 +38,18 @@ build/
 ### Mac OS ###
 .DS_Store
 
-### TODO Remember to git ignore sensitive files and log files###
+### Project Runtime / Local Files ###
+
+# Logs
+logs/
+*.log
+
+# Database exports / dumps
+dba/
+*.sql.backup
+
+# IntelliJ full .idea directory
+.idea/
+
+# OS / temp files
+*.tmp
