@@ -1,6 +1,8 @@
-package edu.matc.inventory.entity;
+package edu.matc.inventory.persistence;
 
-import edu.matc.inventory.persistence.GenericDao;
+import edu.matc.inventory.entity.ArmorSlot;
+import edu.matc.inventory.entity.ArmorType;
+import edu.matc.inventory.entity.UserArmorPiece;
 import edu.matc.inventory.testutils.Database;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,11 +45,17 @@ class UserArmorPieceDaoTest {
 
         UserArmorPiece inserted = dao.getById(id);
         assertNotNull(inserted);
+        assertEquals(id, inserted.getId());
         assertEquals(1, inserted.getUserId());
+
         assertNotNull(inserted.getArmorType());
-        assertEquals(8, inserted.getArmorType().getId());
+        assertEquals(leather.getId(), inserted.getArmorType().getId());
+        assertEquals(leather.getTypeName(), inserted.getArmorType().getTypeName());
+
         assertNotNull(inserted.getArmorSlot());
-        assertEquals(1, inserted.getArmorSlot().getId());
+        assertEquals(leftArm.getId(), inserted.getArmorSlot().getId());
+        assertEquals(leftArm.getSlotName(), inserted.getArmorSlot().getSlotName());
+
         assertNotNull(inserted.getCreatedAt());
     }
 
@@ -69,8 +77,10 @@ class UserArmorPieceDaoTest {
         dao.update(inserted);
 
         UserArmorPiece updated = dao.getById(id);
+
+        assertNotNull(updated);
         assertNotNull(updated.getArmorSlot());
-        assertEquals(3, updated.getArmorSlot().getId());
+        assertEquals(torso.getId(), updated.getArmorSlot().getId());
     }
 
     @Test
@@ -78,14 +88,20 @@ class UserArmorPieceDaoTest {
         ArmorType leather = armorTypeDao.getById(8);
         ArmorSlot leftArm = armorSlotDao.getById(1);
 
+        assertNotNull(leather);
+        assertNotNull(leftArm);
+
         UserArmorPiece piece = new UserArmorPiece();
         piece.setUserId(1);
         piece.setArmorType(leather);
         piece.setArmorSlot(leftArm);
 
         int id = dao.insert(piece);
+        assertTrue(id > 0);
 
         UserArmorPiece inserted = dao.getById(id);
+        assertNotNull(inserted);
+
         dao.delete(inserted);
 
         UserArmorPiece afterDelete = dao.getById(id);
@@ -95,7 +111,9 @@ class UserArmorPieceDaoTest {
     @Test
     void getAllSuccess() {
         List<UserArmorPiece> pieces = dao.getAll();
+
         assertNotNull(pieces);
+        assertFalse(pieces.isEmpty());
     }
 
     @Test
@@ -103,6 +121,10 @@ class UserArmorPieceDaoTest {
         ArmorType leather = armorTypeDao.getById(8);
         ArmorType combat = armorTypeDao.getById(5);
         ArmorSlot leftArm = armorSlotDao.getById(1);
+
+        assertNotNull(leather);
+        assertNotNull(combat);
+        assertNotNull(leftArm);
 
         UserArmorPiece p1 = new UserArmorPiece();
         p1.setUserId(1);
@@ -116,11 +138,11 @@ class UserArmorPieceDaoTest {
         p2.setArmorSlot(leftArm);
         dao.insert(p2);
 
-        List<UserArmorPiece> leatherPieces =
-                dao.getByPropertyEqual("armorType", leather);
+        List<UserArmorPiece> leatherPieces = dao.getByPropertyEqual("armorType", leather);
 
-        assertFalse(leatherPieces.isEmpty());
-        assertTrue(leatherPieces.stream()
-                .allMatch(p -> p.getArmorType().getId() == 8));
+        assertNotNull(leatherPieces);
+        assertEquals(2, leatherPieces.size());
+
+        assertEquals(leather.getId(), leatherPieces.get(0).getArmorType().getId());
     }
 }
