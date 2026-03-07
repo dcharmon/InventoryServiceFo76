@@ -27,8 +27,8 @@
         <tr>
             <td>${piece.id}</td>
             <td>${piece.userId}</td>
-            <td>${piece.armorTypeId}</td>
-            <td>${piece.armorSlotId}</td>
+            <td>${piece.armorType.typeName}</td>
+            <td>${piece.armorSlot.slotName}</td>
             <td>${piece.createdAt}</td>
             <td>
                 <a class="btn btn-warning btn-xs"

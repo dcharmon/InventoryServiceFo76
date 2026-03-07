@@ -1,6 +1,6 @@
 package edu.matc.inventory.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * Represents an armor type (e.g., Leather armor, Combat armor).

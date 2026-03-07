@@ -1,5 +1,7 @@
 package edu.matc.inventory.controller;
 
+import edu.matc.inventory.entity.ArmorSlot;
+import edu.matc.inventory.entity.ArmorType;
 import edu.matc.inventory.entity.UserArmorPiece;
 import edu.matc.inventory.persistence.GenericDao;
 
@@ -41,8 +43,14 @@ public class AddUserArmorPiece extends HttpServlet {
 
         UserArmorPiece piece = new UserArmorPiece();
         piece.setUserId(userId);
-        piece.setArmorTypeId(armorTypeId);
-        piece.setArmorSlotId(armorSlotId);
+        GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
+        GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
+
+        ArmorType armorType = armorTypeDao.getById(armorTypeId);
+        ArmorSlot armorSlot = armorSlotDao.getById(armorSlotId);
+
+        piece.setArmorType(armorType);
+        piece.setArmorSlot(armorSlot);
 
         GenericDao<UserArmorPiece> dao =
                 new GenericDao<>(UserArmorPiece.class);

@@ -1,8 +1,8 @@
 package edu.matc.inventory.entity;
 
-import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,16 +17,17 @@ public class UserArmorPiece {
     @Column(name = "user_id", nullable = false)
     private int userId;
 
-    @Column(name = "armor_type_id", nullable = false)
-    private int armorTypeId;
+    @ManyToOne
+    @JoinColumn(name = "armor_type_id", nullable = false)
+    private ArmorType armorType;
 
-    @Column(name = "armor_slot_id", nullable = false)
-    private int armorSlotId;
+    @ManyToOne
+    @JoinColumn(name = "armor_slot_id", nullable = false)
+    private ArmorSlot armorSlot;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
 
     public int getId() {
         return id;
@@ -44,20 +45,20 @@ public class UserArmorPiece {
         this.userId = userId;
     }
 
-    public int getArmorTypeId() {
-        return armorTypeId;
+    public ArmorType getArmorType() {
+        return armorType;
     }
 
-    public void setArmorTypeId(int armorTypeId) {
-        this.armorTypeId = armorTypeId;
+    public void setArmorType(ArmorType armorType) {
+        this.armorType = armorType;
     }
 
-    public int getArmorSlotId() {
-        return armorSlotId;
+    public ArmorSlot getArmorSlot() {
+        return armorSlot;
     }
 
-    public void setArmorSlotId(int armorSlotId) {
-        this.armorSlotId = armorSlotId;
+    public void setArmorSlot(ArmorSlot armorSlot) {
+        this.armorSlot = armorSlot;
     }
 
     public LocalDateTime getCreatedAt() {

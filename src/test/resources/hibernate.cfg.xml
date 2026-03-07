@@ -18,6 +18,7 @@
 
         <mapping class="edu.matc.inventory.entity.ArmorType" />
         <mapping class="edu.matc.inventory.entity.UserArmorPiece"/>
+        <mapping class="edu.matc.inventory.entity.ArmorSlot"/>
 
     </session-factory>
 

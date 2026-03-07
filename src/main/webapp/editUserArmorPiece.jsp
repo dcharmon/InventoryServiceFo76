@@ -33,7 +33,7 @@
                type="number"
                id="armorTypeId"
                name="armorTypeId"
-               value="${piece.armorTypeId}"
+               value="${piece.armorType.id}"
                required />
     </div>
 
@@ -43,7 +43,7 @@
                type="number"
                id="armorSlotId"
                name="armorSlotId"
-               value="${piece.armorSlotId}"
+               value="${piece.armorSlot.id}"
                required />
     </div>
 
