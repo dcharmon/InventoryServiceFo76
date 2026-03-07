@@ -28,23 +28,27 @@
     </div>
 
     <div class="form-group">
-        <label for="armorTypeId">Armor Type ID</label>
-        <input class="form-control"
-               type="number"
-               id="armorTypeId"
-               name="armorTypeId"
-               value="${piece.armorType.id}"
-               required />
+        <label for="armorTypeId">Armor Type</label>
+        <select class="form-control" id="armorTypeId" name="armorTypeId">
+            <c:forEach var="type" items="${armorTypes}">
+                <option value="${type.id}"
+                        <c:if test="${type.id == piece.armorType.id}">selected</c:if>>
+                        ${type.typeName}
+                </option>
+            </c:forEach>
+        </select>
     </div>
 
     <div class="form-group">
-        <label for="armorSlotId">Armor Slot ID</label>
-        <input class="form-control"
-               type="number"
-               id="armorSlotId"
-               name="armorSlotId"
-               value="${piece.armorSlot.id}"
-               required />
+        <label for="armorSlotId">Armor Slot</label>
+        <select class="form-control" id="armorSlotId" name="armorSlotId">
+            <c:forEach var="slot" items="${armorSlots}">
+                <option value="${slot.id}"
+                        <c:if test="${slot.id == piece.armorSlot.id}">selected</c:if>>
+                        ${slot.slotName}
+                </option>
+            </c:forEach>
+        </select>
     </div>
 
     <button class="btn btn-primary" type="submit">Save</button>

@@ -19,24 +19,42 @@
 ### Week 4 - Class topic is Hibernate and DAOs
 #### This week my focus is the “Add Armor Piece” user story
 
-- [ ] Research possible Web Services/APIs to use
-- [ ] First cut at database design for armor and power armor
-- [ ] Create local dev version of the database
-- [ ] Create `ArmorPiece` entity (regular armor)
-- [ ] Create `ArmorPieceDao` class with CRUD methods
-- [ ] Create config files for DB connection (dev and test)
-- [ ] Create a test version of the database for unit testing
-- [ ] Create unit tests for `ArmorPieceDao`
-- [ ] Create a class for Hibernate SessionFactory management
-- [ ] Create JSP form for adding an armor piece
-- [ ] Create JSP to display user's added armor pieces
-- [ ] Create controller to route to "Add Armor" page
-- [ ] Create controller to process add armor requests
-- [ ] Update weekly reflection/time log
+- [x] First cut at database design for armor and power armor
+- [x] Create local dev version of the database
+- [x] Create `UserArmorPiece` entity (regular armor)
+- [x] Create config files for DB connection (dev and test)
+- [x] Create a test version of the database for unit testing
+- [x] Create unit tests for `UserArmorPieceDao`
+- [x] Create a class for Hibernate SessionFactory management
+- [x] Create JSP form for adding an armor piece
+- [x] Create JSP to display user's added armor pieces
+- [x] Create controller to route to "Add Armor" page
+- [x] Create `index.jsp`
+- [x] Create `editArmor.jsp` (form for editing regular armor piece)
+- [x] Update weekly reflection/time log
 
-### Week 5 - Class topic is Hibernate
-#### This week my focus is the “Add Power Armor” and “View Collections” user stories
+### Week 5 - Class topic is Hibernate Entity Relationships
+#### This week my focus is improving the data model by introducing entity relationships
 
+- [x] Refactor `UserArmorPiece` to use `@ManyToOne` relationships
+- [x] Create `ArmorType` entity
+- [x] Create `ArmorSlot` entity
+- [x] Map relationships between:
+  - `UserArmorPiece` → `ArmorType`
+  - `UserArmorPiece` → `ArmorSlot`
+- [x] Update `AddUserArmorPiece` controller to load related entities before saving
+- [x] Update `EditUserArmorPiece` controller to work with entity relationships
+- [x] Update JSP views to display related entity data instead of IDs
+- [x] Update weekly reflection/time log
+- 
+### Week 6 - Class topic is Deployment to AWS
+#### This week my focus is setting up the user interface structure
+
+- [] Update journal/time log and reflection
+
+### Week 7 - Class topic is Security and Authentication
+#### Checkpoint 2 is Due: Database designed and created, at least one DAO with full CRUD (create, read, update, delete) implemented with Hibernate, DAO is fully unit tested, Log4J is implemented (no System.out.printlns)
+- [ ] Create `error.jsp` (display generic user-friendly error messages)
 - [ ] Create `PowerArmorPiece` entity (power armor table)
 - [ ] Create `PowerArmorPieceDao` class with CRUD methods
 - [ ] Create `LegendaryEffect` entity
@@ -51,27 +69,6 @@
 - [ ] Create controller to handle form submission
 - [ ] Create controller for “My Armor” page to show both regular and power armor
 - [ ] Add search and sort functionality to “My Armor” page
-- [ ] Update weekly reflection/time log
-
-### Week 6 - Class topic is Deployment to AWS and Individual Project Reviews
-#### This week my focus is setting up the user interface structure and getting peer feedback
-
-- [ ] Create `index.jsp` (landing page with welcome and links to login/register)
-- [ ] Create `nav.jsp` (navigation bar include file)
-- [ ] Create `login.jsp` (form for user login)
-- [ ] Create `register.jsp` (form for user registration)
-- [ ] Create `editArmor.jsp` (form for editing regular armor piece)
-- [ ] Create `editPowerArmor.jsp` (form for editing power armor piece)
-- [ ] Create `error.jsp` (display generic user-friendly error messages)
-- [ ] Include `nav.jsp` in existing JSPs (e.g., addArmor, addPowerArmor, myArmor)
-- [ ] Participate in peer review session
-- [ ] Evaluate suggestions and make a list of any changes to implement
-- [ ] Revisit screen design for Add Armor / Add Loadout based on usability
-- [ ] Update journal/time log and reflection
-
-### Week 7 - Class topic is Security and Authentication
-#### Checkpoint 2 is Due: Database designed and created, at least one DAO with full CRUD (create, read, update, delete) implemented with Hibernate, DAO is fully unit tested, Log4J is implemented (no System.out.printlns)
-
 - [ ] Double-check all checkpoint 2 items (above) are complete and visible in github.
 - [ ] Set up Authentication in indie project (more tasks coming for this)
 - [ ] Create project DB on AWS.

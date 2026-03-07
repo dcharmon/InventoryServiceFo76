@@ -22,9 +22,14 @@ import java.io.IOException;
 public class AddUserArmorPiece extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req,
-                         HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
+        GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
+        GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
+
+        req.setAttribute("armorTypes", armorTypeDao.getAll());
+        req.setAttribute("armorSlots", armorSlotDao.getAll());
 
         RequestDispatcher dispatcher =
                 req.getRequestDispatcher("/addUserArmorPiece.jsp");

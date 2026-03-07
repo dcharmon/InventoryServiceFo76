@@ -26,26 +26,17 @@ public class EditUserArmorPiece extends HttpServlet {
                          HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String idParam = req.getParameter("id");
+        int id = Integer.parseInt(req.getParameter("id"));
 
-        if (idParam == null || idParam.trim().isEmpty()) {
-            resp.sendRedirect(req.getContextPath() + "/viewUserArmorPieces");
-            return;
-        }
+        GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
+        GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
+        GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
 
-        int id = Integer.parseInt(idParam);
-
-        GenericDao<UserArmorPiece> dao =
-                new GenericDao<>(UserArmorPiece.class);
-
-        UserArmorPiece piece = dao.getById(id);
-
-        if (piece == null) {
-            resp.sendRedirect(req.getContextPath() + "/viewUserArmorPieces");
-            return;
-        }
+        UserArmorPiece piece = pieceDao.getById(id);
 
         req.setAttribute("piece", piece);
+        req.setAttribute("armorTypes", armorTypeDao.getAll());
+        req.setAttribute("armorSlots", armorSlotDao.getAll());
 
         RequestDispatcher dispatcher =
                 req.getRequestDispatcher("/editUserArmorPiece.jsp");
