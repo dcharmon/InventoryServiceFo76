@@ -4,6 +4,8 @@ import edu.matc.inventory.entity.ArmorSlot;
 import edu.matc.inventory.entity.ArmorType;
 import edu.matc.inventory.entity.UserArmorPiece;
 import edu.matc.inventory.persistence.GenericDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,9 +23,13 @@ import java.io.IOException;
 )
 public class AddUserArmorPiece extends HttpServlet {
 
+    private final Logger logger = LogManager.getLogger(this.getClass());
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
+        logger.debug("Loading add armor piece form");
 
         GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
         GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
@@ -31,8 +37,7 @@ public class AddUserArmorPiece extends HttpServlet {
         req.setAttribute("armorTypes", armorTypeDao.getAll());
         req.setAttribute("armorSlots", armorSlotDao.getAll());
 
-        RequestDispatcher dispatcher =
-                req.getRequestDispatcher("/addUserArmorPiece.jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/addUserArmorPiece.jsp");
 
         dispatcher.forward(req, resp);
     }
@@ -46,8 +51,12 @@ public class AddUserArmorPiece extends HttpServlet {
         int armorTypeId = Integer.parseInt(req.getParameter("armorTypeId"));
         int armorSlotId = Integer.parseInt(req.getParameter("armorSlotId"));
 
+        logger.info("Adding armor piece for userId {}", userId);
+        logger.debug("armorTypeId: {}, armorSlotId: {}", armorTypeId, armorSlotId);
+
         UserArmorPiece piece = new UserArmorPiece();
         piece.setUserId(userId);
+
         GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
         GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
 
@@ -57,10 +66,10 @@ public class AddUserArmorPiece extends HttpServlet {
         piece.setArmorType(armorType);
         piece.setArmorSlot(armorSlot);
 
-        GenericDao<UserArmorPiece> dao =
-                new GenericDao<>(UserArmorPiece.class);
+        GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
 
-        dao.insert(piece);
+        int id = dao.insert(piece);
+        logger.info("Added UserArmorPiece with id {}", id);
 
         resp.sendRedirect(req.getContextPath() + "/viewUserArmorPieces");
     }

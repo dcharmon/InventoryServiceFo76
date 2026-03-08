@@ -4,6 +4,8 @@ import edu.matc.inventory.entity.ArmorSlot;
 import edu.matc.inventory.entity.ArmorType;
 import edu.matc.inventory.entity.UserArmorPiece;
 import edu.matc.inventory.persistence.GenericDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,12 +23,15 @@ import java.io.IOException;
 )
 public class EditUserArmorPiece extends HttpServlet {
 
+    private final Logger logger = LogManager.getLogger(this.getClass());
+
     @Override
     protected void doGet(HttpServletRequest req,
                          HttpServletResponse resp)
             throws ServletException, IOException {
 
         int id = Integer.parseInt(req.getParameter("id"));
+        logger.debug("Loading edit form for UserArmorPiece id {}", id);
 
         GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
         GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
@@ -54,6 +59,9 @@ public class EditUserArmorPiece extends HttpServlet {
         int armorTypeId = Integer.parseInt(req.getParameter("armorTypeId"));
         int armorSlotId = Integer.parseInt(req.getParameter("armorSlotId"));
 
+        logger.info("Updating UserArmorPiece id {}", id);
+        logger.debug("New values - userId: {}, armorTypeId: {}, armorSlotId: {}", userId, armorTypeId, armorSlotId);
+
         GenericDao<UserArmorPiece> dao =
                 new GenericDao<>(UserArmorPiece.class);
 
@@ -61,6 +69,7 @@ public class EditUserArmorPiece extends HttpServlet {
 
         if (piece != null) {
             piece.setUserId(userId);
+
             GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
             GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
 
@@ -71,6 +80,10 @@ public class EditUserArmorPiece extends HttpServlet {
             piece.setArmorSlot(armorSlot);
 
             dao.update(piece);
+
+            logger.info("UserArmorPiece id {} successfully updated", id);
+        } else {
+            logger.warn("UserArmorPiece id {} not found for update", id);
         }
 
         resp.sendRedirect(req.getContextPath() + "/viewUserArmorPieces");
