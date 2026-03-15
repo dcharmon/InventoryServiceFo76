@@ -49,11 +49,18 @@
 - 
 ### Week 6 - Class topic is Deployment to AWS
 #### This week my focus is setting up the user interface structure
-
-- [] Update journal/time log and reflection
+- [x] Create project DB on AWS.
+- [x] Update project config files for AWS as needed
+- [x] Deploy project to AWS
+- [x] Update journal/time log and reflection
 
 ### Week 7 - Class topic is Security and Authentication
 #### Checkpoint 2 is Due: Database designed and created, at least one DAO with full CRUD (create, read, update, delete) implemented with Hibernate, DAO is fully unit tested, Log4J is implemented (no System.out.printlns)
+
+
+### Week 8 - Class topic is Web Services Intro
+#### 
+
 - [ ] Create `error.jsp` (display generic user-friendly error messages)
 - [ ] Create `PowerArmorPiece` entity (power armor table)
 - [ ] Create `PowerArmorPieceDao` class with CRUD methods
@@ -71,14 +78,7 @@
 - [ ] Add search and sort functionality to “My Armor” page
 - [ ] Double-check all checkpoint 2 items (above) are complete and visible in github.
 - [ ] Set up Authentication in indie project (more tasks coming for this)
-- [ ] Create project DB on AWS.
-- [ ] Update project config files for AWS as needed
-- [ ] Deploy project to AWS
 - [ ] Add deployed link to indie project list in student repo
-
-### Week 8 - Class topic is Web Services Intro
-#### 
-
 - [ ] If no useful API is found, define mock API
 -
 ### Week 9 (Start of the team project) - Class topic is RESTFul Web Services

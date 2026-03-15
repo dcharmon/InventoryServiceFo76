@@ -10,3 +10,4 @@
 | Week 5 | Class - EJ    | Hibernate relationships (OneToMany), code cleanup, unit testing improvements | 3.5   | Relationship mapping concepts and examples |
 | Week 5 | Indie Project | Refactor entities to use `@ManyToOne`, update controllers and JSP views       | 5     | Implemented ArmorType and ArmorSlot relationships |
 | Week 6 | Class - EJ    | AWS account setup and deployment exercise                           | 3     | Initial AWS environment configuration |
+| Week 6 | Indie Project | Deploy project to AWS Elastic Beanstalk and connect to RDS         | 1     | Initial cloud deployment for indie project |

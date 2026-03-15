@@ -13,6 +13,19 @@
 
 <hr/>
 
+<c:choose>
+    <c:when test="${empty sessionScope.email}">
+        <p>
+            <a href="${pageContext.request.contextPath}/logIn">Log in</a>
+        </p>
+    </c:when>
+    <c:otherwise>
+        <p>Welcome ${sessionScope.email}</p>
+    </c:otherwise>
+</c:choose>
+
+<hr/>
+
 <ul>
     <li>
         <a href="${pageContext.request.contextPath}/viewUserArmorPieces">

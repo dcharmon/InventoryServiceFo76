@@ -53,3 +53,6 @@ dba/
 
 # OS / temp files
 *.tmp
+
+# props files that I do not want shared
+cognito.properties
