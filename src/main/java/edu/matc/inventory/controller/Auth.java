@@ -42,6 +42,9 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import edu.matc.inventory.entity.AppUser;
+import edu.matc.inventory.persistence.GenericDao;
+import java.util.List;
 
 @WebServlet(
         urlPatterns = {"/auth"}
@@ -112,14 +115,32 @@ public class Auth extends HttpServlet implements PropertiesLoader {
             logger.debug("Email claim: {}", email);
             logger.debug("Cognito username claim: {}", cognitoUsername);
 
+            GenericDao<AppUser> appUserDao = new GenericDao<>(AppUser.class);
+            List<AppUser> users = appUserDao.getByPropertyEqual("authSubject", authSubject);
+
+            AppUser appUser;
+
+            if (users.isEmpty()) {
+                String displayName = email;
+
+                if (cognitoUsername != null && !cognitoUsername.isBlank()) {
+                    displayName = cognitoUsername;
+                }
+
+                appUser = new AppUser(authSubject, email, displayName);
+                appUserDao.insert(appUser);
+
+                logger.info("Created new app user for auth subject: {}", authSubject);
+            } else {
+                appUser = users.get(0);
+                logger.info("Found existing app user for auth subject: {}", authSubject);
+            }
+
             HttpSession session = req.getSession();
+            session.setAttribute("user", appUser);
             session.setAttribute("authSubject", authSubject);
             session.setAttribute("email", email);
             session.setAttribute("cognitoUsername", cognitoUsername);
-
-            /*
-             *  Look up the user in app_user by auth_subject, Insert the user if not found, Store the AppUser object in session
-             */
 
             resp.sendRedirect(req.getContextPath() + "/index.jsp");
 
