@@ -1,5 +1,6 @@
 package edu.matc.inventory.controller;
 
+import edu.matc.inventory.entity.AppUser;
 import edu.matc.inventory.entity.ArmorSlot;
 import edu.matc.inventory.entity.ArmorType;
 import edu.matc.inventory.entity.UserArmorPiece;
@@ -43,11 +44,17 @@ public class AddUserArmorPiece extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req,
-                          HttpServletResponse resp)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        int userId = Integer.parseInt(req.getParameter("userId"));
+        AppUser appUser = (AppUser) req.getSession().getAttribute("user");
+
+        if (appUser == null) {
+            resp.sendRedirect(req.getContextPath() + "/index.jsp");
+            return;
+        }
+
+        int userId = appUser.getUserId();
         int armorTypeId = Integer.parseInt(req.getParameter("armorTypeId"));
         int armorSlotId = Integer.parseInt(req.getParameter("armorSlotId"));
 

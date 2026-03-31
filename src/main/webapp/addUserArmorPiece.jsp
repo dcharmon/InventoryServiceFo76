@@ -14,16 +14,6 @@
 <form class="form" method="post" action="${pageContext.request.contextPath}/addUserArmorPiece">
 
   <div class="form-group">
-    <label for="userId">User ID</label>
-    <input class="form-control"
-           type="number"
-           id="userId"
-           name="userId"
-           value="1"
-           required />
-  </div>
-
-  <div class="form-group">
     <label for="armorTypeId">Armor Type</label>
     <select class="form-control" id="armorTypeId" name="armorTypeId">
       <c:forEach var="type" items="${armorTypes}">

@@ -9,24 +9,20 @@
 
 <body class="container">
 
-<h2>User Armor Pieces</h2>
+<h2>My Armor Pieces</h2>
 
 <table id="armorTable" class="table table-striped table-bordered">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>User ID</th>
-        <th>Armor Type ID</th>
-        <th>Armor Slot ID</th>
-        <th>Created At</th>
+        <th>Armor Type</th>
+        <th>Armor Slot</th>
+        <th>Date Added</th>
         <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach var="piece" items="${pieces}">
         <tr>
-            <td>${piece.id}</td>
-            <td>${piece.userId}</td>
             <td>${piece.armorType.typeName}</td>
             <td>${piece.armorSlot.slotName}</td>
             <td>${piece.createdAt}</td>
@@ -35,7 +31,6 @@
                    href="${pageContext.request.contextPath}/editUserArmorPiece?id=${piece.id}">
                     Edit
                 </a>
-
                 <a class="btn btn-danger btn-xs"
                    href="${pageContext.request.contextPath}/deleteUserArmorPiece?id=${piece.id}"
                    onclick="return confirm('Delete this armor piece?');">
@@ -55,5 +50,3 @@
 
 </body>
 </html>
-
-
