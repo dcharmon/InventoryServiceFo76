@@ -32,13 +32,13 @@ class UserArmorPieceDaoTest {
 
     @Test
     void insertSuccess() {
-        ArmorType combat = armorTypeDao.getById(5);   // Combat armor
+        ArmorType covertScout = armorTypeDao.getById(5);   // Combat armor
         ArmorSlot torso = armorSlotDao.getById(3);    // Torso
         LegendaryEffect unyielding = legendaryEffectDao.getById(19);  // Unyielding, 1-star
 
         UserArmorPiece piece = new UserArmorPiece();
         piece.setUserId(1);
-        piece.setArmorType(combat);
+        piece.setArmorType(covertScout);
         piece.setArmorSlot(torso);
         piece.setStar1Effect(unyielding);
 
@@ -47,7 +47,7 @@ class UserArmorPieceDaoTest {
 
         UserArmorPiece inserted = dao.getById(id);
         assertNotNull(inserted);
-        assertEquals(combat.getId(), inserted.getArmorType().getId());
+        assertEquals(covertScout.getId(), inserted.getArmorType().getId());
         assertEquals(torso.getId(), inserted.getArmorSlot().getId());
         assertEquals(unyielding.getId(), inserted.getStar1Effect().getId());
         assertNotNull(inserted.getCreatedAt());

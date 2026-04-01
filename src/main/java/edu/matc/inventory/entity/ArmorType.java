@@ -17,6 +17,9 @@ public class ArmorType {
     @Column(name = "type_name", nullable = false)
     private String typeName;
 
+    @Column(name = "weight_class")
+    private String weightClass;
+
     /**
      * Gets id.
      *
@@ -51,5 +54,23 @@ public class ArmorType {
      */
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    /**
+     * Gets weight class.
+     *
+     * @return weight class (Light, Sturdy, or Heavy)
+     */
+    public String getWeightClass() {
+        return weightClass;
+    }
+
+    /**
+     * Sets weight class.
+     *
+     * @param weightClass weight class (Light, Sturdy, or Heavy)
+     */
+    public void setWeightClass(String weightClass) {
+        this.weightClass = weightClass;
     }
 }

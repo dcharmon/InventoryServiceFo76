@@ -15,6 +15,7 @@
     <thead>
     <tr>
         <th>Armor Type</th>
+        <th>Weight Class</th>
         <th>Armor Slot</th>
         <th>★ 1-Star</th>
         <th>★★ 2-Star</th>
@@ -28,6 +29,14 @@
     <c:forEach var="piece" items="${pieces}">
         <tr>
             <td>${piece.armorType.typeName}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${not empty piece.armorType.weightClass}">
+                        ${piece.armorType.weightClass}
+                    </c:when>
+                    <c:otherwise>--</c:otherwise>
+                </c:choose>
+            </td>
             <td>${piece.armorSlot.slotName}</td>
             <td>
                 <c:choose>

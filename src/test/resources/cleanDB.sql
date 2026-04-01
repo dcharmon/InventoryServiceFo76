@@ -56,6 +56,9 @@ CREATE TABLE `armor_base_resistance` (
   `damage_resistance` smallint NOT NULL,
   `energy_resistance` smallint NOT NULL,
   `radiation_resistance` smallint NOT NULL,
+  `poison_resistance` smallint NOT NULL DEFAULT '0',
+  `fire_resistance` smallint NOT NULL DEFAULT '0',
+  `cryo_resistance` smallint NOT NULL DEFAULT '0',
   PRIMARY KEY (`armor_type_id`,`slot_group`),
   CONSTRAINT `fk_base_res_type` FOREIGN KEY (`armor_type_id`) REFERENCES `armor_type` (`armor_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -106,9 +109,10 @@ DROP TABLE IF EXISTS `armor_type`;
 CREATE TABLE `armor_type` (
   `armor_type_id` int NOT NULL AUTO_INCREMENT,
   `type_name` varchar(80) NOT NULL,
+  `weight_class` enum('Light','Sturdy','Heavy') DEFAULT NULL,
   PRIMARY KEY (`armor_type_id`),
   UNIQUE KEY `uq_armor_type_type_name` (`type_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,7 +121,7 @@ CREATE TABLE `armor_type` (
 
 LOCK TABLES `armor_type` WRITE;
 /*!40000 ALTER TABLE `armor_type` DISABLE KEYS */;
-INSERT INTO `armor_type` VALUES (1,'Arctic marine armor'),(2,'Botsmith armor'),(3,'Brotherhood recon armor'),(4,'Civil Engineer armor'),(5,'Combat armor'),(6,'Covert scout armor'),(7,'Forest scout armor'),(8,'Leather armor'),(9,'Marine armor'),(10,'Metal armor'),(11,'Raider armor'),(12,'Robot armor'),(13,'Secret Service armor'),(14,'Solar armor'),(15,'Thorn armor'),(16,'Trapper armor'),(17,'Urban scout armor'),(18,'Wood armor');
+INSERT INTO `armor_type` VALUES (1,'Arctic Marine Armor','Sturdy'),(2,'Botsmith Armor','Heavy'),(3,'Brotherhood Recon Armor','Heavy'),(4,'Civil Engineer Armor','Sturdy'),(5,'Covert Scout Armor','Light'),(6,'Forest Scout Armor','Light'),(7,'Heavy Combat Armor','Heavy'),(8,'Heavy Leather Armor','Heavy'),(9,'Heavy Metal Armor','Heavy'),(10,'Heavy Raider Armor','Heavy'),(11,'Heavy Robot Armor','Heavy'),(12,'Light Combat Armor','Light'),(13,'Light Leather Armor','Light'),(14,'Light Metal Armor','Light'),(15,'Light Raider Armor','Light'),(16,'Light Robot Armor','Light'),(17,'Marine Armor','Sturdy'),(18,'Secret Service Armor','Heavy'),(19,'Solar Armor','Light'),(20,'Sturdy Combat Armor','Sturdy'),(21,'Sturdy Leather Armor','Sturdy'),(22,'Sturdy Metal Armor','Sturdy'),(23,'Sturdy Raider Armor','Sturdy'),(24,'Sturdy Robot Armor','Sturdy'),(25,'Thorn Armor','Light'),(26,'Trapper Armor','Sturdy'),(27,'Urban Scout Armor','Light'),(28,'Wood Armor','Light');
 /*!40000 ALTER TABLE `armor_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +183,7 @@ CREATE TABLE `user_armor_piece` (
   CONSTRAINT `fk_uap_star4` FOREIGN KEY (`star4_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
   CONSTRAINT `fk_uap_type` FOREIGN KEY (`armor_type_id`) REFERENCES `armor_type` (`armor_type_id`),
   CONSTRAINT `fk_uap_user` FOREIGN KEY (`user_id`) REFERENCES `app_user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +192,7 @@ CREATE TABLE `user_armor_piece` (
 
 LOCK TABLES `user_armor_piece` WRITE;
 /*!40000 ALTER TABLE `user_armor_piece` DISABLE KEYS */;
-INSERT INTO `user_armor_piece` VALUES (1,1,8,2,'2026-02-22 21:21:40',NULL,NULL,NULL,NULL),(3,1,8,1,'2026-03-31 23:45:36',NULL,NULL,NULL,NULL);
+INSERT INTO `user_armor_piece` VALUES (1,1,12,2,'2026-02-23 03:21:40',NULL,NULL,NULL,NULL),(5,1,5,3,'2026-04-01 19:04:25',19,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user_armor_piece` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -201,4 +205,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-31 19:16:27
+-- Dump completed on 2026-04-01 14:17:21
