@@ -1,9 +1,6 @@
 package edu.matc.inventory.controller;
 
-import edu.matc.inventory.entity.AppUser;
-import edu.matc.inventory.entity.ArmorSlot;
-import edu.matc.inventory.entity.ArmorType;
-import edu.matc.inventory.entity.UserArmorPiece;
+import edu.matc.inventory.entity.*;
 import edu.matc.inventory.persistence.GenericDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +31,12 @@ public class AddUserArmorPiece extends HttpServlet {
 
         GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
         GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
+        GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
+
+        req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", 1));
+        req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", 2));
+        req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", 3));
+        req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", 4));
 
         req.setAttribute("armorTypes", armorTypeDao.getAll());
         req.setAttribute("armorSlots", armorSlotDao.getAll());
@@ -58,6 +61,11 @@ public class AddUserArmorPiece extends HttpServlet {
         int armorTypeId = Integer.parseInt(req.getParameter("armorTypeId"));
         int armorSlotId = Integer.parseInt(req.getParameter("armorSlotId"));
 
+        String star1IdParam = req.getParameter("star1EffectId");
+        String star2IdParam = req.getParameter("star2EffectId");
+        String star3IdParam = req.getParameter("star3EffectId");
+        String star4IdParam = req.getParameter("star4EffectId");
+
         logger.info("Adding armor piece for userId {}", userId);
         logger.debug("armorTypeId: {}, armorSlotId: {}", armorTypeId, armorSlotId);
 
@@ -66,15 +74,25 @@ public class AddUserArmorPiece extends HttpServlet {
 
         GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
         GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
+        GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
 
-        ArmorType armorType = armorTypeDao.getById(armorTypeId);
-        ArmorSlot armorSlot = armorSlotDao.getById(armorSlotId);
+        piece.setArmorType(armorTypeDao.getById(armorTypeId));
+        piece.setArmorSlot(armorSlotDao.getById(armorSlotId));
 
-        piece.setArmorType(armorType);
-        piece.setArmorSlot(armorSlot);
+        if (star1IdParam != null && !star1IdParam.isEmpty()) {
+            piece.setStar1Effect(legendaryEffectDao.getById(Integer.parseInt(star1IdParam)));
+        }
+        if (star2IdParam != null && !star2IdParam.isEmpty()) {
+            piece.setStar2Effect(legendaryEffectDao.getById(Integer.parseInt(star2IdParam)));
+        }
+        if (star3IdParam != null && !star3IdParam.isEmpty()) {
+            piece.setStar3Effect(legendaryEffectDao.getById(Integer.parseInt(star3IdParam)));
+        }
+        if (star4IdParam != null && !star4IdParam.isEmpty()) {
+            piece.setStar4Effect(legendaryEffectDao.getById(Integer.parseInt(star4IdParam)));
+        }
 
         GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
-
         int id = dao.insert(piece);
         logger.info("Added UserArmorPiece with id {}", id);
 

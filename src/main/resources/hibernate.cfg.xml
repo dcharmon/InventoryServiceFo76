@@ -20,6 +20,7 @@
         <mapping class="edu.matc.inventory.entity.UserArmorPiece"/>
         <mapping class="edu.matc.inventory.entity.ArmorSlot"/>
         <mapping class="edu.matc.inventory.entity.AppUser"/>
+        <mapping class="edu.matc.inventory.entity.LegendaryEffect"/>
 
     </session-factory>
 

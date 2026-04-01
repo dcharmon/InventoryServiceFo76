@@ -32,6 +32,22 @@ public class UserArmorPiece {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "star1_effect_id")
+    private LegendaryEffect star1Effect;
+
+    @ManyToOne
+    @JoinColumn(name = "star2_effect_id")
+    private LegendaryEffect star2Effect;
+
+    @ManyToOne
+    @JoinColumn(name = "star3_effect_id")
+    private LegendaryEffect star3Effect;
+
+    @ManyToOne
+    @JoinColumn(name = "star4_effect_id")
+    private LegendaryEffect star4Effect;
+
     /**
      * Gets id.
      *
@@ -111,5 +127,77 @@ public class UserArmorPiece {
      */
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    /**
+     * Gets star 1 effect.
+     *
+     * @return the star 1 effect
+     */
+    public LegendaryEffect getStar1Effect() {
+        return star1Effect;
+    }
+
+    /**
+     * Sets star 1 effect.
+     *
+     * @param star1Effect the star 1 effect
+     */
+    public void setStar1Effect(LegendaryEffect star1Effect) {
+        this.star1Effect = star1Effect;
+    }
+
+    /**
+     * Gets star 2 effect.
+     *
+     * @return the star 2 effect
+     */
+    public LegendaryEffect getStar2Effect() {
+        return star2Effect;
+    }
+
+    /**
+     * Sets star 2 effect.
+     *
+     * @param star2Effect the star 2 effect
+     */
+    public void setStar2Effect(LegendaryEffect star2Effect) {
+        this.star2Effect = star2Effect;
+    }
+
+    /**
+     * Gets star 3 effect.
+     *
+     * @return the star 3 effect
+     */
+    public LegendaryEffect getStar3Effect() {
+        return star3Effect;
+    }
+
+    /**
+     * Sets star 3 effect.
+     *
+     * @param star3Effect the star 3 effect
+     */
+    public void setStar3Effect(LegendaryEffect star3Effect) {
+        this.star3Effect = star3Effect;
+    }
+
+    /**
+     * Gets star 4 effect.
+     *
+     * @return the star 4 effect
+     */
+    public LegendaryEffect getStar4Effect() {
+        return star4Effect;
+    }
+
+    /**
+     * Sets star 4 effect.
+     *
+     * @param star4Effect the star 4 effect
+     */
+    public void setStar4Effect(LegendaryEffect star4Effect) {
+        this.star4Effect = star4Effect;
     }
 }

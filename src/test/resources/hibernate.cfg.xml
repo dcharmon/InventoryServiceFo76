@@ -19,7 +19,7 @@
         <mapping class="edu.matc.inventory.entity.ArmorType" />
         <mapping class="edu.matc.inventory.entity.UserArmorPiece"/>
         <mapping class="edu.matc.inventory.entity.ArmorSlot"/>
-
+        <mapping class="edu.matc.inventory.entity.LegendaryEffect"/>
     </session-factory>
 
 </hibernate-configuration>
