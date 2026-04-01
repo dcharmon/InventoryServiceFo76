@@ -55,45 +55,41 @@ class UserArmorPieceDaoTest {
 
     @Test
     void updateSuccess() {
-
-        UserArmorPiece existing = dao.getById(1);
+        UserArmorPiece existing = dao.getById(5);
         assertNotNull(existing);
 
         ArmorSlot torso = armorSlotDao.getById(3);
         existing.setArmorSlot(torso);
         dao.update(existing);
 
-        UserArmorPiece updated = dao.getById(1);
+        UserArmorPiece updated = dao.getById(5);
         assertNotNull(updated);
         assertEquals(3, updated.getArmorSlot().getId());
     }
 
     @Test
     void deleteSuccess() {
-
-        UserArmorPiece existing = dao.getById(1);
+        UserArmorPiece existing = dao.getById(5);
         assertNotNull(existing);
 
         dao.delete(existing);
 
-        UserArmorPiece afterDelete = dao.getById(1);
+        UserArmorPiece afterDelete = dao.getById(5);
         assertNull(afterDelete);
     }
 
     @Test
     void getAllSuccess() {
         List<UserArmorPiece> pieces = dao.getAll();
-
         assertNotNull(pieces);
-        assertEquals(2, pieces.size());
+        assertEquals(3, pieces.size());
     }
 
     @Test
     void getByPropertyEqualSuccess() {
         List<UserArmorPiece> pieces = dao.getByPropertyEqual("userId", 1);
-
         assertNotNull(pieces);
-        assertEquals(2, pieces.size());
+        assertEquals(3, pieces.size());
         assertEquals(1, pieces.get(0).getUserId());
     }
 }

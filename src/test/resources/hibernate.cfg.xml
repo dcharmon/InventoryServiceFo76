@@ -21,6 +21,7 @@
         <mapping class="edu.matc.inventory.entity.ArmorSlot"/>
         <mapping class="edu.matc.inventory.entity.LegendaryEffect"/>
         <mapping class="edu.matc.inventory.entity.ArmorBaseResistance"/>
+        <mapping class="edu.matc.inventory.entity.Loadout"/>
 
     </session-factory>
 

@@ -14,30 +14,38 @@
 <hr/>
 
 <c:choose>
-    <c:when test="${empty sessionScope.email}">
-        <p>
-            <a href="${pageContext.request.contextPath}/logIn">Log in</a>
-        </p>
+    <c:when test="${empty sessionScope.user}">
+        <p>Please <a href="${pageContext.request.contextPath}/logIn">log in</a> to access your inventory.</p>
     </c:when>
     <c:otherwise>
-        <p>Welcome ${sessionScope.email}</p>
+        <p>Welcome, <strong>${sessionScope.user.email}</strong>!</p>
+
+        <hr/>
+
+        <ul>
+            <li>
+                <a href="${pageContext.request.contextPath}/viewUserArmorPieces">
+                    My Armor Pieces
+                </a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/addUserArmorPiece">
+                    Add Armor Piece
+                </a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/viewLoadouts">
+                    My Loadouts
+                </a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/addLoadout">
+                    Add Loadout
+                </a>
+            </li>
+        </ul>
     </c:otherwise>
 </c:choose>
-
-<hr/>
-
-<ul>
-    <li>
-        <a href="${pageContext.request.contextPath}/viewUserArmorPieces">
-            View User Armor Pieces
-        </a>
-    </li>
-    <li>
-        <a href="${pageContext.request.contextPath}/addUserArmorPiece">
-            Add Armor Piece
-        </a>
-    </li>
-</ul>
 
 </body>
 </html>

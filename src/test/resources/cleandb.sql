@@ -153,6 +153,62 @@ INSERT INTO `legendary_effect` VALUES (1,'Adrenal','+10 Damage and Energy Resist
 UNLOCK TABLES;
 
 --
+-- Table structure for table `loadout`
+--
+
+DROP TABLE IF EXISTS `loadout`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `loadout` (
+  `loadout_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `name` varchar(80) NOT NULL,
+  `notes` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`loadout_id`),
+  KEY `ix_loadout_user` (`user_id`),
+  CONSTRAINT `fk_loadout_user` FOREIGN KEY (`user_id`) REFERENCES `app_user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `loadout`
+--
+
+LOCK TABLES `loadout` WRITE;
+/*!40000 ALTER TABLE `loadout` DISABLE KEYS */;
+INSERT INTO `loadout` VALUES (1,1,'New Loadout','Some notes','2026-04-01 22:33:29');
+/*!40000 ALTER TABLE `loadout` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `loadout_armor_piece`
+--
+
+DROP TABLE IF EXISTS `loadout_armor_piece`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `loadout_armor_piece` (
+  `loadout_id` int NOT NULL,
+  `user_armor_piece_id` int NOT NULL,
+  PRIMARY KEY (`loadout_id`,`user_armor_piece_id`),
+  KEY `fk_lap_piece` (`user_armor_piece_id`),
+  CONSTRAINT `fk_lap_loadout` FOREIGN KEY (`loadout_id`) REFERENCES `loadout` (`loadout_id`),
+  CONSTRAINT `fk_lap_piece` FOREIGN KEY (`user_armor_piece_id`) REFERENCES `user_armor_piece` (`user_armor_piece_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `loadout_armor_piece`
+--
+
+LOCK TABLES `loadout_armor_piece` WRITE;
+/*!40000 ALTER TABLE `loadout_armor_piece` DISABLE KEYS */;
+INSERT INTO `loadout_armor_piece` VALUES (1,1);
+/*!40000 ALTER TABLE `loadout_armor_piece` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_armor_piece`
 --
 
@@ -206,4 +262,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-01 16:27:34
+-- Dump completed on 2026-04-01 17:34:53
