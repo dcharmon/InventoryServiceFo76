@@ -20,6 +20,8 @@
         <mapping class="edu.matc.inventory.entity.UserArmorPiece"/>
         <mapping class="edu.matc.inventory.entity.ArmorSlot"/>
         <mapping class="edu.matc.inventory.entity.LegendaryEffect"/>
+        <mapping class="edu.matc.inventory.entity.ArmorBaseResistance"/>
+
     </session-factory>
 
 </hibernate-configuration>

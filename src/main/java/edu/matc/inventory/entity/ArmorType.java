@@ -2,6 +2,8 @@ package edu.matc.inventory.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 /**
  * Represents an armor type (e.g., Leather armor, Combat armor).
  */
@@ -19,6 +21,9 @@ public class ArmorType {
 
     @Column(name = "weight_class")
     private String weightClass;
+
+    @OneToMany(mappedBy = "armorType", fetch = FetchType.EAGER)
+    private List<ArmorBaseResistance> baseResistances;
 
     /**
      * Gets id.
@@ -73,4 +78,23 @@ public class ArmorType {
     public void setWeightClass(String weightClass) {
         this.weightClass = weightClass;
     }
+
+    /**
+     * Gets base resistances.
+     *
+     * @return the base resistances
+     */
+    public List<ArmorBaseResistance> getBaseResistances() {
+        return baseResistances;
+    }
+
+    /**
+     * Sets base resistances.
+     *
+     * @param baseResistances the base resistances
+     */
+    public void setBaseResistances(List<ArmorBaseResistance> baseResistances) {
+        this.baseResistances = baseResistances;
+    }
 }
+

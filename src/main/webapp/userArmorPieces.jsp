@@ -17,6 +17,12 @@
         <th>Armor Type</th>
         <th>Weight Class</th>
         <th>Armor Slot</th>
+        <th>DR</th>
+        <th>ER</th>
+        <th>RR</th>
+        <th>PR</th>
+        <th>FR</th>
+        <th>CR</th>
         <th>★ 1-Star</th>
         <th>★★ 2-Star</th>
         <th>★★★ 3-Star</th>
@@ -27,6 +33,13 @@
     </thead>
     <tbody>
     <c:forEach var="piece" items="${pieces}">
+        <%-- Find the resistance row matching this piece's slot group --%>
+        <c:set var="resistance" value="${null}" />
+        <c:forEach var="res" items="${piece.armorType.baseResistances}">
+            <c:if test="${res.id.slotGroup == piece.armorSlot.slotGroup}">
+                <c:set var="resistance" value="${res}" />
+            </c:if>
+        </c:forEach>
         <tr>
             <td>${piece.armorType.typeName}</td>
             <td>
@@ -38,6 +51,42 @@
                 </c:choose>
             </td>
             <td>${piece.armorSlot.slotName}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${not empty resistance}">${resistance.damageResistance}</c:when>
+                    <c:otherwise>--</c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${not empty resistance}">${resistance.energyResistance}</c:when>
+                    <c:otherwise>--</c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${not empty resistance}">${resistance.radiationResistance}</c:when>
+                    <c:otherwise>--</c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${not empty resistance}">${resistance.poisonResistance}</c:when>
+                    <c:otherwise>--</c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${not empty resistance}">${resistance.fireResistance}</c:when>
+                    <c:otherwise>--</c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${not empty resistance}">${resistance.cryoResistance}</c:when>
+                    <c:otherwise>--</c:otherwise>
+                </c:choose>
+            </td>
             <td>
                 <c:choose>
                     <c:when test="${not empty piece.star1Effect}">
