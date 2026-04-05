@@ -21,4 +21,4 @@
 | Week 9 | Indie Project | Add `LegendaryEffect` entity, update `UserArmorPiece` with star1-4 fields, update JSPs and DAO tests | 2     | Full legendary effects workflow |
 | Week 9 | Indie Project | Add armor base resistance feature and improve test coverage       | 4     | Resistance fields on entity, updated seed data |
 | Week 9 | Indie Project | Add loadout feature with view and add functionality              | 3     | `Loadout` entity, ManyToMany, `addLoadout.jsp`, `viewLoadouts.jsp`, live resistance totals |
-
+| Week 10 | Indie Project | Add power armor to database, expand legendary effects, add set bonus tables | 2.5   | |

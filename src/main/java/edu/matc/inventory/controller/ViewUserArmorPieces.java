@@ -39,9 +39,9 @@ public class ViewUserArmorPieces extends HttpServlet {
         }
 
         GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
-        List<UserArmorPiece> pieces = dao.getByPropertyEqual("userId", appUser.getUserId());
+        List<UserArmorPiece> pieces = dao.getByPropertyEqual("user", appUser);
 
-        logger.debug("Retrieved {} armor pieces for user {}", pieces.size(), appUser.getUserId());
+        logger.debug("Retrieved {} armor pieces for user {}", pieces.size(), appUser.getDisplayName());
 
         req.setAttribute("pieces", pieces);
         RequestDispatcher dispatcher = req.getRequestDispatcher("/userArmorPieces.jsp");

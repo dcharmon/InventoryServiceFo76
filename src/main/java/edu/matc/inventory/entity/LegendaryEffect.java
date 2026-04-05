@@ -23,6 +23,9 @@ public class LegendaryEffect {
     @Column(name = "star", nullable = false)
     private int star;
 
+    @Column(name = "armor_category", nullable = false)
+    private String armorCategory;
+
     /**
      * Gets id.
      *
@@ -93,5 +96,23 @@ public class LegendaryEffect {
      */
     public void setStar(int star) {
         this.star = star;
+    }
+
+    /**
+     * Gets armor category.
+     *
+     * @return the armor category
+     */
+    public String getArmorCategory() {
+        return armorCategory;
+    }
+
+    /**
+     * Sets armor category.
+     *
+     * @param armorCategory the armor category
+     */
+    public void setArmorCategory(String armorCategory) {
+        this.armorCategory = armorCategory;
     }
 }

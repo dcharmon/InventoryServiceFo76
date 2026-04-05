@@ -57,7 +57,6 @@ public class AddUserArmorPiece extends HttpServlet {
             return;
         }
 
-        int userId = appUser.getUserId();
         int armorTypeId = Integer.parseInt(req.getParameter("armorTypeId"));
         int armorSlotId = Integer.parseInt(req.getParameter("armorSlotId"));
 
@@ -66,11 +65,11 @@ public class AddUserArmorPiece extends HttpServlet {
         String star3IdParam = req.getParameter("star3EffectId");
         String star4IdParam = req.getParameter("star4EffectId");
 
-        logger.info("Adding armor piece for userId {}", userId);
+        logger.info("Adding armor piece for user {}", appUser.getDisplayName());
         logger.debug("armorTypeId: {}, armorSlotId: {}", armorTypeId, armorSlotId);
 
         UserArmorPiece piece = new UserArmorPiece();
-        piece.setUserId(userId);
+        piece.setUser(appUser);
 
         GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
         GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);

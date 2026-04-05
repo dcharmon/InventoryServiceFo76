@@ -83,7 +83,8 @@ public class GenericDao<T> {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
 
-        session.delete(entity);
+        T merged = (T) session.merge(entity);
+        session.delete(merged);
 
         transaction.commit();
         session.close();

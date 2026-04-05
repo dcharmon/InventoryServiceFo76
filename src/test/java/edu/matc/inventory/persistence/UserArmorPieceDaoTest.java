@@ -1,5 +1,6 @@
 package edu.matc.inventory.persistence;
 
+import edu.matc.inventory.entity.AppUser;
 import edu.matc.inventory.entity.ArmorSlot;
 import edu.matc.inventory.entity.ArmorType;
 import edu.matc.inventory.entity.LegendaryEffect;
@@ -18,6 +19,7 @@ class UserArmorPieceDaoTest {
     private GenericDao<ArmorType> armorTypeDao;
     private GenericDao<ArmorSlot> armorSlotDao;
     private GenericDao<LegendaryEffect> legendaryEffectDao;
+    private GenericDao<AppUser> userDao;
 
     @BeforeEach
     void setUp() {
@@ -28,16 +30,18 @@ class UserArmorPieceDaoTest {
         armorTypeDao = new GenericDao<>(ArmorType.class);
         armorSlotDao = new GenericDao<>(ArmorSlot.class);
         legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
+        userDao = new GenericDao<>(AppUser.class);
     }
 
     @Test
     void insertSuccess() {
         ArmorType covertScout = armorTypeDao.getById(5);   // Combat armor
-        ArmorSlot torso = armorSlotDao.getById(3);    // Torso
+        ArmorSlot torso = armorSlotDao.getById(3);         // Torso
         LegendaryEffect unyielding = legendaryEffectDao.getById(19);  // Unyielding, 1-star
+        AppUser user = userDao.getById(1);
 
         UserArmorPiece piece = new UserArmorPiece();
-        piece.setUserId(1);
+        piece.setUser(user);
         piece.setArmorType(covertScout);
         piece.setArmorSlot(torso);
         piece.setStar1Effect(unyielding);
@@ -72,6 +76,10 @@ class UserArmorPieceDaoTest {
         UserArmorPiece existing = dao.getById(5);
         assertNotNull(existing);
 
+        AppUser user = existing.getUser();
+        user.getArmorPieces().remove(existing);
+        userDao.update(user);
+
         dao.delete(existing);
 
         UserArmorPiece afterDelete = dao.getById(5);
@@ -82,14 +90,15 @@ class UserArmorPieceDaoTest {
     void getAllSuccess() {
         List<UserArmorPiece> pieces = dao.getAll();
         assertNotNull(pieces);
-        assertEquals(3, pieces.size());
+        assertEquals(4, pieces.size());
     }
 
     @Test
     void getByPropertyEqualSuccess() {
-        List<UserArmorPiece> pieces = dao.getByPropertyEqual("userId", 1);
+        AppUser user = userDao.getById(1);
+        List<UserArmorPiece> pieces = dao.getByPropertyEqual("user", user);
         assertNotNull(pieces);
-        assertEquals(3, pieces.size());
-        assertEquals(1, pieces.get(0).getUserId());
+        assertEquals(4, pieces.size());
+        assertEquals(1, pieces.get(0).getUser().getUserId());
     }
 }

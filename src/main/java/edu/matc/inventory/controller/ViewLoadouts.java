@@ -37,9 +37,9 @@ public class ViewLoadouts extends HttpServlet {
         }
 
         GenericDao<Loadout> dao = new GenericDao<>(Loadout.class);
-        List<Loadout> loadouts = dao.getByPropertyEqual("userId", appUser.getUserId());
+        List<Loadout> loadouts = dao.getByPropertyEqual("user", appUser);
 
-        logger.debug("Retrieved {} loadouts for user {}", loadouts.size(), appUser.getUserId());
+        logger.debug("Retrieved {} loadouts for user {}", loadouts.size(), appUser.getDisplayName());
 
         req.setAttribute("loadouts", loadouts);
 

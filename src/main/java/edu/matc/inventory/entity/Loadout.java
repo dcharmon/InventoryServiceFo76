@@ -18,8 +18,9 @@ public class Loadout {
     @Column(name = "loadout_id")
     private int id;
 
-    @Column(name = "user_id", nullable = false)
-    private int userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private AppUser user;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -31,7 +32,7 @@ public class Loadout {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "loadout_armor_piece",
             joinColumns = @JoinColumn(name = "loadout_id"),
@@ -58,21 +59,21 @@ public class Loadout {
     }
 
     /**
-     * Gets user id.
+     * Gets user.
      *
-     * @return user id
+     * @return the user who owns this loadout
      */
-    public int getUserId() {
-        return userId;
+    public AppUser getUser() {
+        return user;
     }
 
     /**
-     * Sets user id.
+     * Sets user.
      *
-     * @param userId user id
+     * @param user the user who owns this loadout
      */
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(AppUser user) {
+        this.user = user;
     }
 
     /**

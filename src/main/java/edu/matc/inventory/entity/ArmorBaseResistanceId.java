@@ -17,25 +17,54 @@ public class ArmorBaseResistanceId implements Serializable {
     @Column(name = "slot_group")
     private String slotGroup;
 
+    /**
+     * Instantiates a new Armor base resistance id.
+     */
     public ArmorBaseResistanceId() {}
 
+    /**
+     * Instantiates a new Armor base resistance id.
+     *
+     * @param armorTypeId the armor type id
+     * @param slotGroup   the slot group
+     */
     public ArmorBaseResistanceId(int armorTypeId, String slotGroup) {
         this.armorTypeId = armorTypeId;
         this.slotGroup = slotGroup;
     }
 
+    /**
+     * Gets armor type id.
+     *
+     * @return the armor type id
+     */
     public int getArmorTypeId() {
         return armorTypeId;
     }
 
+    /**
+     * Sets armor type id.
+     *
+     * @param armorTypeId the armor type id
+     */
     public void setArmorTypeId(int armorTypeId) {
         this.armorTypeId = armorTypeId;
     }
 
+    /**
+     * Gets slot group.
+     *
+     * @return the slot group
+     */
     public String getSlotGroup() {
         return slotGroup;
     }
 
+    /**
+     * Sets slot group.
+     *
+     * @param slotGroup the slot group
+     */
     public void setSlotGroup(String slotGroup) {
         this.slotGroup = slotGroup;
     }

@@ -4,6 +4,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type User armor piece.
@@ -17,8 +19,9 @@ public class UserArmorPiece {
     @Column(name = "user_armor_piece_id")
     private int id;
 
-    @Column(name = "user_id", nullable = false)
-    private int userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private AppUser user;
 
     @ManyToOne
     @JoinColumn(name = "armor_type_id", nullable = false)
@@ -48,6 +51,9 @@ public class UserArmorPiece {
     @JoinColumn(name = "star4_effect_id")
     private LegendaryEffect star4Effect;
 
+    @ManyToMany(mappedBy = "armorPieces", fetch = FetchType.EAGER)
+    private List<Loadout> loadouts = new ArrayList<>();
+
     /**
      * Gets id.
      *
@@ -67,21 +73,21 @@ public class UserArmorPiece {
     }
 
     /**
-     * Gets user id.
+     * Gets user.
      *
-     * @return the user id
+     * @return the user
      */
-    public int getUserId() {
-        return userId;
+    public AppUser getUser() {
+        return user;
     }
 
     /**
-     * Sets user id.
+     * Sets user.
      *
-     * @param userId the user id
+     * @param user the user
      */
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(AppUser user) {
+        this.user = user;
     }
 
     /**
@@ -200,4 +206,18 @@ public class UserArmorPiece {
     public void setStar4Effect(LegendaryEffect star4Effect) {
         this.star4Effect = star4Effect;
     }
+
+    /**
+     * Gets loadouts.
+     *
+     * @return the loadouts
+     */
+    public List<Loadout> getLoadouts() { return loadouts; }
+
+    /**
+     * Sets loadouts.
+     *
+     * @param loadouts the loadouts
+     */
+    public void setLoadouts(List<Loadout> loadouts) { this.loadouts = loadouts; }
 }

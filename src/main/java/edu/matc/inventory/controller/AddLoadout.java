@@ -39,7 +39,7 @@ public class AddLoadout extends HttpServlet {
         }
 
         GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
-        List<UserArmorPiece> userPieces = pieceDao.getByPropertyEqual("userId", appUser.getUserId());
+        List<UserArmorPiece> userPieces = pieceDao.getByPropertyEqual("user", appUser);
 
         req.setAttribute("userPieces", userPieces);
 
@@ -62,10 +62,10 @@ public class AddLoadout extends HttpServlet {
         String notes = req.getParameter("notes");
         String[] pieceIds = req.getParameterValues("armorPieceIds");
 
-        logger.info("Adding loadout '{}' for userId {}", name, appUser.getUserId());
+        logger.info("Adding loadout '{}' for user {}", name, appUser.getDisplayName());
 
         Loadout loadout = new Loadout();
-        loadout.setUserId(appUser.getUserId());
+        loadout.setUser(appUser);
         loadout.setName(name);
         loadout.setNotes(notes);
 

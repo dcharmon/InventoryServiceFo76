@@ -1,5 +1,6 @@
 package edu.matc.inventory.controller;
 
+import edu.matc.inventory.entity.AppUser;
 import edu.matc.inventory.entity.ArmorSlot;
 import edu.matc.inventory.entity.ArmorType;
 import edu.matc.inventory.entity.UserArmorPiece;
@@ -54,30 +55,31 @@ public class EditUserArmorPiece extends HttpServlet {
                           HttpServletResponse resp)
             throws ServletException, IOException {
 
+        AppUser appUser = (AppUser) req.getSession().getAttribute("user");
+
+        if (appUser == null) {
+            resp.sendRedirect(req.getContextPath() + "/index.jsp");
+            return;
+        }
+
         int id = Integer.parseInt(req.getParameter("id"));
-        int userId = Integer.parseInt(req.getParameter("userId"));
         int armorTypeId = Integer.parseInt(req.getParameter("armorTypeId"));
         int armorSlotId = Integer.parseInt(req.getParameter("armorSlotId"));
 
-        logger.info("Updating UserArmorPiece id {}", id);
-        logger.debug("New values - userId: {}, armorTypeId: {}, armorSlotId: {}", userId, armorTypeId, armorSlotId);
+        logger.info("Updating UserArmorPiece id {} for user {}", id, appUser.getDisplayName());
+        logger.debug("New values - armorTypeId: {}, armorSlotId: {}", armorTypeId, armorSlotId);
 
-        GenericDao<UserArmorPiece> dao =
-                new GenericDao<>(UserArmorPiece.class);
-
+        GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
         UserArmorPiece piece = dao.getById(id);
 
         if (piece != null) {
-            piece.setUserId(userId);
+            piece.setUser(appUser);
 
             GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
             GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
 
-            ArmorType armorType = armorTypeDao.getById(armorTypeId);
-            ArmorSlot armorSlot = armorSlotDao.getById(armorSlotId);
-
-            piece.setArmorType(armorType);
-            piece.setArmorSlot(armorSlot);
+            piece.setArmorType(armorTypeDao.getById(armorTypeId));
+            piece.setArmorSlot(armorSlotDao.getById(armorSlotId));
 
             dao.update(piece);
 

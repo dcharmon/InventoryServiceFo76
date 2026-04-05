@@ -1,5 +1,6 @@
 package edu.matc.inventory.persistence;
 
+import edu.matc.inventory.entity.AppUser;
 import edu.matc.inventory.entity.Loadout;
 import edu.matc.inventory.entity.UserArmorPiece;
 import edu.matc.inventory.testutils.Database;
@@ -31,7 +32,8 @@ class LoadoutDaoTest {
         assertNotNull(loadout);
         assertEquals("New Loadout", loadout.getName());
         assertEquals("Some notes", loadout.getNotes());
-        assertEquals(1, loadout.getUserId());
+        assertNotNull(loadout.getUser());
+        assertEquals(1, loadout.getUser().getUserId());
         assertEquals(1, loadout.getArmorPieces().size());
     }
 
@@ -45,7 +47,9 @@ class LoadoutDaoTest {
 
     @Test
     void getByPropertyEqualSuccess() {
-        List<Loadout> loadouts = dao.getByPropertyEqual("userId", 1);
+        GenericDao<AppUser> userDao = new GenericDao<>(AppUser.class);
+        AppUser user = userDao.getById(1);
+        List<Loadout> loadouts = dao.getByPropertyEqual("user", user);
         assertNotNull(loadouts);
         assertEquals(1, loadouts.size());
         assertEquals("New Loadout", loadouts.get(0).getName());
@@ -59,7 +63,9 @@ class LoadoutDaoTest {
         pieces.add(piece);
 
         Loadout loadout = new Loadout();
-        loadout.setUserId(1);
+        GenericDao<AppUser> userDao = new GenericDao<>(AppUser.class);
+        AppUser user = userDao.getById(1);
+        loadout.setUser(user);
         loadout.setName("New Loadout");
         loadout.setNotes("Some notes");
         loadout.setArmorPieces(pieces);
@@ -90,6 +96,11 @@ class LoadoutDaoTest {
     void deleteSuccess() {
         Loadout existing = dao.getById(1);
         assertNotNull(existing);
+
+        AppUser user = existing.getUser();
+        user.getLoadouts().remove(existing);
+        GenericDao<AppUser> userDao = new GenericDao<>(AppUser.class);
+        userDao.update(user);
 
         dao.delete(existing);
 
