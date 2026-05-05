@@ -47,5 +47,14 @@
     </c:otherwise>
 </c:choose>
 
+<hr/>
+<h3>Reference Data</h3>
+<ul>
+    <li>
+        <a href="${pageContext.request.contextPath}/viewLegendaryEffects">
+            Legendary Effects
+        </a>
+    </li>
+</ul>
 </body>
 </html>
