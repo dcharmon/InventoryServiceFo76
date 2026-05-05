@@ -9,6 +9,8 @@
 
 <body class="container">
 
+<c:import url="navbar.jsp" />
+
 <h2>Legendary Effects</h2>
 
 <hr/>

@@ -9,6 +9,8 @@
 
 <body class="container">
 
+<c:import url="navbar.jsp" />
+
 <h2>Add Loadout</h2>
 
 <form class="form" method="post" action="${pageContext.request.contextPath}/addLoadout">

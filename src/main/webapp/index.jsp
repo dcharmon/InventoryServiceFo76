@@ -9,52 +9,24 @@
 
 <body class="container">
 
-<h2>Inventory Service FO76</h2>
+<c:import url="navbar.jsp" />
 
-<hr/>
+<div class="jumbotron">
+    <h1>FO76 Inventory</h1>
+    <p>Track your Fallout 76 armor pieces and loadouts.</p>
+    <c:if test="${empty sessionScope.user}">
+        <a href="${pageContext.request.contextPath}/logIn" class="btn btn-primary btn-lg">Sign In</a>
+    </c:if>
+</div>
 
-<c:choose>
-    <c:when test="${empty sessionScope.user}">
-        <p>Please <a href="${pageContext.request.contextPath}/logIn">log in</a> to access your inventory.</p>
-    </c:when>
-    <c:otherwise>
-        <p>Welcome, <strong>${sessionScope.user.email}</strong>!</p>
+<c:if test="${not empty sessionScope.user}">
+    <p>Welcome back, <strong>${sessionScope.user.email}</strong>!</p>
+</c:if>
 
-        <hr/>
-
-        <ul>
-            <li>
-                <a href="${pageContext.request.contextPath}/viewUserArmorPieces">
-                    My Armor Pieces
-                </a>
-            </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/addUserArmorPiece">
-                    Add Armor Piece
-                </a>
-            </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/viewLoadouts">
-                    My Loadouts
-                </a>
-            </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/addLoadout">
-                    Add Loadout
-                </a>
-            </li>
-        </ul>
-    </c:otherwise>
-</c:choose>
-
-<hr/>
 <h3>Reference Data</h3>
 <ul>
-    <li>
-        <a href="${pageContext.request.contextPath}/viewLegendaryEffects">
-            Legendary Effects
-        </a>
-    </li>
+    <li><a href="${pageContext.request.contextPath}/viewLegendaryEffects">Legendary Effects</a></li>
 </ul>
+
 </body>
 </html>

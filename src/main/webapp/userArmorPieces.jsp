@@ -9,6 +9,8 @@
 
 <body class="container">
 
+<c:import url="navbar.jsp" />
+
 <h2>My Armor Pieces</h2>
 
 <table id="armorTable" class="table table-striped table-bordered">
@@ -23,10 +25,10 @@
         <th>PR</th>
         <th>FR</th>
         <th>CR</th>
-        <th>★ 1-Star</th>
-        <th>★★ 2-Star</th>
-        <th>★★★ 3-Star</th>
-        <th>★★★★ 4-Star</th>
+        <th>&#9733; 1-Star</th>
+        <th>&#9733;&#9733; 2-Star</th>
+        <th>&#9733;&#9733;&#9733; 3-Star</th>
+        <th>&#9733;&#9733;&#9733;&#9733; 4-Star</th>
         <th>Date Added</th>
         <th>Actions</th>
     </tr>

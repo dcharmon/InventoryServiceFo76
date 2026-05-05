@@ -9,6 +9,8 @@
 
 <body class="container">
 
+<c:import url="navbar.jsp" />
+
 <h2>Edit Armor Piece</h2>
 
 <form class="form"

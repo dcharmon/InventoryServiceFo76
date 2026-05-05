@@ -9,6 +9,8 @@
 
 <body class="container">
 
+<c:import url="navbar.jsp" />
+
 <h2>My Loadouts</h2>
 
 <a class="btn btn-primary" href="${pageContext.request.contextPath}/addLoadout">Add Loadout</a>
@@ -63,10 +65,10 @@
                                     <th>PR</th>
                                     <th>FR</th>
                                     <th>CR</th>
-                                    <th>★ 1-Star</th>
-                                    <th>★★ 2-Star</th>
-                                    <th>★★★ 3-Star</th>
-                                    <th>★★★★ 4-Star</th>
+                                    <th>&#9733; 1-Star</th>
+                                    <th>&#9733;&#9733; 2-Star</th>
+                                    <th>&#9733;&#9733;&#9733; 3-Star</th>
+                                    <th>&#9733;&#9733;&#9733;&#9733; 4-Star</th>
                                 </tr>
                                 </thead>
                                 <tbody>
