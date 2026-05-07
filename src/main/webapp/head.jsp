@@ -19,4 +19,5 @@
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/loadout.css">
 </head>

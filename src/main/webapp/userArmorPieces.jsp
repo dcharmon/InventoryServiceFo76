@@ -121,7 +121,7 @@
                     <c:otherwise>--</c:otherwise>
                 </c:choose>
             </td>
-            <td>${piece.createdAt}</td>
+            <td>${piece.formattedCreatedAt}</td>
             <td>
                 <a class="btn btn-warning btn-xs"
                    href="${pageContext.request.contextPath}/editUserArmorPiece?id=${piece.id}">

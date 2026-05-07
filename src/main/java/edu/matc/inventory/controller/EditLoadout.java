@@ -17,21 +17,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 /**
- * Adds a new loadout.
+ * Edits a user Loadout.
  */
 @WebServlet(
-        urlPatterns = {"/addLoadout"}
+        urlPatterns = {"/editLoadout"}
 )
-public class AddLoadout extends HttpServlet {
+public class EditLoadout extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req,
+                         HttpServletResponse resp)
             throws ServletException, IOException {
 
         AppUser appUser = (AppUser) req.getSession().getAttribute("user");
@@ -41,9 +44,14 @@ public class AddLoadout extends HttpServlet {
             return;
         }
 
-        GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
-        List<UserArmorPiece> userPieces = pieceDao.getByPropertyEqual("user", appUser);
+        int id = Integer.parseInt(req.getParameter("id"));
+        logger.debug("Loading edit form for Loadout id {}", id);
 
+        GenericDao<Loadout> loadoutDao = new GenericDao<>(Loadout.class);
+        GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
+
+        Loadout loadout = loadoutDao.getById(id);
+        List<UserArmorPiece> userPieces = pieceDao.getByPropertyEqual("user", appUser);
         Map<String, List<UserArmorPiece>> piecesBySlot = new LinkedHashMap<>();
         piecesBySlot.put("Left Arm",  new ArrayList<>());
         piecesBySlot.put("Right Arm", new ArrayList<>());
@@ -74,16 +82,31 @@ public class AddLoadout extends HttpServlet {
             }
             resolvedResistances.put(piece.getId(), res);
         }
-        req.setAttribute("resolvedResistances", resolvedResistances);
-        req.setAttribute("userPieces", userPieces);       // still needed for the JS data block
-        req.setAttribute("piecesBySlot", piecesBySlot);   // new — used by the slot tables
 
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/addLoadout.jsp");
+        Set<Integer> selectedPieceIds = new HashSet<>();
+        for (UserArmorPiece piece : loadout.getArmorPieces()) {
+            selectedPieceIds.add(piece.getId());
+        }
+
+        Map<String, Integer> selectedBySlot = new HashMap<>();
+        for (UserArmorPiece piece : loadout.getArmorPieces()) {
+            selectedBySlot.put(piece.getArmorSlot().getSlotName(), piece.getId());
+        }
+        req.setAttribute("selectedBySlot", selectedBySlot);
+        req.setAttribute("selectedPieceIds", selectedPieceIds);
+        req.setAttribute("piecesBySlot", piecesBySlot);
+        req.setAttribute("resolvedResistances", resolvedResistances);
+
+        req.setAttribute("loadout", loadout);
+        req.setAttribute("userPieces", userPieces);
+
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/editLoadout.jsp");
         dispatcher.forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doPost(HttpServletRequest req,
+                          HttpServletResponse resp)
             throws ServletException, IOException {
 
         AppUser appUser = (AppUser) req.getSession().getAttribute("user");
@@ -93,34 +116,35 @@ public class AddLoadout extends HttpServlet {
             return;
         }
 
+        int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         String notes = req.getParameter("notes");
         String[] pieceIds = req.getParameterValues("armorPieceIds");
 
-        logger.info("Adding loadout '{}' for user {}", name, appUser.getDisplayName());
+        logger.info("Updating Loadout id {} for user {}", id, appUser.getDisplayName());
 
-        Loadout loadout = new Loadout();
-        loadout.setUser(appUser);
-        loadout.setName(name);
-        loadout.setNotes(notes);
+        GenericDao<Loadout> dao = new GenericDao<>(Loadout.class);
+        Loadout loadout = dao.getById(id);
 
-        List<UserArmorPiece> selectedPieces = new ArrayList<>();
+        if (loadout != null) {
+            loadout.setName(name);
+            loadout.setNotes(notes);
 
-        if (pieceIds != null) {
-            GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
-            for (String idStr : pieceIds) {
-                UserArmorPiece piece = pieceDao.getById(Integer.parseInt(idStr));
-                if (piece != null) {
-                    selectedPieces.add(piece);
+            List<UserArmorPiece> selectedPieces = new ArrayList<>();
+            if (pieceIds != null) {
+                GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
+                for (String idStr : pieceIds) {
+                    UserArmorPiece piece = pieceDao.getById(Integer.parseInt(idStr));
+                    if (piece != null) selectedPieces.add(piece);
                 }
             }
+
+            loadout.setArmorPieces(selectedPieces);
+            dao.update(loadout);
+            logger.info("Loadout id {} successfully updated", id);
+        } else {
+            logger.warn("Loadout id {} not found for update", id);
         }
-
-        loadout.setArmorPieces(selectedPieces);
-
-        GenericDao<Loadout> loadoutDao = new GenericDao<>(Loadout.class);
-        int id = loadoutDao.insert(loadout);
-        logger.info("Added loadout with id {}", id);
 
         resp.sendRedirect(req.getContextPath() + "/viewLoadouts");
     }

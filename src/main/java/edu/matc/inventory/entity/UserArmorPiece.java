@@ -220,4 +220,14 @@ public class UserArmorPiece {
      * @param loadouts the loadouts
      */
     public void setLoadouts(List<Loadout> loadouts) { this.loadouts = loadouts; }
+
+    /**
+     * Gets formatted created at.
+     *
+     * @return the formatted created at
+     */
+    public String getFormattedCreatedAt() {
+        if (createdAt == null) return "--";
+        return createdAt.format(java.time.format.DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a"));
+    }
 }
