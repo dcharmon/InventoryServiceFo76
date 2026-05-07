@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a user's armor loadout.
+ * Represents a user's loadout, which can include standard armor pieces
+ * and/or power armor frames.
  */
 @Entity
 @Table(name = "loadout")
@@ -38,7 +40,15 @@ public class Loadout {
             joinColumns = @JoinColumn(name = "loadout_id"),
             inverseJoinColumns = @JoinColumn(name = "user_armor_piece_id")
     )
-    private List<UserArmorPiece> armorPieces;
+    private List<UserArmorPiece> armorPieces = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "loadout_pa_frame",
+            joinColumns = @JoinColumn(name = "loadout_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_pa_frame_id")
+    )
+    private List<UserPaFrame> paFrames = new ArrayList<>();
 
     /**
      * Gets id.
@@ -124,7 +134,7 @@ public class Loadout {
     /**
      * Gets armor pieces.
      *
-     * @return list of armor pieces in this loadout
+     * @return list of standard armor pieces in this loadout
      */
     public List<UserArmorPiece> getArmorPieces() {
         return armorPieces;
@@ -133,9 +143,27 @@ public class Loadout {
     /**
      * Sets armor pieces.
      *
-     * @param armorPieces list of armor pieces in this loadout
+     * @param armorPieces list of standard armor pieces in this loadout
      */
     public void setArmorPieces(List<UserArmorPiece> armorPieces) {
         this.armorPieces = armorPieces;
+    }
+
+    /**
+     * Gets pa frames.
+     *
+     * @return list of power armor frames in this loadout
+     */
+    public List<UserPaFrame> getPaFrames() {
+        return paFrames;
+    }
+
+    /**
+     * Sets pa frames.
+     *
+     * @param paFrames list of power armor frames in this loadout
+     */
+    public void setPaFrames(List<UserPaFrame> paFrames) {
+        this.paFrames = paFrames;
     }
 }
