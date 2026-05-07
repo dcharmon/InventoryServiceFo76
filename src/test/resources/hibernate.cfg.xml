@@ -23,7 +23,11 @@
         <mapping class="edu.matc.inventory.entity.ArmorBaseResistance"/>
         <mapping class="edu.matc.inventory.entity.Loadout"/>
         <mapping class="edu.matc.inventory.entity.AppUser"/>
-
+        <mapping class="edu.matc.inventory.entity.PaSlot"/>
+        <mapping class="edu.matc.inventory.entity.PaType"/>
+        <mapping class="edu.matc.inventory.entity.PaBaseResistance"/>
+        <mapping class="edu.matc.inventory.entity.UserPaFrame"/>
+        <mapping class="edu.matc.inventory.entity.UserPaPiece"/>
     </session-factory>
 
 </hibernate-configuration>

@@ -1,9 +1,6 @@
 package edu.matc.inventory.controller;
 
-import edu.matc.inventory.entity.AppUser;
-import edu.matc.inventory.entity.Loadout;
-import edu.matc.inventory.entity.UserArmorPiece;
-import edu.matc.inventory.entity.ArmorBaseResistance;
+import edu.matc.inventory.entity.*;
 import edu.matc.inventory.persistence.GenericDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,13 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+
 /**
  * Edits a user Loadout.
  */
@@ -33,8 +25,7 @@ public class EditLoadout extends HttpServlet {
     private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
-    protected void doGet(HttpServletRequest req,
-                         HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         AppUser appUser = (AppUser) req.getSession().getAttribute("user");
@@ -49,9 +40,13 @@ public class EditLoadout extends HttpServlet {
 
         GenericDao<Loadout> loadoutDao = new GenericDao<>(Loadout.class);
         GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
+        GenericDao<UserPaFrame> paFrameDao = new GenericDao<>(UserPaFrame.class);
 
         Loadout loadout = loadoutDao.getById(id);
         List<UserArmorPiece> userPieces = pieceDao.getByPropertyEqual("user", appUser);
+        List<UserPaFrame> userFrames = paFrameDao.getByPropertyEqual("user", appUser);
+
+        // --- Standard armor: group pieces by slot ---
         Map<String, List<UserArmorPiece>> piecesBySlot = new LinkedHashMap<>();
         piecesBySlot.put("Left Arm",  new ArrayList<>());
         piecesBySlot.put("Right Arm", new ArrayList<>());
@@ -66,6 +61,7 @@ public class EditLoadout extends HttpServlet {
             }
         }
 
+        // --- Standard armor: resolve base resistances per piece ---
         Map<Integer, int[]> resolvedResistances = new HashMap<>();
         for (UserArmorPiece piece : userPieces) {
             int[] res = new int[]{0, 0, 0, 0, 0, 0};
@@ -83,6 +79,27 @@ public class EditLoadout extends HttpServlet {
             resolvedResistances.put(piece.getId(), res);
         }
 
+        // --- PA: resolve base resistances per piece across all frames ---
+        Map<Integer, int[]> resolvedPaResistances = new HashMap<>();
+        for (UserPaFrame frame : userFrames) {
+            for (UserPaPiece paPiece : frame.getPieces()) {
+                int[] res = new int[]{0, 0, 0, 0, 0, 0};
+                for (PaBaseResistance r : paPiece.getPaType().getBaseResistances()) {
+                    if (r.getId().getPaSlotId() == paPiece.getPaSlot().getId()) {
+                        res[0] = r.getDamageResistance();
+                        res[1] = r.getEnergyResistance();
+                        res[2] = r.getRadiationResistance();
+                        res[3] = r.getPoisonResistance();
+                        res[4] = r.getFireResistance();
+                        res[5] = r.getCryoResistance();
+                        break;
+                    }
+                }
+                resolvedPaResistances.put(paPiece.getId(), res);
+            }
+        }
+
+        // --- Track which armor pieces are currently selected ---
         Set<Integer> selectedPieceIds = new HashSet<>();
         for (UserArmorPiece piece : loadout.getArmorPieces()) {
             selectedPieceIds.add(piece.getId());
@@ -92,21 +109,30 @@ public class EditLoadout extends HttpServlet {
         for (UserArmorPiece piece : loadout.getArmorPieces()) {
             selectedBySlot.put(piece.getArmorSlot().getSlotName(), piece.getId());
         }
-        req.setAttribute("selectedBySlot", selectedBySlot);
-        req.setAttribute("selectedPieceIds", selectedPieceIds);
-        req.setAttribute("piecesBySlot", piecesBySlot);
-        req.setAttribute("resolvedResistances", resolvedResistances);
+
+        // --- Track which PA frames are currently selected ---
+        Set<Integer> selectedFrameIds = new HashSet<>();
+        for (UserPaFrame frame : loadout.getPaFrames()) {
+            selectedFrameIds.add(frame.getId());
+        }
 
         req.setAttribute("loadout", loadout);
+        req.setAttribute("loadoutType", loadout.getType());
         req.setAttribute("userPieces", userPieces);
+        req.setAttribute("piecesBySlot", piecesBySlot);
+        req.setAttribute("resolvedResistances", resolvedResistances);
+        req.setAttribute("resolvedPaResistances", resolvedPaResistances);
+        req.setAttribute("selectedPieceIds", selectedPieceIds);
+        req.setAttribute("selectedBySlot", selectedBySlot);
+        req.setAttribute("userFrames", userFrames);
+        req.setAttribute("selectedFrameIds", selectedFrameIds);
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/editLoadout.jsp");
         dispatcher.forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req,
-                          HttpServletResponse resp)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         AppUser appUser = (AppUser) req.getSession().getAttribute("user");
@@ -119,7 +145,9 @@ public class EditLoadout extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         String notes = req.getParameter("notes");
+        String type = req.getParameter("type");
         String[] pieceIds = req.getParameterValues("armorPieceIds");
+        String[] frameIds = req.getParameterValues("paFrameIds");
 
         logger.info("Updating Loadout id {} for user {}", id, appUser.getDisplayName());
 
@@ -129,7 +157,9 @@ public class EditLoadout extends HttpServlet {
         if (loadout != null) {
             loadout.setName(name);
             loadout.setNotes(notes);
+            loadout.setType(type != null ? type : "STANDARD");
 
+            // --- Resolve selected armor pieces ---
             List<UserArmorPiece> selectedPieces = new ArrayList<>();
             if (pieceIds != null) {
                 GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
@@ -139,7 +169,19 @@ public class EditLoadout extends HttpServlet {
                 }
             }
 
+            // --- Resolve selected PA frames ---
+            List<UserPaFrame> selectedFrames = new ArrayList<>();
+            if (frameIds != null) {
+                GenericDao<UserPaFrame> paFrameDao = new GenericDao<>(UserPaFrame.class);
+                for (String idStr : frameIds) {
+                    UserPaFrame frame = paFrameDao.getById(Integer.parseInt(idStr));
+                    if (frame != null) selectedFrames.add(frame);
+                }
+            }
+
             loadout.setArmorPieces(selectedPieces);
+            loadout.setPaFrames(selectedFrames);
+
             dao.update(loadout);
             logger.info("Loadout id {} successfully updated", id);
         } else {

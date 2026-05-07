@@ -1,9 +1,6 @@
 package edu.matc.inventory.controller;
 
-import edu.matc.inventory.entity.AppUser;
-import edu.matc.inventory.entity.Loadout;
-import edu.matc.inventory.entity.UserArmorPiece;
-import edu.matc.inventory.entity.ArmorBaseResistance;
+import edu.matc.inventory.entity.*;
 import edu.matc.inventory.persistence.GenericDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,11 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
+
 /**
  * Adds a new loadout.
  */
@@ -42,8 +36,12 @@ public class AddLoadout extends HttpServlet {
         }
 
         GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
-        List<UserArmorPiece> userPieces = pieceDao.getByPropertyEqual("user", appUser);
+        GenericDao<UserPaFrame> paFrameDao  = new GenericDao<>(UserPaFrame.class);
 
+        List<UserArmorPiece> userPieces = pieceDao.getByPropertyEqual("user", appUser);
+        List<UserPaFrame> userFrames    = paFrameDao.getByPropertyEqual("user", appUser);
+
+        // --- Standard armor: group pieces by slot ---
         Map<String, List<UserArmorPiece>> piecesBySlot = new LinkedHashMap<>();
         piecesBySlot.put("Left Arm",  new ArrayList<>());
         piecesBySlot.put("Right Arm", new ArrayList<>());
@@ -58,6 +56,7 @@ public class AddLoadout extends HttpServlet {
             }
         }
 
+        // --- Standard armor: resolve base resistances per piece ---
         Map<Integer, int[]> resolvedResistances = new HashMap<>();
         for (UserArmorPiece piece : userPieces) {
             int[] res = new int[]{0, 0, 0, 0, 0, 0};
@@ -74,9 +73,32 @@ public class AddLoadout extends HttpServlet {
             }
             resolvedResistances.put(piece.getId(), res);
         }
+
+        // --- PA: resolve base resistances per piece across all frames ---
+        Map<Integer, int[]> resolvedPaResistances = new HashMap<>();
+        for (UserPaFrame frame : userFrames) {
+            for (UserPaPiece paPiece : frame.getPieces()) {
+                int[] res = new int[]{0, 0, 0, 0, 0, 0};
+                for (PaBaseResistance r : paPiece.getPaType().getBaseResistances()) {
+                    if (r.getId().getPaSlotId() == paPiece.getPaSlot().getId()) {
+                        res[0] = r.getDamageResistance();
+                        res[1] = r.getEnergyResistance();
+                        res[2] = r.getRadiationResistance();
+                        res[3] = r.getPoisonResistance();
+                        res[4] = r.getFireResistance();
+                        res[5] = r.getCryoResistance();
+                        break;
+                    }
+                }
+                resolvedPaResistances.put(paPiece.getId(), res);
+            }
+        }
+
         req.setAttribute("resolvedResistances", resolvedResistances);
-        req.setAttribute("userPieces", userPieces);       // still needed for the JS data block
-        req.setAttribute("piecesBySlot", piecesBySlot);   // new — used by the slot tables
+        req.setAttribute("resolvedPaResistances", resolvedPaResistances);
+        req.setAttribute("userPieces", userPieces);
+        req.setAttribute("piecesBySlot", piecesBySlot);
+        req.setAttribute("userFrames", userFrames);
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/addLoadout.jsp");
         dispatcher.forward(req, resp);
@@ -95,17 +117,20 @@ public class AddLoadout extends HttpServlet {
 
         String name = req.getParameter("name");
         String notes = req.getParameter("notes");
+        String type = req.getParameter("type");
         String[] pieceIds = req.getParameterValues("armorPieceIds");
+        String[] frameIds = req.getParameterValues("paFrameIds");
 
-        logger.info("Adding loadout '{}' for user {}", name, appUser.getDisplayName());
+        logger.info("Adding loadout '{}' of type {} for user {}", name, type, appUser.getDisplayName());
 
         Loadout loadout = new Loadout();
         loadout.setUser(appUser);
         loadout.setName(name);
         loadout.setNotes(notes);
+        loadout.setType(type != null ? type : "STANDARD");
 
+        // --- Resolve selected armor pieces ---
         List<UserArmorPiece> selectedPieces = new ArrayList<>();
-
         if (pieceIds != null) {
             GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
             for (String idStr : pieceIds) {
@@ -116,7 +141,20 @@ public class AddLoadout extends HttpServlet {
             }
         }
 
+        // --- Resolve selected PA frames ---
+        List<UserPaFrame> selectedFrames = new ArrayList<>();
+        if (frameIds != null) {
+            GenericDao<UserPaFrame> paFrameDao = new GenericDao<>(UserPaFrame.class);
+            for (String idStr : frameIds) {
+                UserPaFrame frame = paFrameDao.getById(Integer.parseInt(idStr));
+                if (frame != null) {
+                    selectedFrames.add(frame);
+                }
+            }
+        }
+
         loadout.setArmorPieces(selectedPieces);
+        loadout.setPaFrames(selectedFrames);
 
         GenericDao<Loadout> loadoutDao = new GenericDao<>(Loadout.class);
         int id = loadoutDao.insert(loadout);

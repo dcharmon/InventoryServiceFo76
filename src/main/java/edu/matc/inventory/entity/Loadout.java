@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Represents a user's loadout, which can include standard armor pieces
- * and/or power armor frames.
+ * or a power armor frame.
  */
 @Entity
 @Table(name = "loadout")
@@ -29,6 +29,9 @@ public class Loadout {
 
     @Column(name = "notes")
     private String notes;
+
+    @Column(name = "type", nullable = false)
+    private String type;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -120,6 +123,24 @@ public class Loadout {
      */
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    /**
+     * Gets type.
+     *
+     * @return loadout type (STANDARD or POWER_ARMOR)
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Sets type.
+     *
+     * @param type loadout type (STANDARD or POWER_ARMOR)
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**

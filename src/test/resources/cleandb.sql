@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `app_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `app_user` (
-  `user_id` int NOT NULL AUTO_INCREMENT,
-  `auth_subject` varchar(255) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `display_name` varchar(80) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `uq_app_user_auth_subject` (`auth_subject`)
+                            `user_id` int NOT NULL AUTO_INCREMENT,
+                            `auth_subject` varchar(255) NOT NULL,
+                            `email` varchar(255) DEFAULT NULL,
+                            `display_name` varchar(80) DEFAULT NULL,
+                            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                            PRIMARY KEY (`user_id`),
+                            UNIQUE KEY `uq_app_user_auth_subject` (`auth_subject`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -51,16 +51,16 @@ DROP TABLE IF EXISTS `armor_base_resistance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `armor_base_resistance` (
-  `armor_type_id` int NOT NULL,
-  `slot_group` enum('ARM','LEG','TORSO') NOT NULL,
-  `damage_resistance` smallint NOT NULL,
-  `energy_resistance` smallint NOT NULL,
-  `radiation_resistance` smallint NOT NULL,
-  `poison_resistance` smallint NOT NULL DEFAULT '0',
-  `fire_resistance` smallint NOT NULL DEFAULT '0',
-  `cryo_resistance` smallint NOT NULL DEFAULT '0',
-  PRIMARY KEY (`armor_type_id`,`slot_group`),
-  CONSTRAINT `fk_base_res_type` FOREIGN KEY (`armor_type_id`) REFERENCES `armor_type` (`armor_type_id`)
+                                         `armor_type_id` int NOT NULL,
+                                         `slot_group` enum('ARM','LEG','TORSO') NOT NULL,
+                                         `damage_resistance` smallint NOT NULL,
+                                         `energy_resistance` smallint NOT NULL,
+                                         `radiation_resistance` smallint NOT NULL,
+                                         `poison_resistance` smallint NOT NULL DEFAULT '0',
+                                         `fire_resistance` smallint NOT NULL DEFAULT '0',
+                                         `cryo_resistance` smallint NOT NULL DEFAULT '0',
+                                         PRIMARY KEY (`armor_type_id`,`slot_group`),
+                                         CONSTRAINT `fk_base_res_type` FOREIGN KEY (`armor_type_id`) REFERENCES `armor_type` (`armor_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -82,14 +82,14 @@ DROP TABLE IF EXISTS `armor_set_bonus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `armor_set_bonus` (
-  `armor_set_bonus_id` int NOT NULL AUTO_INCREMENT,
-  `armor_type_id` int NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `bonus_type` enum('PER_PIECE','FULL_SET') NOT NULL,
-  `pieces_required` tinyint NOT NULL,
-  PRIMARY KEY (`armor_set_bonus_id`),
-  KEY `ix_armor_set_bonus_type` (`armor_type_id`),
-  CONSTRAINT `fk_armor_set_bonus_type` FOREIGN KEY (`armor_type_id`) REFERENCES `armor_type` (`armor_type_id`)
+                                   `armor_set_bonus_id` int NOT NULL AUTO_INCREMENT,
+                                   `armor_type_id` int NOT NULL,
+                                   `description` varchar(255) NOT NULL,
+                                   `bonus_type` enum('PER_PIECE','FULL_SET') NOT NULL,
+                                   `pieces_required` tinyint NOT NULL,
+                                   PRIMARY KEY (`armor_set_bonus_id`),
+                                   KEY `ix_armor_set_bonus_type` (`armor_type_id`),
+                                   CONSTRAINT `fk_armor_set_bonus_type` FOREIGN KEY (`armor_type_id`) REFERENCES `armor_type` (`armor_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -111,11 +111,11 @@ DROP TABLE IF EXISTS `armor_slot`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `armor_slot` (
-  `armor_slot_id` int NOT NULL AUTO_INCREMENT,
-  `slot_name` varchar(30) NOT NULL,
-  `slot_group` enum('ARM','LEG','TORSO') NOT NULL,
-  PRIMARY KEY (`armor_slot_id`),
-  UNIQUE KEY `uq_armor_slot_slot_name` (`slot_name`)
+                              `armor_slot_id` int NOT NULL AUTO_INCREMENT,
+                              `slot_name` varchar(30) NOT NULL,
+                              `slot_group` enum('ARM','LEG','TORSO') NOT NULL,
+                              PRIMARY KEY (`armor_slot_id`),
+                              UNIQUE KEY `uq_armor_slot_slot_name` (`slot_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -137,11 +137,11 @@ DROP TABLE IF EXISTS `armor_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `armor_type` (
-  `armor_type_id` int NOT NULL AUTO_INCREMENT,
-  `type_name` varchar(80) NOT NULL,
-  `weight_class` enum('Light','Sturdy','Heavy') DEFAULT NULL,
-  PRIMARY KEY (`armor_type_id`),
-  UNIQUE KEY `uq_armor_type_type_name` (`type_name`)
+                              `armor_type_id` int NOT NULL AUTO_INCREMENT,
+                              `type_name` varchar(80) NOT NULL,
+                              `weight_class` enum('Light','Sturdy','Heavy') DEFAULT NULL,
+                              PRIMARY KEY (`armor_type_id`),
+                              UNIQUE KEY `uq_armor_type_type_name` (`type_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -163,12 +163,12 @@ DROP TABLE IF EXISTS `legendary_effect`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `legendary_effect` (
-  `legendary_effect_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(80) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `star` tinyint NOT NULL,
-  `armor_category` enum('ANY','STANDARD','POWER_ARMOR') NOT NULL DEFAULT 'ANY',
-  PRIMARY KEY (`legendary_effect_id`)
+                                    `legendary_effect_id` int NOT NULL AUTO_INCREMENT,
+                                    `name` varchar(80) NOT NULL,
+                                    `description` varchar(255) NOT NULL,
+                                    `star` tinyint NOT NULL,
+                                    `armor_category` enum('ANY','STANDARD','POWER_ARMOR') NOT NULL DEFAULT 'ANY',
+                                    PRIMARY KEY (`legendary_effect_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -190,14 +190,15 @@ DROP TABLE IF EXISTS `loadout`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `loadout` (
-  `loadout_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `name` varchar(80) NOT NULL,
-  `notes` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`loadout_id`),
-  KEY `ix_loadout_user` (`user_id`),
-  CONSTRAINT `fk_loadout_user` FOREIGN KEY (`user_id`) REFERENCES `app_user` (`user_id`)
+                           `loadout_id` int NOT NULL AUTO_INCREMENT,
+                           `user_id` int NOT NULL,
+                           `name` varchar(80) NOT NULL,
+                           `notes` varchar(255) DEFAULT NULL,
+                           `type` enum('STANDARD','POWER_ARMOR') NOT NULL DEFAULT 'STANDARD',
+                           `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                           PRIMARY KEY (`loadout_id`),
+                           KEY `ix_loadout_user` (`user_id`),
+                           CONSTRAINT `fk_loadout_user` FOREIGN KEY (`user_id`) REFERENCES `app_user` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -207,7 +208,7 @@ CREATE TABLE `loadout` (
 
 LOCK TABLES `loadout` WRITE;
 /*!40000 ALTER TABLE `loadout` DISABLE KEYS */;
-INSERT INTO `loadout` VALUES (1,1,'New Loadout','Some notes','2026-04-01 22:33:29');
+INSERT INTO `loadout` VALUES (1,1,'New Loadout','Some notes','STANDARD','2026-04-01 22:33:29');
 /*!40000 ALTER TABLE `loadout` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,12 +220,12 @@ DROP TABLE IF EXISTS `loadout_armor_piece`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `loadout_armor_piece` (
-  `loadout_id` int NOT NULL,
-  `user_armor_piece_id` int NOT NULL,
-  PRIMARY KEY (`loadout_id`,`user_armor_piece_id`),
-  KEY `fk_lap_piece` (`user_armor_piece_id`),
-  CONSTRAINT `fk_lap_loadout` FOREIGN KEY (`loadout_id`) REFERENCES `loadout` (`loadout_id`),
-  CONSTRAINT `fk_lap_piece` FOREIGN KEY (`user_armor_piece_id`) REFERENCES `user_armor_piece` (`user_armor_piece_id`) ON DELETE CASCADE
+                                       `loadout_id` int NOT NULL,
+                                       `user_armor_piece_id` int NOT NULL,
+                                       PRIMARY KEY (`loadout_id`,`user_armor_piece_id`),
+                                       KEY `fk_lap_piece` (`user_armor_piece_id`),
+                                       CONSTRAINT `fk_lap_loadout` FOREIGN KEY (`loadout_id`) REFERENCES `loadout` (`loadout_id`),
+                                       CONSTRAINT `fk_lap_piece` FOREIGN KEY (`user_armor_piece_id`) REFERENCES `user_armor_piece` (`user_armor_piece_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -246,12 +247,12 @@ DROP TABLE IF EXISTS `loadout_pa_frame`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `loadout_pa_frame` (
-  `loadout_id` int NOT NULL,
-  `user_pa_frame_id` int NOT NULL,
-  PRIMARY KEY (`loadout_id`,`user_pa_frame_id`),
-  KEY `fk_lpaf_frame` (`user_pa_frame_id`),
-  CONSTRAINT `fk_lpaf_frame` FOREIGN KEY (`user_pa_frame_id`) REFERENCES `user_pa_frame` (`user_pa_frame_id`),
-  CONSTRAINT `fk_lpaf_loadout` FOREIGN KEY (`loadout_id`) REFERENCES `loadout` (`loadout_id`)
+                                    `loadout_id` int NOT NULL,
+                                    `user_pa_frame_id` int NOT NULL,
+                                    PRIMARY KEY (`loadout_id`,`user_pa_frame_id`),
+                                    KEY `fk_lpaf_frame` (`user_pa_frame_id`),
+                                    CONSTRAINT `fk_lpaf_frame` FOREIGN KEY (`user_pa_frame_id`) REFERENCES `user_pa_frame` (`user_pa_frame_id`),
+                                    CONSTRAINT `fk_lpaf_loadout` FOREIGN KEY (`loadout_id`) REFERENCES `loadout` (`loadout_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -272,18 +273,18 @@ DROP TABLE IF EXISTS `pa_base_resistance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pa_base_resistance` (
-  `pa_type_id` int NOT NULL,
-  `pa_slot_id` int NOT NULL,
-  `damage_resistance` smallint NOT NULL,
-  `energy_resistance` smallint NOT NULL,
-  `radiation_resistance` smallint NOT NULL,
-  `poison_resistance` smallint NOT NULL DEFAULT '0',
-  `fire_resistance` smallint NOT NULL DEFAULT '0',
-  `cryo_resistance` smallint NOT NULL DEFAULT '0',
-  PRIMARY KEY (`pa_type_id`,`pa_slot_id`),
-  KEY `fk_pa_base_res_slot` (`pa_slot_id`),
-  CONSTRAINT `fk_pa_base_res_slot` FOREIGN KEY (`pa_slot_id`) REFERENCES `pa_slot` (`pa_slot_id`),
-  CONSTRAINT `fk_pa_base_res_type` FOREIGN KEY (`pa_type_id`) REFERENCES `pa_type` (`pa_type_id`)
+                                      `pa_type_id` int NOT NULL,
+                                      `pa_slot_id` int NOT NULL,
+                                      `damage_resistance` smallint NOT NULL,
+                                      `energy_resistance` smallint NOT NULL,
+                                      `radiation_resistance` smallint NOT NULL,
+                                      `poison_resistance` smallint NOT NULL DEFAULT '0',
+                                      `fire_resistance` smallint NOT NULL DEFAULT '0',
+                                      `cryo_resistance` smallint NOT NULL DEFAULT '0',
+                                      PRIMARY KEY (`pa_type_id`,`pa_slot_id`),
+                                      KEY `fk_pa_base_res_slot` (`pa_slot_id`),
+                                      CONSTRAINT `fk_pa_base_res_slot` FOREIGN KEY (`pa_slot_id`) REFERENCES `pa_slot` (`pa_slot_id`),
+                                      CONSTRAINT `fk_pa_base_res_type` FOREIGN KEY (`pa_type_id`) REFERENCES `pa_type` (`pa_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -305,14 +306,14 @@ DROP TABLE IF EXISTS `pa_set_bonus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pa_set_bonus` (
-  `pa_set_bonus_id` int NOT NULL AUTO_INCREMENT,
-  `pa_type_id` int NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `bonus_type` enum('PER_PIECE','FULL_SET') NOT NULL,
-  `pieces_required` tinyint NOT NULL,
-  PRIMARY KEY (`pa_set_bonus_id`),
-  KEY `ix_pa_set_bonus_type` (`pa_type_id`),
-  CONSTRAINT `fk_pa_set_bonus_type` FOREIGN KEY (`pa_type_id`) REFERENCES `pa_type` (`pa_type_id`)
+                                `pa_set_bonus_id` int NOT NULL AUTO_INCREMENT,
+                                `pa_type_id` int NOT NULL,
+                                `description` varchar(255) NOT NULL,
+                                `bonus_type` enum('PER_PIECE','FULL_SET') NOT NULL,
+                                `pieces_required` tinyint NOT NULL,
+                                PRIMARY KEY (`pa_set_bonus_id`),
+                                KEY `ix_pa_set_bonus_type` (`pa_type_id`),
+                                CONSTRAINT `fk_pa_set_bonus_type` FOREIGN KEY (`pa_type_id`) REFERENCES `pa_type` (`pa_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -334,12 +335,12 @@ DROP TABLE IF EXISTS `pa_slot`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pa_slot` (
-  `pa_slot_id` int NOT NULL AUTO_INCREMENT,
-  `slot_name` varchar(30) NOT NULL,
-  `slot_group` enum('HEAD','ARM','TORSO','LEG') NOT NULL,
-  `allows_legendary` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`pa_slot_id`),
-  UNIQUE KEY `uq_pa_slot_slot_name` (`slot_name`)
+                           `pa_slot_id` int NOT NULL AUTO_INCREMENT,
+                           `slot_name` varchar(30) NOT NULL,
+                           `slot_group` enum('HEAD','ARM','TORSO','LEG') NOT NULL,
+                           `allows_legendary` tinyint(1) NOT NULL DEFAULT '1',
+                           PRIMARY KEY (`pa_slot_id`),
+                           UNIQUE KEY `uq_pa_slot_slot_name` (`slot_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -361,10 +362,10 @@ DROP TABLE IF EXISTS `pa_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pa_type` (
-  `pa_type_id` int NOT NULL AUTO_INCREMENT,
-  `type_name` varchar(80) NOT NULL,
-  PRIMARY KEY (`pa_type_id`),
-  UNIQUE KEY `uq_pa_type_type_name` (`type_name`)
+                           `pa_type_id` int NOT NULL AUTO_INCREMENT,
+                           `type_name` varchar(80) NOT NULL,
+                           PRIMARY KEY (`pa_type_id`),
+                           UNIQUE KEY `uq_pa_type_type_name` (`type_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -386,30 +387,30 @@ DROP TABLE IF EXISTS `user_armor_piece`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_armor_piece` (
-  `user_armor_piece_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `armor_type_id` int NOT NULL,
-  `armor_slot_id` int NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `star1_effect_id` int DEFAULT NULL,
-  `star2_effect_id` int DEFAULT NULL,
-  `star3_effect_id` int DEFAULT NULL,
-  `star4_effect_id` int DEFAULT NULL,
-  PRIMARY KEY (`user_armor_piece_id`),
-  KEY `ix_uap_user` (`user_id`),
-  KEY `ix_uap_type` (`armor_type_id`),
-  KEY `ix_uap_slot` (`armor_slot_id`),
-  KEY `fk_uap_star1` (`star1_effect_id`),
-  KEY `fk_uap_star2` (`star2_effect_id`),
-  KEY `fk_uap_star3` (`star3_effect_id`),
-  KEY `fk_uap_star4` (`star4_effect_id`),
-  CONSTRAINT `fk_uap_slot` FOREIGN KEY (`armor_slot_id`) REFERENCES `armor_slot` (`armor_slot_id`),
-  CONSTRAINT `fk_uap_star1` FOREIGN KEY (`star1_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
-  CONSTRAINT `fk_uap_star2` FOREIGN KEY (`star2_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
-  CONSTRAINT `fk_uap_star3` FOREIGN KEY (`star3_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
-  CONSTRAINT `fk_uap_star4` FOREIGN KEY (`star4_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
-  CONSTRAINT `fk_uap_type` FOREIGN KEY (`armor_type_id`) REFERENCES `armor_type` (`armor_type_id`),
-  CONSTRAINT `fk_uap_user` FOREIGN KEY (`user_id`) REFERENCES `app_user` (`user_id`)
+                                    `user_armor_piece_id` int NOT NULL AUTO_INCREMENT,
+                                    `user_id` int NOT NULL,
+                                    `armor_type_id` int NOT NULL,
+                                    `armor_slot_id` int NOT NULL,
+                                    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                    `star1_effect_id` int DEFAULT NULL,
+                                    `star2_effect_id` int DEFAULT NULL,
+                                    `star3_effect_id` int DEFAULT NULL,
+                                    `star4_effect_id` int DEFAULT NULL,
+                                    PRIMARY KEY (`user_armor_piece_id`),
+                                    KEY `ix_uap_user` (`user_id`),
+                                    KEY `ix_uap_type` (`armor_type_id`),
+                                    KEY `ix_uap_slot` (`armor_slot_id`),
+                                    KEY `fk_uap_star1` (`star1_effect_id`),
+                                    KEY `fk_uap_star2` (`star2_effect_id`),
+                                    KEY `fk_uap_star3` (`star3_effect_id`),
+                                    KEY `fk_uap_star4` (`star4_effect_id`),
+                                    CONSTRAINT `fk_uap_slot` FOREIGN KEY (`armor_slot_id`) REFERENCES `armor_slot` (`armor_slot_id`),
+                                    CONSTRAINT `fk_uap_star1` FOREIGN KEY (`star1_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
+                                    CONSTRAINT `fk_uap_star2` FOREIGN KEY (`star2_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
+                                    CONSTRAINT `fk_uap_star3` FOREIGN KEY (`star3_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
+                                    CONSTRAINT `fk_uap_star4` FOREIGN KEY (`star4_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
+                                    CONSTRAINT `fk_uap_type` FOREIGN KEY (`armor_type_id`) REFERENCES `armor_type` (`armor_type_id`),
+                                    CONSTRAINT `fk_uap_user` FOREIGN KEY (`user_id`) REFERENCES `app_user` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -431,12 +432,12 @@ DROP TABLE IF EXISTS `user_pa_frame`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_pa_frame` (
-  `user_pa_frame_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `frame_name` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`user_pa_frame_id`),
-  KEY `ix_user_pa_frame_user` (`user_id`),
-  CONSTRAINT `fk_user_pa_frame_user` FOREIGN KEY (`user_id`) REFERENCES `app_user` (`user_id`)
+                                 `user_pa_frame_id` int NOT NULL AUTO_INCREMENT,
+                                 `user_id` int NOT NULL,
+                                 `frame_name` varchar(80) DEFAULT NULL,
+                                 PRIMARY KEY (`user_pa_frame_id`),
+                                 KEY `ix_user_pa_frame_user` (`user_id`),
+                                 CONSTRAINT `fk_user_pa_frame_user` FOREIGN KEY (`user_id`) REFERENCES `app_user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -457,33 +458,33 @@ DROP TABLE IF EXISTS `user_pa_piece`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_pa_piece` (
-  `user_pa_piece_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `pa_type_id` int NOT NULL,
-  `pa_slot_id` int NOT NULL,
-  `user_pa_frame_id` int DEFAULT NULL,
-  `star1_effect_id` int DEFAULT NULL,
-  `star2_effect_id` int DEFAULT NULL,
-  `star3_effect_id` int DEFAULT NULL,
-  `star4_effect_id` int DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_pa_piece_id`),
-  UNIQUE KEY `uq_pa_frame_slot` (`user_pa_frame_id`,`pa_slot_id`),
-  KEY `ix_upap_user` (`user_id`),
-  KEY `ix_upap_type` (`pa_type_id`),
-  KEY `ix_upap_slot` (`pa_slot_id`),
-  KEY `fk_upap_star1` (`star1_effect_id`),
-  KEY `fk_upap_star2` (`star2_effect_id`),
-  KEY `fk_upap_star3` (`star3_effect_id`),
-  KEY `fk_upap_star4` (`star4_effect_id`),
-  CONSTRAINT `fk_upap_frame` FOREIGN KEY (`user_pa_frame_id`) REFERENCES `user_pa_frame` (`user_pa_frame_id`),
-  CONSTRAINT `fk_upap_slot` FOREIGN KEY (`pa_slot_id`) REFERENCES `pa_slot` (`pa_slot_id`),
-  CONSTRAINT `fk_upap_star1` FOREIGN KEY (`star1_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
-  CONSTRAINT `fk_upap_star2` FOREIGN KEY (`star2_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
-  CONSTRAINT `fk_upap_star3` FOREIGN KEY (`star3_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
-  CONSTRAINT `fk_upap_star4` FOREIGN KEY (`star4_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
-  CONSTRAINT `fk_upap_type` FOREIGN KEY (`pa_type_id`) REFERENCES `pa_type` (`pa_type_id`),
-  CONSTRAINT `fk_upap_user` FOREIGN KEY (`user_id`) REFERENCES `app_user` (`user_id`)
+                                 `user_pa_piece_id` int NOT NULL AUTO_INCREMENT,
+                                 `user_id` int NOT NULL,
+                                 `pa_type_id` int NOT NULL,
+                                 `pa_slot_id` int NOT NULL,
+                                 `user_pa_frame_id` int DEFAULT NULL,
+                                 `star1_effect_id` int DEFAULT NULL,
+                                 `star2_effect_id` int DEFAULT NULL,
+                                 `star3_effect_id` int DEFAULT NULL,
+                                 `star4_effect_id` int DEFAULT NULL,
+                                 `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                 PRIMARY KEY (`user_pa_piece_id`),
+                                 UNIQUE KEY `uq_pa_frame_slot` (`user_pa_frame_id`,`pa_slot_id`),
+                                 KEY `ix_upap_user` (`user_id`),
+                                 KEY `ix_upap_type` (`pa_type_id`),
+                                 KEY `ix_upap_slot` (`pa_slot_id`),
+                                 KEY `fk_upap_star1` (`star1_effect_id`),
+                                 KEY `fk_upap_star2` (`star2_effect_id`),
+                                 KEY `fk_upap_star3` (`star3_effect_id`),
+                                 KEY `fk_upap_star4` (`star4_effect_id`),
+                                 CONSTRAINT `fk_upap_frame` FOREIGN KEY (`user_pa_frame_id`) REFERENCES `user_pa_frame` (`user_pa_frame_id`),
+                                 CONSTRAINT `fk_upap_slot` FOREIGN KEY (`pa_slot_id`) REFERENCES `pa_slot` (`pa_slot_id`),
+                                 CONSTRAINT `fk_upap_star1` FOREIGN KEY (`star1_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
+                                 CONSTRAINT `fk_upap_star2` FOREIGN KEY (`star2_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
+                                 CONSTRAINT `fk_upap_star3` FOREIGN KEY (`star3_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
+                                 CONSTRAINT `fk_upap_star4` FOREIGN KEY (`star4_effect_id`) REFERENCES `legendary_effect` (`legendary_effect_id`),
+                                 CONSTRAINT `fk_upap_type` FOREIGN KEY (`pa_type_id`) REFERENCES `pa_type` (`pa_type_id`),
+                                 CONSTRAINT `fk_upap_user` FOREIGN KEY (`user_id`) REFERENCES `app_user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
