@@ -51,11 +51,13 @@
                                 <span class="label label-default">Standard</span>
                             </c:otherwise>
                         </c:choose>
-                        <a class="btn btn-warning btn-xs pull-right"
-                           href="${pageContext.request.contextPath}/editLoadout?id=${loadout.id}">Edit</a>
-                        <a class="btn btn-danger btn-xs pull-right"
-                           href="${pageContext.request.contextPath}/deleteLoadout?id=${loadout.id}"
-                           onclick="return confirm('Delete this loadout?');">Delete</a>
+                                <a class="btn btn-default btn-xs pull-right"
+                                   href="${pageContext.request.contextPath}/exportLoadout?id=${loadout.id}">Export CSV</a>
+                                <a class="btn btn-warning btn-xs pull-right"
+                                   href="${pageContext.request.contextPath}/editLoadout?id=${loadout.id}">Edit</a>
+                                <a class="btn btn-danger btn-xs pull-right"
+                                   href="${pageContext.request.contextPath}/deleteLoadout?id=${loadout.id}"
+                                   onclick="return confirm('Delete this loadout?');">Delete</a>
                     </h3>
                 </div>
                 <div class="panel-body">
