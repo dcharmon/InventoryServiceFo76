@@ -15,6 +15,10 @@
 
 <form class="form" method="post" action="${pageContext.request.contextPath}/addUserPaPiece">
 
+  <c:if test="${not empty errorMessage}">
+    <div class="alert alert-danger">${errorMessage}</div>
+  </c:if>
+
   <div class="form-group">
     <label for="paTypeId">PA Type</label>
     <select class="form-control" id="paTypeId" name="paTypeId">

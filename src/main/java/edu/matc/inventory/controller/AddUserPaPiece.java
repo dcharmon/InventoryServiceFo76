@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Adds a UserPaPiece record, optionally assigning it to a user-owned frame.
@@ -85,7 +84,26 @@ public class AddUserPaPiece extends HttpServlet {
         piece.setPaSlot(slot);
 
         if (frameIdParam != null && !frameIdParam.isEmpty()) {
-            piece.setPaFrame(paFrameDao.getById(Integer.parseInt(frameIdParam)));
+            UserPaFrame frame = paFrameDao.getById(Integer.parseInt(frameIdParam));
+
+            boolean slotTaken = frame.getPieces().stream()
+                    .anyMatch(p -> p.getPaSlot().getId() == paSlotId && p.getId() != piece.getId());
+
+            if (slotTaken) {
+                logger.warn("Slot {} already occupied on frame {}", paSlotId, frame.getId());
+                req.setAttribute("errorMessage", "That slot is already occupied on this frame.");
+                req.setAttribute("paTypes", paTypeDao.getAll());
+                req.setAttribute("paSlots", paSlotDao.getAll());
+                req.setAttribute("userFrames", paFrameDao.getByPropertyEqual("user", appUser));
+                req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", 1));
+                req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", 2));
+                req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", 3));
+                req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", 4));
+                req.getRequestDispatcher("/addUserPaPiece.jsp").forward(req, resp);
+                return;
+            }
+
+            piece.setPaFrame(frame);
         }
 
         if (slot.isAllowsLegendary()) {

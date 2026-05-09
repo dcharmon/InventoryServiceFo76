@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Edits a UserPaPiece record.
@@ -89,9 +88,32 @@ public class EditUserPaPiece extends HttpServlet {
             PaSlot slot = paSlotDao.getById(paSlotId);
             piece.setPaSlot(slot);
 
-            piece.setPaFrame(frameIdParam != null && !frameIdParam.isEmpty()
-                    ? paFrameDao.getById(Integer.parseInt(frameIdParam))
-                    : null);
+            if (frameIdParam != null && !frameIdParam.isEmpty()) {
+                UserPaFrame frame = paFrameDao.getById(Integer.parseInt(frameIdParam));
+
+                // Check if slot is taken by a different piece on this frame
+                boolean slotTaken = frame.getPieces().stream()
+                        .anyMatch(p -> p.getPaSlot().getId() == paSlotId && p.getId() != id);
+
+                if (slotTaken) {
+                    logger.warn("Slot {} already occupied on frame {} during edit of piece {}", paSlotId, frame.getId(), id);
+                    req.setAttribute("errorMessage", "That slot is already occupied on this frame.");
+                    req.setAttribute("piece", piece);
+                    req.setAttribute("paTypes", paTypeDao.getAll());
+                    req.setAttribute("paSlots", paSlotDao.getAll());
+                    req.setAttribute("userFrames", paFrameDao.getByPropertyEqual("user", appUser));
+                    req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", 1));
+                    req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", 2));
+                    req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", 3));
+                    req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", 4));
+                    req.getRequestDispatcher("/editUserPaPiece.jsp").forward(req, resp);
+                    return;
+                }
+
+                piece.setPaFrame(frame);
+            } else {
+                piece.setPaFrame(null);
+            }
 
             piece.setStar1Effect(null);
             piece.setStar2Effect(null);

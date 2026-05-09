@@ -15,6 +15,10 @@
 
 <form class="form" method="post" action="${pageContext.request.contextPath}/editUserPaPiece">
 
+    <c:if test="${not empty errorMessage}">
+        <div class="alert alert-danger">${errorMessage}</div>
+    </c:if>
+
     <input type="hidden" name="id" value="${piece.id}" />
 
     <div class="form-group">
