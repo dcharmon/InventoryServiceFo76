@@ -8,10 +8,45 @@
         <ul class="nav navbar-nav">
             <li><a href="${pageContext.request.contextPath}/viewLegendaryEffects">Legendary Effects</a></li>
             <c:if test="${not empty sessionScope.user}">
-                <li><a href="${pageContext.request.contextPath}/viewUserArmorPieces">My Armor</a></li>
-                <li><a href="${pageContext.request.contextPath}/addUserArmorPiece">Add Armor</a></li>
-                <li><a href="${pageContext.request.contextPath}/viewLoadouts">My Loadouts</a></li>
-                <li><a href="${pageContext.request.contextPath}/addLoadout">Add Loadout</a></li>
+
+                <%-- Armor dropdown --%>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false">
+                        Armor <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${pageContext.request.contextPath}/viewUserArmorPieces">View My Armor</a></li>
+                        <li><a href="${pageContext.request.contextPath}/addUserArmorPiece">Add Armor Piece</a></li>
+                    </ul>
+                </li>
+
+                <%-- Power Armor dropdown --%>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false">
+                        Power Armor <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${pageContext.request.contextPath}/viewUserPaPieces">View My PA</a></li>
+                        <li><a href="${pageContext.request.contextPath}/addUserPaPiece">Add PA Piece</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/addUserPaFrame">Add Frame</a></li>
+                    </ul>
+                </li>
+
+                <%-- Loadouts dropdown --%>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false">
+                        Loadouts <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${pageContext.request.contextPath}/viewLoadouts">View Loadouts</a></li>
+                        <li><a href="${pageContext.request.contextPath}/addLoadout">Add Loadout</a></li>
+                    </ul>
+                </li>
+
             </c:if>
         </ul>
         <ul class="nav navbar-nav navbar-right">
