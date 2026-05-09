@@ -22,16 +22,16 @@ import java.io.IOException;
 public class AddUserArmorPiece extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
+    GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
+    private final GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
+    private final GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
+    private final GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         logger.debug("Loading add armor piece form");
-
-        GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
-        GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
-        GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
 
         req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", 1));
         req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", 2));
@@ -71,10 +71,6 @@ public class AddUserArmorPiece extends HttpServlet {
         UserArmorPiece piece = new UserArmorPiece();
         piece.setUser(appUser);
 
-        GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
-        GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
-        GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
-
         piece.setArmorType(armorTypeDao.getById(armorTypeId));
         piece.setArmorSlot(armorSlotDao.getById(armorSlotId));
 
@@ -91,7 +87,7 @@ public class AddUserArmorPiece extends HttpServlet {
             piece.setStar4Effect(legendaryEffectDao.getById(Integer.parseInt(star4IdParam)));
         }
 
-        GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
+
         int id = dao.insert(piece);
         logger.info("Added UserArmorPiece with id {}", id);
 

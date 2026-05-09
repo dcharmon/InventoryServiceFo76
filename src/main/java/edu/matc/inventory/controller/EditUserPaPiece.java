@@ -23,6 +23,11 @@ import java.util.List;
 public class EditUserPaPiece extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
+    private final GenericDao<UserPaPiece> dao = new GenericDao<>(UserPaPiece.class);
+    private final GenericDao<PaType> paTypeDao = new GenericDao<>(PaType.class);
+    private final GenericDao<PaSlot> paSlotDao = new GenericDao<>(PaSlot.class);
+    private final GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
+    private final GenericDao<UserPaFrame> paFrameDao = new GenericDao<>(UserPaFrame.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -38,19 +43,10 @@ public class EditUserPaPiece extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         logger.debug("Loading edit form for UserPaPiece id {}", id);
 
-        GenericDao<UserPaPiece> paPieceDao = new GenericDao<>(UserPaPiece.class);
-        GenericDao<PaType> paTypeDao = new GenericDao<>(PaType.class);
-        GenericDao<PaSlot> paSlotDao = new GenericDao<>(PaSlot.class);
-        GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
-        GenericDao<UserPaFrame> paFrameDao = new GenericDao<>(UserPaFrame.class);
-
-        UserPaPiece piece = paPieceDao.getById(id);
-        List<UserPaFrame> userFrames = paFrameDao.getByPropertyEqual("user", appUser);
-
-        req.setAttribute("piece", piece);
+        req.setAttribute("piece", dao.getById(id));
         req.setAttribute("paTypes", paTypeDao.getAll());
         req.setAttribute("paSlots", paSlotDao.getAll());
-        req.setAttribute("userFrames", userFrames);
+        req.setAttribute("userFrames", paFrameDao.getByPropertyEqual("user", appUser));
         req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", 1));
         req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", 2));
         req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", 3));
@@ -84,12 +80,6 @@ public class EditUserPaPiece extends HttpServlet {
         logger.info("Updating UserPaPiece id {} for user {}", id, appUser.getDisplayName());
         logger.debug("New values - paTypeId: {}, paSlotId: {}", paTypeId, paSlotId);
 
-        GenericDao<UserPaPiece> dao = new GenericDao<>(UserPaPiece.class);
-        GenericDao<PaType> paTypeDao = new GenericDao<>(PaType.class);
-        GenericDao<PaSlot> paSlotDao = new GenericDao<>(PaSlot.class);
-        GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
-        GenericDao<UserPaFrame> paFrameDao = new GenericDao<>(UserPaFrame.class);
-
         UserPaPiece piece = dao.getById(id);
 
         if (piece != null) {
@@ -99,11 +89,9 @@ public class EditUserPaPiece extends HttpServlet {
             PaSlot slot = paSlotDao.getById(paSlotId);
             piece.setPaSlot(slot);
 
-            if (frameIdParam != null && !frameIdParam.isEmpty()) {
-                piece.setPaFrame(paFrameDao.getById(Integer.parseInt(frameIdParam)));
-            } else {
-                piece.setPaFrame(null);
-            }
+            piece.setPaFrame(frameIdParam != null && !frameIdParam.isEmpty()
+                    ? paFrameDao.getById(Integer.parseInt(frameIdParam))
+                    : null);
 
             piece.setStar1Effect(null);
             piece.setStar2Effect(null);

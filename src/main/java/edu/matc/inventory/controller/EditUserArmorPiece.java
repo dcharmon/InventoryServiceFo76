@@ -3,6 +3,7 @@ package edu.matc.inventory.controller;
 import edu.matc.inventory.entity.AppUser;
 import edu.matc.inventory.entity.ArmorSlot;
 import edu.matc.inventory.entity.ArmorType;
+import edu.matc.inventory.entity.LegendaryEffect;
 import edu.matc.inventory.entity.UserArmorPiece;
 import edu.matc.inventory.persistence.GenericDao;
 import org.apache.logging.log4j.LogManager;
@@ -25,6 +26,10 @@ import java.io.IOException;
 public class EditUserArmorPiece extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
+    private final GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
+    private final GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
+    private final GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
+    private final GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
 
     @Override
     protected void doGet(HttpServletRequest req,
@@ -34,19 +39,15 @@ public class EditUserArmorPiece extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         logger.debug("Loading edit form for UserArmorPiece id {}", id);
 
-        GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
-        GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
-        GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
-
-        UserArmorPiece piece = pieceDao.getById(id);
-
-        req.setAttribute("piece", piece);
+        req.setAttribute("piece", dao.getById(id));
         req.setAttribute("armorTypes", armorTypeDao.getAll());
         req.setAttribute("armorSlots", armorSlotDao.getAll());
+        req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", 1));
+        req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", 2));
+        req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", 3));
+        req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", 4));
 
-        RequestDispatcher dispatcher =
-                req.getRequestDispatcher("/editUserArmorPiece.jsp");
-
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/editUserArmorPiece.jsp");
         dispatcher.forward(req, resp);
     }
 
@@ -66,23 +67,41 @@ public class EditUserArmorPiece extends HttpServlet {
         int armorTypeId = Integer.parseInt(req.getParameter("armorTypeId"));
         int armorSlotId = Integer.parseInt(req.getParameter("armorSlotId"));
 
+        String star1IdParam = req.getParameter("star1EffectId");
+        String star2IdParam = req.getParameter("star2EffectId");
+        String star3IdParam = req.getParameter("star3EffectId");
+        String star4IdParam = req.getParameter("star4EffectId");
+
         logger.info("Updating UserArmorPiece id {} for user {}", id, appUser.getDisplayName());
         logger.debug("New values - armorTypeId: {}, armorSlotId: {}", armorTypeId, armorSlotId);
 
-        GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
         UserArmorPiece piece = dao.getById(id);
 
         if (piece != null) {
             piece.setUser(appUser);
-
-            GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
-            GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
-
             piece.setArmorType(armorTypeDao.getById(armorTypeId));
             piece.setArmorSlot(armorSlotDao.getById(armorSlotId));
 
-            dao.update(piece);
+            // Clear all effects first then re-apply submitted values
+            piece.setStar1Effect(null);
+            piece.setStar2Effect(null);
+            piece.setStar3Effect(null);
+            piece.setStar4Effect(null);
 
+            if (star1IdParam != null && !star1IdParam.isEmpty()) {
+                piece.setStar1Effect(legendaryEffectDao.getById(Integer.parseInt(star1IdParam)));
+            }
+            if (star2IdParam != null && !star2IdParam.isEmpty()) {
+                piece.setStar2Effect(legendaryEffectDao.getById(Integer.parseInt(star2IdParam)));
+            }
+            if (star3IdParam != null && !star3IdParam.isEmpty()) {
+                piece.setStar3Effect(legendaryEffectDao.getById(Integer.parseInt(star3IdParam)));
+            }
+            if (star4IdParam != null && !star4IdParam.isEmpty()) {
+                piece.setStar4Effect(legendaryEffectDao.getById(Integer.parseInt(star4IdParam)));
+            }
+
+            dao.update(piece);
             logger.info("UserArmorPiece id {} successfully updated", id);
         } else {
             logger.warn("UserArmorPiece id {} not found for update", id);

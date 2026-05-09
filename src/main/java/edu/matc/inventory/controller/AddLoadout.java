@@ -23,6 +23,9 @@ import java.util.*;
 public class AddLoadout extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
+    private final GenericDao<Loadout> loadoutDao = new GenericDao<>(Loadout.class);
+    private final GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
+    private final GenericDao<UserPaFrame> paFrameDao = new GenericDao<>(UserPaFrame.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -35,13 +38,10 @@ public class AddLoadout extends HttpServlet {
             return;
         }
 
-        GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
-        GenericDao<UserPaFrame> paFrameDao  = new GenericDao<>(UserPaFrame.class);
-
         List<UserArmorPiece> userPieces = pieceDao.getByPropertyEqual("user", appUser);
-        List<UserPaFrame> userFrames    = paFrameDao.getByPropertyEqual("user", appUser);
+        List<UserPaFrame> userFrames = paFrameDao.getByPropertyEqual("user", appUser);
 
-        // --- Standard armor: group pieces by slot ---
+        // Standard armor: group pieces by slot
         Map<String, List<UserArmorPiece>> piecesBySlot = new LinkedHashMap<>();
         piecesBySlot.put("Left Arm",  new ArrayList<>());
         piecesBySlot.put("Right Arm", new ArrayList<>());
@@ -56,7 +56,7 @@ public class AddLoadout extends HttpServlet {
             }
         }
 
-        // --- Standard armor: resolve base resistances per piece ---
+        // Standard armor: resolve base resistances per piece
         Map<Integer, int[]> resolvedResistances = new HashMap<>();
         for (UserArmorPiece piece : userPieces) {
             int[] res = new int[]{0, 0, 0, 0, 0, 0};
@@ -74,7 +74,7 @@ public class AddLoadout extends HttpServlet {
             resolvedResistances.put(piece.getId(), res);
         }
 
-        // --- PA: resolve base resistances per piece across all frames ---
+        // PA: resolve base resistances per piece across all frames
         Map<Integer, int[]> resolvedPaResistances = new HashMap<>();
         for (UserPaFrame frame : userFrames) {
             for (UserPaPiece paPiece : frame.getPieces()) {
@@ -129,34 +129,25 @@ public class AddLoadout extends HttpServlet {
         loadout.setNotes(notes);
         loadout.setType(type != null ? type : "STANDARD");
 
-        // --- Resolve selected armor pieces ---
         List<UserArmorPiece> selectedPieces = new ArrayList<>();
         if (pieceIds != null) {
-            GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
             for (String idStr : pieceIds) {
                 UserArmorPiece piece = pieceDao.getById(Integer.parseInt(idStr));
-                if (piece != null) {
-                    selectedPieces.add(piece);
-                }
+                if (piece != null) selectedPieces.add(piece);
             }
         }
 
-        // --- Resolve selected PA frames ---
         List<UserPaFrame> selectedFrames = new ArrayList<>();
         if (frameIds != null) {
-            GenericDao<UserPaFrame> paFrameDao = new GenericDao<>(UserPaFrame.class);
             for (String idStr : frameIds) {
                 UserPaFrame frame = paFrameDao.getById(Integer.parseInt(idStr));
-                if (frame != null) {
-                    selectedFrames.add(frame);
-                }
+                if (frame != null) selectedFrames.add(frame);
             }
         }
 
         loadout.setArmorPieces(selectedPieces);
         loadout.setPaFrames(selectedFrames);
 
-        GenericDao<Loadout> loadoutDao = new GenericDao<>(Loadout.class);
         int id = loadoutDao.insert(loadout);
         logger.info("Added loadout with id {}", id);
 
