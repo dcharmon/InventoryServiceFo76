@@ -1,6 +1,6 @@
 <%@ include file="taglib.jsp" %>
 
-<c:set var="title" value="Error" />
+<c:set var="title" value="Server Error" />
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,8 +11,8 @@
 
 <c:import url="navbar.jsp" />
 
-<h2>Something went wrong</h2>
-<p>An unexpected error occurred. Please try again.</p>
+<h2>Server Error</h2>
+<p>Something went wrong on our end. Please try again later.</p>
 <p><a class="btn btn-default" href="${pageContext.request.contextPath}/index.jsp">Return Home</a></p>
 
 </body>
