@@ -5,6 +5,10 @@ $(document).ready(function() {
     });
 });
 
+/**
+ * Recalculates and updates the resistance totals row in the loadout summary table
+ * by summing the resistance values of all currently selected armor pieces.
+ */
 function updateTotals() {
     var totals = { dr: 0, er: 0, rr: 0, pr: 0, fr: 0, cr: 0 };
     document.querySelectorAll('.armor-radio:checked').forEach(function(radio) {
@@ -26,6 +30,13 @@ function updateTotals() {
     document.getElementById('totalCr').textContent = totals.cr;
 }
 
+/**
+ * Updates the loadout summary row for a given slot with the selected piece's
+ * armor type name, legendary effects, and resistance values.
+ *
+ * @param {string} figId - The slot identifier (e.g. 'left-arm', 'torso').
+ * @param {HTMLElement|null} radio - The selected radio button element, or null to clear the row.
+ */
 function updateSummary(figId, radio) {
     var row = document.getElementById('summary-' + figId);
     if (!row) return;
@@ -53,14 +64,25 @@ function updateSummary(figId, radio) {
     }
 }
 
+/**
+ * Shows the standard armor or power armor section based on the currently
+ * selected loadout type radio button.
+ */
+function updateTypeSection() {
+    var selected = document.querySelector('input[name="type"]:checked').value;
+    document.getElementById('standardSection').style.display   = selected === 'STANDARD'    ? 'block' : 'none';
+    document.getElementById('powerArmorSection').style.display = selected === 'POWER_ARMOR' ? 'block' : 'none';
+}
+
+// Attach change listeners to armor slot radios
 document.querySelectorAll('.armor-radio').forEach(function(radio) {
     radio.addEventListener('change', function() {
         var figId = this.getAttribute('data-fig');
         var hiddenMap = {
-            'left-arm': 'hidden-left-arm',
+            'left-arm':  'hidden-left-arm',
             'right-arm': 'hidden-right-arm',
-            'torso': 'hidden-torso',
-            'left-leg': 'hidden-left-leg',
+            'torso':     'hidden-torso',
+            'left-leg':  'hidden-left-leg',
             'right-leg': 'hidden-right-leg'
         };
         document.getElementById(hiddenMap[figId]).value = this.value;
@@ -69,12 +91,14 @@ document.querySelectorAll('.armor-radio').forEach(function(radio) {
     });
 });
 
+// Disable empty hidden inputs before form submit so they are not sent as blank values
 document.querySelector('form').addEventListener('submit', function() {
     document.querySelectorAll('input[type="hidden"][name="armorPieceIds"]').forEach(function(el) {
         if (!el.value) el.disabled = true;
     });
 });
 
+// Restore summary and totals for any pre-selected pieces (edit loadout)
 document.querySelectorAll('.armor-radio:checked').forEach(function(radio) {
     var figId = radio.getAttribute('data-fig');
     if (figId && radio.value) {
@@ -83,3 +107,12 @@ document.querySelectorAll('.armor-radio:checked').forEach(function(radio) {
     }
 });
 updateTotals();
+
+// Attach change listeners to loadout type radios and set initial section visibility
+var typeRadios = document.querySelectorAll('input[name="type"]');
+if (typeRadios.length > 0) {
+    typeRadios.forEach(function(radio) {
+        radio.addEventListener('change', updateTypeSection);
+    });
+    updateTypeSection();
+}

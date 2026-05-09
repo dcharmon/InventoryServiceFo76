@@ -175,16 +175,6 @@
     }<c:if test="${!pieceStatus.last}">,</c:if>
     </c:forEach>
   };
-
-  function updateTypeSection() {
-    var selected = document.querySelector('input[name="type"]:checked').value;
-    document.getElementById('standardSection').style.display   = (selected === 'STANDARD')    ? 'block' : 'none';
-    document.getElementById('powerArmorSection').style.display = (selected === 'POWER_ARMOR') ? 'block' : 'none';
-  }
-
-  document.querySelectorAll('input[name="type"]').forEach(function(radio) {
-    radio.addEventListener('change', updateTypeSection);
-  });
 </script>
 <script src="${pageContext.request.contextPath}/js/loadout.js"></script>
 
