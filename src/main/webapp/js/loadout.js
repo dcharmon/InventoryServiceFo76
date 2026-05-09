@@ -62,51 +62,49 @@ function updateSummary(figId, radio) {
  * Shows the standard armor or power armor section based on the currently
  * selected loadout type radio button.
  */
-function updateTypeSection() {
-    var selected = document.querySelector('input[name="type"]:checked').value;
-    document.getElementById('standardSection').style.display   = selected === 'STANDARD'    ? 'block' : 'none';
-    document.getElementById('powerArmorSection').style.display = selected === 'POWER_ARMOR' ? 'block' : 'none';
+function setLoadoutType(type) {
+    document.getElementById('loadoutType').value = type;
+    document.getElementById('standardSection').style.display   = type === 'STANDARD'    ? 'block' : 'none';
+    document.getElementById('powerArmorSection').style.display = type === 'POWER_ARMOR' ? 'block' : 'none';
+    document.getElementById('btnStandard').classList.toggle('active', type === 'STANDARD');
+    document.getElementById('btnPowerArmor').classList.toggle('active', type === 'POWER_ARMOR');
 }
 
-// Attach change listeners to armor slot radios
-document.querySelectorAll('.armor-radio').forEach(function(radio) {
-    radio.addEventListener('change', function() {
-        var figId = this.getAttribute('data-fig');
-        var hiddenMap = {
-            'left-arm':  'hidden-left-arm',
-            'right-arm': 'hidden-right-arm',
-            'torso':     'hidden-torso',
-            'left-leg':  'hidden-left-leg',
-            'right-leg': 'hidden-right-leg'
-        };
-        document.getElementById(hiddenMap[figId]).value = this.value;
-        updateSummary(figId, this);
-        updateTotals();
-    });
-});
+$(document).ready(function() {
 
-// Disable empty hidden inputs before form submit so they are not sent as blank values
-document.querySelector('form').addEventListener('submit', function() {
-    document.querySelectorAll('input[type="hidden"][name="armorPieceIds"]').forEach(function(el) {
-        if (!el.value) el.disabled = true;
+    // Attach change listeners to armor slot radios
+    document.querySelectorAll('.armor-radio').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            var figId = this.getAttribute('data-fig');
+            var hiddenMap = {
+                'left-arm':  'hidden-left-arm',
+                'right-arm': 'hidden-right-arm',
+                'torso':     'hidden-torso',
+                'left-leg':  'hidden-left-leg',
+                'right-leg': 'hidden-right-leg'
+            };
+            document.getElementById(hiddenMap[figId]).value = this.value;
+            updateSummary(figId, this);
+            updateTotals();
+        });
     });
-});
 
-// Restore summary and totals for any pre-selected pieces (edit loadout)
-document.querySelectorAll('.armor-radio:checked').forEach(function(radio) {
-    var figId = radio.getAttribute('data-fig');
-    if (figId && radio.value) {
-        document.getElementById('hidden-' + figId).value = radio.value;
-        updateSummary(figId, radio);
-    }
-});
-updateTotals();
-
-// Attach change listeners to loadout type radios and set initial section visibility
-var typeRadios = document.querySelectorAll('input[name="type"]');
-if (typeRadios.length > 0) {
-    typeRadios.forEach(function(radio) {
-        radio.addEventListener('change', updateTypeSection);
+    // Disable empty hidden inputs before form submit
+    document.querySelector('form').addEventListener('submit', function() {
+        document.querySelectorAll('input[type="hidden"][name="armorPieceIds"]').forEach(function(el) {
+            if (!el.value) el.disabled = true;
+        });
     });
-    updateTypeSection();
-}
+
+    // Restore summary and totals for any pre-selected pieces (edit loadout)
+    document.querySelectorAll('.armor-radio:checked').forEach(function(radio) {
+        var figId = radio.getAttribute('data-fig');
+        if (figId && radio.value) {
+            document.getElementById('hidden-' + figId).value = radio.value;
+            updateSummary(figId, radio);
+        }
+    });
+    updateTotals();
+
+    setLoadoutType('STANDARD');
+});

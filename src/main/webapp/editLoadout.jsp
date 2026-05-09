@@ -29,19 +29,13 @@
         <textarea class="form-control" id="notes" name="notes" rows="3">${loadout.notes}</textarea>
     </div>
 
-    <div class="form-group">
-        <label>Loadout Type</label>
-        <div>
-            <label class="radio-inline">
-                <input type="radio" name="type" value="STANDARD"
-                       <c:if test="${loadoutType == 'STANDARD'}">checked</c:if> /> Standard Armor
-            </label>
-            <label class="radio-inline">
-                <input type="radio" name="type" value="POWER_ARMOR"
-                       <c:if test="${loadoutType == 'POWER_ARMOR'}">checked</c:if> /> Power Armor
-            </label>
-        </div>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default active" id="btnStandard"
+                onclick="setLoadoutType('STANDARD')">Standard Armor</button>
+        <button type="button" class="btn btn-default" id="btnPowerArmor"
+                onclick="setLoadoutType('POWER_ARMOR')">Power Armor</button>
     </div>
+    <input type="hidden" name="type" id="loadoutType" value="STANDARD" />
 
     <%-- Standard Armor Section --%>
     <div id="standardSection">

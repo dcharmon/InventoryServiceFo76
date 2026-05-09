@@ -28,17 +28,13 @@
               placeholder="Any notes about this loadout..."></textarea>
   </div>
 
-  <div class="form-group">
-    <label>Loadout Type</label>
-    <div>
-      <label class="radio-inline">
-        <input type="radio" name="type" value="STANDARD" checked /> Standard Armor
-      </label>
-      <label class="radio-inline">
-        <input type="radio" name="type" value="POWER_ARMOR" /> Power Armor
-      </label>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default active" id="btnStandard"
+                onclick="setLoadoutType('STANDARD')">Standard Armor</button>
+        <button type="button" class="btn btn-default" id="btnPowerArmor"
+                onclick="setLoadoutType('POWER_ARMOR')">Power Armor</button>
     </div>
-  </div>
+    <input type="hidden" name="type" id="loadoutType" value="STANDARD" />
 
   <%-- Standard Armor Section --%>
   <div id="standardSection">
@@ -89,7 +85,7 @@
 
       </c:otherwise>
     </c:choose>
-  </div>
+  </div><%-- end standardSection --%>
 
   <%-- Power Armor Section --%>
   <div id="powerArmorSection" style="display:none;">
@@ -147,7 +143,7 @@
         </c:forEach>
       </c:otherwise>
     </c:choose>
-  </div>
+  </div><%-- end powerArmorSection --%>
 
   <input type="hidden" id="hidden-left-arm"  name="armorPieceIds" value=""/>
   <input type="hidden" id="hidden-right-arm" name="armorPieceIds" value=""/>

@@ -227,12 +227,13 @@
             </div>
         </c:forEach>
 
-        <p id="noResults" style="display:none;">No loadouts match the selected filter.</p>
 
     </c:otherwise>
 </c:choose>
 
-<script src="${pageContext.request.contextPath}/js/viewLoadouts.js"></script>
+<p id="noResults" style="display:none;">No loadouts match the selected filter.</p>
+
+<script src="${pageContext.request.contextPath}/js/viewLoadout.js"></script>
 
 </body>
 </html>
