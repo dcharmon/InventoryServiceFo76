@@ -13,15 +13,33 @@
 
 <h2>My Loadouts</h2>
 
-<a class="btn btn-primary" href="${pageContext.request.contextPath}/addLoadout">Add Loadout</a>
+<%-- Filter bar --%>
+<div class="row" style="margin-bottom: 15px;">
+    <div class="col-xs-8">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default active" id="filterAll"
+                    onclick="filterLoadouts('all')">All</button>
+            <button type="button" class="btn btn-default" id="filterStandard"
+                    onclick="filterLoadouts('STANDARD')">Standard</button>
+            <button type="button" class="btn btn-default" id="filterPa"
+                    onclick="filterLoadouts('POWER_ARMOR')">Power Armor</button>
+        </div>
+    </div>
+    <div class="col-xs-4 text-right">
+        <a class="btn btn-primary" href="${pageContext.request.contextPath}/addLoadout">
+            Add Loadout
+        </a>
+    </div>
+</div>
 
 <c:choose>
     <c:when test="${empty loadouts}">
-        <p class="mt-3">You have no loadouts yet.</p>
+        <p>You have no loadouts yet.</p>
     </c:when>
     <c:otherwise>
         <c:forEach var="loadout" items="${loadouts}">
-            <div class="panel panel-default mt-3">
+            <div class="panel panel-default loadout-panel"
+                 data-type="${loadout.type}">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                             ${loadout.name}
@@ -208,8 +226,13 @@
                 </div>
             </div>
         </c:forEach>
+
+        <p id="noResults" style="display:none;">No loadouts match the selected filter.</p>
+
     </c:otherwise>
 </c:choose>
+
+<script src="${pageContext.request.contextPath}/js/viewLoadouts.js"></script>
 
 </body>
 </html>
