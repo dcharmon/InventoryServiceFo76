@@ -1,9 +1,3 @@
-$(document).ready(function() {
-    $('.slot-table').DataTable({
-        paging: false,
-        info: false
-    });
-});
 
 /**
  * Recalculates and updates the resistance totals row in the loadout summary table
