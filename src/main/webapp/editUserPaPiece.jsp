@@ -119,42 +119,7 @@
 
 </form>
 
-<script>
-    function updateStarDropdowns() {
-        var star1 = document.getElementById('star1EffectId');
-        var star2 = document.getElementById('star2EffectId');
-        var star3 = document.getElementById('star3EffectId');
-        var star4 = document.getElementById('star4EffectId');
-
-        var has1 = star1.value !== '';
-        var has2 = has1 && star2.value !== '';
-        var has3 = has2 && star3.value !== '';
-
-        star2.disabled = !has1;
-        star3.disabled = !has2;
-        star4.disabled = !has3;
-
-        if (!has1) { star2.value = ''; star3.value = ''; star4.value = ''; }
-        if (!has2) { star3.value = ''; star4.value = ''; }
-        if (!has3) { star4.value = ''; }
-    }
-
-    function updateLegendaryVisibility() {
-        var slotSelect = document.getElementById('paSlotId');
-        var selected = slotSelect.options[slotSelect.selectedIndex];
-        var allowsLegendary = selected.getAttribute('data-allows-legendary') === 'true';
-        document.getElementById('legendarySection').style.display = allowsLegendary ? 'block' : 'none';
-    }
-
-    document.getElementById('star1EffectId').addEventListener('change', updateStarDropdowns);
-    document.getElementById('star2EffectId').addEventListener('change', updateStarDropdowns);
-    document.getElementById('star3EffectId').addEventListener('change', updateStarDropdowns);
-    document.getElementById('paSlotId').addEventListener('change', updateLegendaryVisibility);
-
-    // Run on page load — also initialize star chain state from existing values
-    updateLegendaryVisibility();
-    updateStarDropdowns();
-</script>
+<script src="${pageContext.request.contextPath}/js/armorPiece.js"></script>
 
 </body>
 </html>

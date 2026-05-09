@@ -89,7 +89,7 @@
 
       </c:otherwise>
     </c:choose>
-  </div><%-- end standardSection --%>
+  </div>
 
   <%-- Power Armor Section --%>
   <div id="powerArmorSection" style="display:none;">
@@ -147,7 +147,7 @@
         </c:forEach>
       </c:otherwise>
     </c:choose>
-  </div><%-- end powerArmorSection --%>
+  </div>
 
   <input type="hidden" id="hidden-left-arm"  name="armorPieceIds" value=""/>
   <input type="hidden" id="hidden-right-arm" name="armorPieceIds" value=""/>
