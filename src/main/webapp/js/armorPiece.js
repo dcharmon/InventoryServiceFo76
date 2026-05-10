@@ -5,14 +5,14 @@
  * Applies to both standard armor and power armor piece forms.
  */
 function updateStarDropdowns() {
-    var star1 = document.getElementById('star1EffectId');
-    var star2 = document.getElementById('star2EffectId');
-    var star3 = document.getElementById('star3EffectId');
-    var star4 = document.getElementById('star4EffectId');
+    const star1 = document.getElementById('star1EffectId');
+    const star2 = document.getElementById('star2EffectId');
+    const star3 = document.getElementById('star3EffectId');
+    const star4 = document.getElementById('star4EffectId');
 
-    var has1 = star1.value !== '';
-    var has2 = has1 && star2.value !== '';
-    var has3 = has2 && star3.value !== '';
+    const has1 = star1.value !== '';
+    const has2 = has1 && star2.value !== '';
+    const has3 = has2 && star3.value !== '';
 
     // Enable/disable based on previous tier
     star2.disabled = !has1;

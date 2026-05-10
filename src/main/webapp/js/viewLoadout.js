@@ -4,11 +4,11 @@
  * @param {string} type - 'all', 'STANDARD', or 'POWER_ARMOR'
  */
 function filterLoadouts(type) {
-    var panels = document.querySelectorAll('.loadout-panel');
-    var visible = 0;
+    const panels = document.querySelectorAll('.loadout-panel');
+    let visible = 0;
 
     panels.forEach(function(panel) {
-        var show = type === 'all' || panel.getAttribute('data-type') === type;
+        const show = type === 'all' || panel.getAttribute('data-type') === type;
         panel.style.display = show ? 'block' : 'none';
         if (show) visible++;
     });

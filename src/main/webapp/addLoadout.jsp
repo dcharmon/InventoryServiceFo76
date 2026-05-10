@@ -158,7 +158,7 @@
 </form>
 
 <script>
-  var resistanceData = {
+  const resistanceData = {
     <c:forEach var="piece" items="${userPieces}" varStatus="pieceStatus">
     "${piece.id}": {
       name: "${piece.armorType.typeName}",
@@ -168,7 +168,7 @@
       pr: ${resolvedResistances[piece.id][3]},
       fr: ${resolvedResistances[piece.id][4]},
       cr: ${resolvedResistances[piece.id][5]}
-    }<c:if test="${!pieceStatus.last}">,</c:if>
+    }<c:if test="${!pieceStatus.last}">, </c:if>
     </c:forEach>
   };
 </script>

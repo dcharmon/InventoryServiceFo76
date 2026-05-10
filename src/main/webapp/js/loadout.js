@@ -4,9 +4,9 @@
  * by summing the resistance values of all currently selected armor pieces.
  */
 function updateTotals() {
-    var totals = { dr: 0, er: 0, rr: 0, pr: 0, fr: 0, cr: 0 };
+    const totals = {dr: 0, er: 0, rr: 0, pr: 0, fr: 0, cr: 0};
     document.querySelectorAll('.armor-radio:checked').forEach(function(radio) {
-        var res = resistanceData[radio.value];
+        const res = resistanceData[radio.value];
         if (res) {
             totals.dr += res.dr;
             totals.er += res.er;
@@ -32,10 +32,10 @@ function updateTotals() {
  * @param {HTMLElement|null} radio - The selected radio button element, or null to clear the row.
  */
 function updateSummary(figId, radio) {
-    var row = document.getElementById('summary-' + figId);
+    const row = document.getElementById('summary-' + figId);
     if (!row) return;
-    var pieceId = radio ? radio.value : null;
-    var res = pieceId ? resistanceData[pieceId] : null;
+    const pieceId = radio ? radio.value : null;
+    const res = pieceId ? resistanceData[pieceId] : null;
 
     if (pieceId && resistanceData[pieceId]) {
         row.querySelector('[data-col="name"]').textContent = resistanceData[pieceId].name;
@@ -75,12 +75,12 @@ $(document).ready(function() {
     // Attach change listeners to armor slot radios
     document.querySelectorAll('.armor-radio').forEach(function(radio) {
         radio.addEventListener('change', function() {
-            var figId = this.getAttribute('data-fig');
-            var hiddenMap = {
-                'left-arm':  'hidden-left-arm',
+            const figId = this.getAttribute('data-fig');
+            const hiddenMap = {
+                'left-arm': 'hidden-left-arm',
                 'right-arm': 'hidden-right-arm',
-                'torso':     'hidden-torso',
-                'left-leg':  'hidden-left-leg',
+                'torso': 'hidden-torso',
+                'left-leg': 'hidden-left-leg',
                 'right-leg': 'hidden-right-leg'
             };
             document.getElementById(hiddenMap[figId]).value = this.value;
@@ -98,7 +98,7 @@ $(document).ready(function() {
 
     // Restore summary and totals for any pre-selected pieces (edit loadout)
     document.querySelectorAll('.armor-radio:checked').forEach(function(radio) {
-        var figId = radio.getAttribute('data-fig');
+        const figId = radio.getAttribute('data-fig');
         if (figId && radio.value) {
             document.getElementById('hidden-' + figId).value = radio.value;
             updateSummary(figId, radio);

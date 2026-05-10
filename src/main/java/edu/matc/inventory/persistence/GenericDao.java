@@ -17,7 +17,7 @@ import java.util.List;
  */
 public final class GenericDao<T> {
 
-    private Class<T> type;
+    private final Class<T> type;
     private final Logger logger = LogManager.getLogger(this.getClass());
 
     /**
@@ -83,8 +83,8 @@ public final class GenericDao<T> {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
 
-        T merged = (T) session.merge(entity);
-        session.delete(merged);
+        T merged = session.merge(entity);
+        session.remove(merged);
 
         transaction.commit();
         session.close();
