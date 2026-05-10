@@ -52,3 +52,18 @@ Managing gear across different sets is a common challenge in inventory heavy gam
 ### Time Log
 
 #### [TimeLog](TimeLog.md)
+
+## V2 Improvements
+
+### Features
+- Implement armor set bonus detection — display set bonuses when a user has enough pieces of an armor type in a loadout (data already exists in `armor_set_bonus` table)
+- Loadout comparison — select two loadouts and view resistance totals side by side
+- Search/filter loadouts by name on the viewLoadouts page
+- Show loadout created date on viewLoadouts page
+
+### Technical
+- Replace DataTables initialization with a compatible implementation — current table structure causes _DT_CellIndex errors
+- Replace native SQL in deleteLoadout with a proper Hibernate cascade configuration using CascadeType.REMOVE
+
+### UI
+- Add success/error flash messages after saving, editing, or deleting a loadout
