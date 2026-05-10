@@ -142,12 +142,20 @@
 ### Week 15
 
 - [x] Update README with final technology list
-- [ ] Final Presentation
-- [ ] Create video, add video link to readme.md
-- [ ] Finalize all documentation
 - [ ] Code quality check
+  - [x] Run QAPlug analysis and document before/after findings report
+  - [x] Fix encapsulation warnings - add private final to dao fields
+  - [x] Fix design-for-extension warnings - add final to all servlet classes
+  - [x] Fix utility class warnings - add private constructors to CognitoJWTParser and SessionFactoryProvider
+  - [x] Replace magic numbers with named constants across servlet controllers
+  - [x] Reduce cyclomatic complexity by extracting helper methods
+  - [x] Extract LoadoutHelper utility class to eliminate code duplication
+  - [x] Fix slotGroup String vs enum comparison bug uncovered during refactoring
+- [ ] Finalize all documentation
 - [ ] Weekly journal entry
 
 ### Week 16
+- [ ] Final Presentation
+- [ ] Create video, add video link to readme.md
 - [ ] Weekly journal entry
 - [ ] Final touches before code complete

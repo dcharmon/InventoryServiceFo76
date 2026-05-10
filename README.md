@@ -40,6 +40,8 @@ Managing gear across different sets is a common challenge in inventory heavy gam
   * FO76 Inventory API (team project REST API)
   * Jackson 2.15.2 for JSON deserialization
   * Apache Commons IO 2.11.0 for HTTP response handling
+* Code Quality
+  * QAPlug (Checkstyle / PMD) run on the project in Week 15 to identify and address best practice violations
 
 ### Design
 

@@ -34,3 +34,5 @@
 | Week 14 | Indie Project | Add CSV export feature for loadouts | 1.5 | ExportLoadout servlet, file download via HTTP response streaming |
 | Week 14 | Indie Project | Add DeleteLoadout servlet and fix Hibernate cascade delete issue | 1.5 | Native SQL workaround for bidirectional ManyToMany cascade |
 | Week 14 | Indie Project | Add Java enums, externalize DB credentials, update README and project plan | 2 | LoadoutType, WeightClass, SlotGroup enums, Maven filtering for hibernate.cfg.xml |
+| Week 15 | Indie Project | Run QAPlug code quality analysis and fix findings | 3 | Fixed encapsulation, design-for-extension, magic numbers, cyclomatic complexity warnings |
+| Week 15 | Indie Project | Refactor LoadoutHelper utility class and fix slotGroup comparison bug | 2 | Extracted shared logic from AddLoadout and EditLoadout, fixed String vs enum comparison |
