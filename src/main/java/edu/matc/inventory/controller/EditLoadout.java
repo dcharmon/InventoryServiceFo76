@@ -22,14 +22,6 @@ import java.util.*;
 )
 public final class EditLoadout extends HttpServlet {
 
-    private static final int RESISTANCE_COUNT = 6;
-    private static final int DAMAGE_INDEX = 0;
-    private static final int ENERGY_INDEX = 1;
-    private static final int RADIATION_INDEX = 2;
-    private static final int POISON_INDEX = 3;
-    private static final int FIRE_INDEX = 4;
-    private static final int CRYO_INDEX = 5;
-
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final GenericDao<Loadout> loadoutDao = new GenericDao<>(Loadout.class);
     private final GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
@@ -53,79 +45,17 @@ public final class EditLoadout extends HttpServlet {
         List<UserArmorPiece> userPieces = pieceDao.getByPropertyEqual("user", appUser);
         List<UserPaFrame> userFrames = paFrameDao.getByPropertyEqual("user", appUser);
 
-        //Standard armor: group pieces by slot
-        Map<String, List<UserArmorPiece>> piecesBySlot = new LinkedHashMap<>();
-        piecesBySlot.put("Left Arm",  new ArrayList<>());
-        piecesBySlot.put("Right Arm", new ArrayList<>());
-        piecesBySlot.put("Torso",     new ArrayList<>());
-        piecesBySlot.put("Left Leg",  new ArrayList<>());
-        piecesBySlot.put("Right Leg", new ArrayList<>());
-
-        for (UserArmorPiece piece : userPieces) {
-            String slot = piece.getArmorSlot().getSlotName();
-            if (piecesBySlot.containsKey(slot)) {
-                piecesBySlot.get(slot).add(piece);
-            }
-        }
-
-        //Standard armor: resolve base resistances per piece
-        Map<Integer, int[]> resolvedResistances = new HashMap<>();
-        for (UserArmorPiece piece : userPieces) {
-            int[] res = new int[RESISTANCE_COUNT];
-            for (ArmorBaseResistance r : piece.getArmorType().getBaseResistances()) {
-                if (r.getId().getSlotGroup().equals(piece.getArmorSlot().getSlotGroup())) {
-                    res[DAMAGE_INDEX]    = r.getDamageResistance();
-                    res[ENERGY_INDEX]    = r.getEnergyResistance();
-                    res[RADIATION_INDEX] = r.getRadiationResistance();
-                    res[POISON_INDEX]    = r.getPoisonResistance();
-                    res[FIRE_INDEX]      = r.getFireResistance();
-                    res[CRYO_INDEX]      = r.getCryoResistance();
-                    break;
-                }
-            }
-            resolvedResistances.put(piece.getId(), res);
-        }
-
-        //PA: resolve base resistances per piece across all frames
-        Map<Integer, int[]> resolvedPaResistances = new HashMap<>();
-        for (UserPaFrame frame : userFrames) {
-            for (UserPaPiece paPiece : frame.getPieces()) {
-                int[] res = new int[RESISTANCE_COUNT];
-                for (PaBaseResistance r : paPiece.getPaType().getBaseResistances()) {
-                    if (r.getId().getPaSlotId() == paPiece.getPaSlot().getId()) {
-                        res[DAMAGE_INDEX]    = r.getDamageResistance();
-                        res[ENERGY_INDEX]    = r.getEnergyResistance();
-                        res[RADIATION_INDEX] = r.getRadiationResistance();
-                        res[POISON_INDEX]    = r.getPoisonResistance();
-                        res[FIRE_INDEX]      = r.getFireResistance();
-                        res[CRYO_INDEX]      = r.getCryoResistance();
-                        break;
-                    }
-                }
-                resolvedPaResistances.put(paPiece.getId(), res);
-            }
-        }
-
-        //Track which armor pieces are currently selected
         Set<Integer> selectedPieceIds = new HashSet<>();
         Map<String, Integer> selectedBySlot = new HashMap<>();
-        for (UserArmorPiece piece : loadout.getArmorPieces()) {
-            selectedPieceIds.add(piece.getId());
-            selectedBySlot.put(piece.getArmorSlot().getSlotName(), piece.getId());
-        }
-
-        //Track which PA frames are currently selected
-        Set<Integer> selectedFrameIds = new HashSet<>();
-        for (UserPaFrame frame : loadout.getPaFrames()) {
-            selectedFrameIds.add(frame.getId());
-        }
+        resolveSelectedPieces(loadout, selectedPieceIds, selectedBySlot);
+        Set<Integer> selectedFrameIds = resolveSelectedFrameIds(loadout);
 
         req.setAttribute("loadout", loadout);
         req.setAttribute("loadoutType", loadout.getType());
         req.setAttribute("userPieces", userPieces);
-        req.setAttribute("piecesBySlot", piecesBySlot);
-        req.setAttribute("resolvedResistances", resolvedResistances);
-        req.setAttribute("resolvedPaResistances", resolvedPaResistances);
+        req.setAttribute("piecesBySlot", LoadoutHelper.groupPiecesBySlot(userPieces));
+        req.setAttribute("resolvedResistances", LoadoutHelper.resolveArmorResistances(userPieces));
+        req.setAttribute("resolvedPaResistances", LoadoutHelper.resolvePaResistances(userFrames));
         req.setAttribute("selectedPieceIds", selectedPieceIds);
         req.setAttribute("selectedBySlot", selectedBySlot);
         req.setAttribute("userFrames", userFrames);
@@ -133,6 +63,35 @@ public final class EditLoadout extends HttpServlet {
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/editLoadout.jsp");
         dispatcher.forward(req, resp);
+    }
+
+    /**
+     * Populates selected piece ids and slot mapping from the loadout's current armor pieces.
+     *
+     * @param loadout the loadout
+     * @param selectedPieceIds the set to populate with selected piece ids
+     * @param selectedBySlot the map to populate with slot name to piece id
+     */
+    private void resolveSelectedPieces(Loadout loadout, Set<Integer> selectedPieceIds,
+                                       Map<String, Integer> selectedBySlot) {
+        for (UserArmorPiece piece : loadout.getArmorPieces()) {
+            selectedPieceIds.add(piece.getId());
+            selectedBySlot.put(piece.getArmorSlot().getSlotName(), piece.getId());
+        }
+    }
+
+    /**
+     * Builds a set of selected PA frame ids from the loadout.
+     *
+     * @param loadout the loadout
+     * @return set of selected frame ids
+     */
+    private Set<Integer> resolveSelectedFrameIds(Loadout loadout) {
+        Set<Integer> selectedFrameIds = new HashSet<>();
+        for (UserPaFrame frame : loadout.getPaFrames()) {
+            selectedFrameIds.add(frame.getId());
+        }
+        return selectedFrameIds;
     }
 
     @Override
@@ -158,28 +117,9 @@ public final class EditLoadout extends HttpServlet {
         Loadout loadout = loadoutDao.getById(id);
 
         if (loadout != null) {
-            loadout.setName(name);
-            loadout.setNotes(notes);
-            loadout.setType(type != null ? LoadoutType.valueOf(type) : LoadoutType.STANDARD);
-
-            List<UserArmorPiece> selectedPieces = new ArrayList<>();
-            if (pieceIds != null) {
-                for (String idStr : pieceIds) {
-                    UserArmorPiece piece = pieceDao.getById(Integer.parseInt(idStr));
-                    if (piece != null) selectedPieces.add(piece);
-                }
-            }
-
-            List<UserPaFrame> selectedFrames = new ArrayList<>();
-            if (frameIds != null) {
-                for (String idStr : frameIds) {
-                    UserPaFrame frame = paFrameDao.getById(Integer.parseInt(idStr));
-                    if (frame != null) selectedFrames.add(frame);
-                }
-            }
-
-            loadout.setArmorPieces(selectedPieces);
-            loadout.setPaFrames(selectedFrames);
+            LoadoutHelper.updateLoadout(loadout, name, notes, type);
+            loadout.setArmorPieces(LoadoutHelper.resolveSelectedPieces(pieceIds, pieceDao));
+            loadout.setPaFrames(LoadoutHelper.resolveSelectedFrames(frameIds, paFrameDao));
 
             loadoutDao.update(loadout);
             logger.info("Loadout id {} successfully updated", id);

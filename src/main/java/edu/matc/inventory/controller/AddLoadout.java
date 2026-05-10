@@ -22,14 +22,6 @@ import java.util.*;
 )
 public final class AddLoadout extends HttpServlet {
 
-    private static final int RESISTANCE_COUNT = 6;
-    private static final int DAMAGE_INDEX = 0;
-    private static final int ENERGY_INDEX = 1;
-    private static final int RADIATION_INDEX = 2;
-    private static final int POISON_INDEX = 3;
-    private static final int FIRE_INDEX = 4;
-    private static final int CRYO_INDEX = 5;
-
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final GenericDao<Loadout> loadoutDao = new GenericDao<>(Loadout.class);
     private final GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
@@ -51,68 +43,20 @@ public final class AddLoadout extends HttpServlet {
         List<UserArmorPiece> userPieces = pieceDao.getByPropertyEqual("user", appUser);
         List<UserPaFrame> userFrames = paFrameDao.getByPropertyEqual("user", appUser);
 
-        // Standard armor: group pieces by slot
-        Map<String, List<UserArmorPiece>> piecesBySlot = new LinkedHashMap<>();
-        piecesBySlot.put("Left Arm",  new ArrayList<>());
-        piecesBySlot.put("Right Arm", new ArrayList<>());
-        piecesBySlot.put("Torso",     new ArrayList<>());
-        piecesBySlot.put("Left Leg",  new ArrayList<>());
-        piecesBySlot.put("Right Leg", new ArrayList<>());
+        Map<Integer, int[]> resistances = LoadoutHelper.resolveArmorResistances(userPieces);
+        logger.debug("Resolved resistances map size: {}", resistances.size());
 
-        for (UserArmorPiece piece : userPieces) {
-            String slot = piece.getArmorSlot().getSlotName();
-            if (piecesBySlot.containsKey(slot)) {
-                piecesBySlot.get(slot).add(piece);
-            }
-        }
-
-        // Standard armor: resolve base resistances per piece
-        Map<Integer, int[]> resolvedResistances = new HashMap<>();
-        for (UserArmorPiece piece : userPieces) {
-            int[] res = new int[RESISTANCE_COUNT];
-            for (ArmorBaseResistance r : piece.getArmorType().getBaseResistances()) {
-                if (r.getId().getSlotGroup().equals(piece.getArmorSlot().getSlotGroup())) {
-                    res[DAMAGE_INDEX]    = r.getDamageResistance();
-                    res[ENERGY_INDEX]    = r.getEnergyResistance();
-                    res[RADIATION_INDEX] = r.getRadiationResistance();
-                    res[POISON_INDEX]    = r.getPoisonResistance();
-                    res[FIRE_INDEX]      = r.getFireResistance();
-                    res[CRYO_INDEX]      = r.getCryoResistance();
-                    break;
-                }
-            }
-            resolvedResistances.put(piece.getId(), res);
-        }
-
-        // PA: resolve base resistances per piece across all frames
-        Map<Integer, int[]> resolvedPaResistances = new HashMap<>();
-        for (UserPaFrame frame : userFrames) {
-            for (UserPaPiece paPiece : frame.getPieces()) {
-                int[] res = new int[RESISTANCE_COUNT];
-                for (PaBaseResistance r : paPiece.getPaType().getBaseResistances()) {
-                    if (r.getId().getPaSlotId() == paPiece.getPaSlot().getId()) {
-                        res[DAMAGE_INDEX]    = r.getDamageResistance();
-                        res[ENERGY_INDEX]    = r.getEnergyResistance();
-                        res[RADIATION_INDEX] = r.getRadiationResistance();
-                        res[POISON_INDEX]    = r.getPoisonResistance();
-                        res[FIRE_INDEX]      = r.getFireResistance();
-                        res[CRYO_INDEX]      = r.getCryoResistance();
-                        break;
-                    }
-                }
-                resolvedPaResistances.put(paPiece.getId(), res);
-            }
-        }
-
-        req.setAttribute("resolvedResistances", resolvedResistances);
-        req.setAttribute("resolvedPaResistances", resolvedPaResistances);
+        req.setAttribute("piecesBySlot", LoadoutHelper.groupPiecesBySlot(userPieces));
+        req.setAttribute("resolvedResistances", LoadoutHelper.resolveArmorResistances(userPieces));
+        req.setAttribute("resolvedPaResistances", LoadoutHelper.resolvePaResistances(userFrames));
         req.setAttribute("userPieces", userPieces);
-        req.setAttribute("piecesBySlot", piecesBySlot);
         req.setAttribute("userFrames", userFrames);
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/addLoadout.jsp");
         dispatcher.forward(req, resp);
     }
+
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -135,28 +79,10 @@ public final class AddLoadout extends HttpServlet {
 
         Loadout loadout = new Loadout();
         loadout.setUser(appUser);
-        loadout.setName(name);
-        loadout.setNotes(notes);
-        loadout.setType(type != null ? LoadoutType.valueOf(type) : LoadoutType.STANDARD);
+        LoadoutHelper.updateLoadout(loadout, name, notes, type);
 
-        List<UserArmorPiece> selectedPieces = new ArrayList<>();
-        if (pieceIds != null) {
-            for (String idStr : pieceIds) {
-                UserArmorPiece piece = pieceDao.getById(Integer.parseInt(idStr));
-                if (piece != null) selectedPieces.add(piece);
-            }
-        }
-
-        List<UserPaFrame> selectedFrames = new ArrayList<>();
-        if (frameIds != null) {
-            for (String idStr : frameIds) {
-                UserPaFrame frame = paFrameDao.getById(Integer.parseInt(idStr));
-                if (frame != null) selectedFrames.add(frame);
-            }
-        }
-
-        loadout.setArmorPieces(selectedPieces);
-        loadout.setPaFrames(selectedFrames);
+        loadout.setArmorPieces(LoadoutHelper.resolveSelectedPieces(pieceIds, pieceDao));
+        loadout.setPaFrames(LoadoutHelper.resolveSelectedFrames(frameIds, paFrameDao));
 
         int id = loadoutDao.insert(loadout);
         logger.info("Added loadout with id {}", id);
