@@ -15,11 +15,16 @@ import java.util.Base64.Decoder;
 /**
  * Utility class for all operations on JWT.
  */
-public class CognitoJWTParser {
+public final class CognitoJWTParser {
+
     private static final int HEADER = 0;
     private static final int PAYLOAD = 1;
     private static final int SIGNATURE = 2;
     private static final int JWT_PARTS = 3;
+
+    private CognitoJWTParser() {
+
+    }
 
     /**
      * Returns header for a JWT as a JSON object.

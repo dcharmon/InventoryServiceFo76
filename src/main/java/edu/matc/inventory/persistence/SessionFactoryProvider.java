@@ -12,10 +12,14 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
  * @author paulawaite
  * @version 3.0
  */
-public class SessionFactoryProvider {
+public final class SessionFactoryProvider {
 
     private static SessionFactory sessionFactory;
     private static StandardServiceRegistry registry;
+
+    private SessionFactoryProvider() {
+
+    }
 
     /**
      * Create session factory.
