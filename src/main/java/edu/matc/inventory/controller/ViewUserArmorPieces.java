@@ -24,6 +24,7 @@ import java.util.List;
 public class ViewUserArmorPieces extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
+    private final GenericDao<AppUser> userDao = new GenericDao<>(AppUser.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -38,8 +39,8 @@ public class ViewUserArmorPieces extends HttpServlet {
             return;
         }
 
-        GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
-        List<UserArmorPiece> pieces = dao.getByPropertyEqual("user", appUser);
+        AppUser freshUser = userDao.getById(appUser.getUserId());
+        List<UserArmorPiece> pieces = freshUser.getArmorPieces();
 
         logger.debug("Retrieved {} armor pieces for user {}", pieces.size(), appUser.getDisplayName());
 

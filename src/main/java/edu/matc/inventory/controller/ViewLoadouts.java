@@ -24,6 +24,7 @@ import java.util.List;
 public class ViewLoadouts extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
+    private final GenericDao<AppUser> userDao = new GenericDao<>(AppUser.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -36,8 +37,8 @@ public class ViewLoadouts extends HttpServlet {
             return;
         }
 
-        GenericDao<Loadout> dao = new GenericDao<>(Loadout.class);
-        List<Loadout> loadouts = dao.getByPropertyEqual("user", appUser);
+        AppUser freshUser = userDao.getById(appUser.getUserId());
+        List<Loadout> loadouts = freshUser.getLoadouts();
 
         logger.debug("Retrieved {} loadouts for user {}", loadouts.size(), appUser.getDisplayName());
 

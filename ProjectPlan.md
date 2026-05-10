@@ -91,60 +91,57 @@
 - [x] Update weekly reflection/time log
 
 ### Week 10 - Work Week
-#### This week my focus is the team project and polishing core functionality, testing, and beginning loadout-related features.
 
-- [ ] Team Project
-- [ ] Create `error.jsp` (display generic user-friendly error messages)
-- [ ] Create `PowerArmorPiece` entity (power armor table)
-- [ ] Create `PowerArmorPieceDao` class with CRUD methods
-- [ ] Create `PowerArmorFrame` entity to support frame naming
-- [ ] Update dev database with frame and effect relationships
-- [ ] Create unit tests for `PowerArmorPieceDao`
-- [ ] Create JSP form for adding a power armor piece
-- [ ] Create JSP to display user's power armor pieces
-- [ ] Create controller to manage "Add Power Armor" form display
-- [ ] Create controller to handle form submission
-- [ ] Refactor controllers and DAOs for clarity and consistency
-- [ ] Add client-side validation to armor and power armor forms
-- [ ] Add success/error messages for form submissions
-- [ ] Improve styling/layout of forms and results pages
-- [ ] Update journal/time log and reflection
+- [x] Add power armor entity layer - PaSlot, PaType, PaBaseResistance, UserPaFrame, UserPaPiece
+- [x] Add CRUD controllers for UserPaPiece and UserPaFrame
+- [x] Add power armor JSPs - addUserPaPiece, editUserPaPiece, userPaPieces, addUserPaFrame, editUserPaFrame
+- [x] Add loadout type (STANDARD/POWER_ARMOR) to loadout table, entity, and controllers
+- [x] Update Loadout to include paFrames via loadout_pa_frame join table
+- [x] Register all new PA entities in hibernate.cfg.xml
+- [x] Update weekly reflection/time log
 
 ### Week 11 - Work Week
-#### This week my focus is the team work and completing loadout functionality, enhancing interactivity, and writing tests.
 
-- [ ] Team Project
-- [ ] Complete "Add Loadout" feature if not done
-- [ ] Implement "View Loadouts" page:
-    - [ ] Create JSP for viewing all loadouts (with filters/toggles)
-    - [ ] Create controller to retrieve loadouts by user
-- [ ] Begin work on "Edit Loadout":
-    - [ ] Pre-fill form with existing loadout data
-    - [ ] Update DAO to support updating loadouts
-- [ ] Add delete functionality for loadouts
-- [ ] Create unit tests for `LoadoutDao`
-- [ ] Update weekly reflection and time log
+- [x] Refactor loadout add/edit pages with custom JSP tags (slotTable.tag, summaryRow.tag)
+- [x] Add sticky summary table with live resistance totals to add/edit loadout pages
+- [x] Extract JS functions to loadout.js and add loadout.css
+- [x] Add navigation, logout, and UI improvements (navbar.jsp, LogOut servlet)
+- [x] Add legendary effects page using team API integration
+- [x] Refactor entities to use proper Hibernate associations per checkpoint feedback
+- [x] Update weekly reflection/time log
 
 ### Week 12 - Team Project Presentations
-####
 
-- [ ] Team Project
-- [ ] Update weekly reflection and time log
+- [x] Add legendary effect dropdowns to editUserArmorPiece.jsp
+- [x] Extract star dropdown logic to armorPiece.js
+- [x] Refactor move DAOs to instance fields across controllers
+- [x] Validate PA slot uniqueness per frame before insert/update
+- [x] Add loadout type filter buttons and reposition Add Loadout button
+- [x] Update weekly reflection/time log
 
 ### Week 13 - Class Topic is Asynchronous Messaging
-####
 
-- [ ] Time for unfinished tasks
-- [ ] Update weekly reflection and time log
+- [x] Fix DataTables initialization issues
+- [x] Refactor loadout type selector to button group
+- [x] Move updateTypeSection to loadout.js
+- [x] Fix JS execution order by wrapping listeners in document.ready
+- [x] Update weekly reflection/time log
 
 ### Week 14 - Individual Project Code Reviews
-####
 
-- [ ] Code Review
-- [ ] Update weekly reflection and time log
+- [x] Add specific error pages (404.jsp, 500.jsp) and fix error.jsp styling
+- [x] Configure error mappings in web.xml
+- [x] Add CSV export feature for loadouts (ExportLoadout servlet)
+- [x] Add DeleteLoadout servlet
+- [x] Add Java enums for LoadoutType, WeightClass, SlotGroup
+- [x] Fix Hibernate cascade delete error using native SQL in GenericDao
+- [x] Externalize database credentials using Maven filtering
+- [x] Add V2 improvements list to README
+- [x] Update weekly reflection/time log
 
 ### Week 15
-- [ ] Implement Feedback from Week 14 review
+
+- [x] Update README with final technology list
 - [ ] Final Presentation
 - [ ] Create video, add video link to readme.md
 - [ ] Finalize all documentation

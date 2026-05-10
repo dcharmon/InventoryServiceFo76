@@ -22,3 +22,15 @@
 | Week 9 | Indie Project | Add armor base resistance feature and improve test coverage       | 4     | Resistance fields on entity, updated seed data |
 | Week 9 | Indie Project | Add loadout feature with view and add functionality              | 3     | `Loadout` entity, ManyToMany, `addLoadout.jsp`, `viewLoadouts.jsp`, live resistance totals |
 | Week 10 | Indie Project | Add power armor to database, expand legendary effects, add set bonus tables | 2.5   | |
+| Week 10 | Indie Project | Add power armor entity layer, CRUD controllers, and JSPs for PA pieces and frames | 6 | PaSlot, PaType, UserPaFrame, UserPaPiece entities and full CRUD |
+| Week 10 | Indie Project | Add loadout type (STANDARD/POWER_ARMOR) and update Loadout entity and controllers | 2 | |
+| Week 11 | Indie Project | Refactor loadout add/edit pages with custom JSP tags, sticky summary table, loadout.js and loadout.css | 5 | slotTable.tag, summaryRow.tag, live resistance totals |
+| Week 11 | Indie Project | Add legendary effects page using team API integration | 3 | ViewLegendaryEffects servlet, LegendaryEffectDao, viewLegendaryEffects.jsp |
+| Week 11 | Indie Project | Add navigation, logout, and UI improvements | 5 | navbar.jsp, LogOut servlet, jumbotron index layout |
+| Week 12 | Indie Project | Refactor star dropdown logic to armorPiece.js, fix editUserArmorPiece.jsp, move DAOs to instance fields | 3 | |
+| Week 12 | Indie Project | Validate PA slot uniqueness per frame, add loadout type filter buttons | 2 | |
+| Week 13 | Indie Project | Fix DataTables issues, refactor loadout type selector to button group, fix JS execution order | 3 | Consolidated listeners into single document.ready block |
+| Week 14 | Indie Project | Add specific error pages and configure web.xml error mappings | 1 | 404.jsp, 500.jsp, error.jsp styling fix |
+| Week 14 | Indie Project | Add CSV export feature for loadouts | 1.5 | ExportLoadout servlet, file download via HTTP response streaming |
+| Week 14 | Indie Project | Add DeleteLoadout servlet and fix Hibernate cascade delete issue | 1.5 | Native SQL workaround for bidirectional ManyToMany cascade |
+| Week 14 | Indie Project | Add Java enums, externalize DB credentials, update README and project plan | 2 | LoadoutType, WeightClass, SlotGroup enums, Maven filtering for hibernate.cfg.xml |
