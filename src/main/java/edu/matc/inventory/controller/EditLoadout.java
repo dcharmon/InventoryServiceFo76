@@ -152,7 +152,7 @@ public class EditLoadout extends HttpServlet {
         if (loadout != null) {
             loadout.setName(name);
             loadout.setNotes(notes);
-            loadout.setType(type != null ? type : "STANDARD");
+            loadout.setType(type != null ? LoadoutType.valueOf(type) : LoadoutType.STANDARD);
 
             List<UserArmorPiece> selectedPieces = new ArrayList<>();
             if (pieceIds != null) {

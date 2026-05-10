@@ -17,8 +17,9 @@ public class ArmorSlot {
     @Column(name = "slot_name", nullable = false)
     private String slotName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "slot_group", nullable = false)
-    private String slotGroup;
+    private SlotGroup slotGroup;
 
     /**
      * Gets id.
@@ -61,7 +62,7 @@ public class ArmorSlot {
      *
      * @return slot group (ARM, LEG, TORSO)
      */
-    public String getSlotGroup() {
+    public SlotGroup getSlotGroup() {
         return slotGroup;
     }
 
@@ -70,7 +71,7 @@ public class ArmorSlot {
      *
      * @param slotGroup slot group (ARM, LEG, TORSO)
      */
-    public void setSlotGroup(String slotGroup) {
+    public void setSlotGroup(SlotGroup slotGroup) {
         this.slotGroup = slotGroup;
     }
 }

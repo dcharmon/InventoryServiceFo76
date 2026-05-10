@@ -19,8 +19,9 @@ public class ArmorType {
     @Column(name = "type_name", nullable = false)
     private String typeName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "weight_class")
-    private String weightClass;
+    private WeightClass weightClass;
 
     @OneToMany(mappedBy = "armorType", fetch = FetchType.EAGER)
     private List<ArmorBaseResistance> baseResistances;
@@ -66,16 +67,11 @@ public class ArmorType {
      *
      * @return weight class (Light, Sturdy, or Heavy)
      */
-    public String getWeightClass() {
+    public WeightClass getWeightClass() {
         return weightClass;
     }
 
-    /**
-     * Sets weight class.
-     *
-     * @param weightClass weight class (Light, Sturdy, or Heavy)
-     */
-    public void setWeightClass(String weightClass) {
+    public void setWeightClass(WeightClass weightClass) {
         this.weightClass = weightClass;
     }
 

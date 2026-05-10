@@ -161,4 +161,24 @@ public class GenericDao<T> {
     private Session getSession() {
         return SessionFactoryProvider.getSessionFactory().openSession();
     }
+
+    public void deleteLoadout(edu.matc.inventory.entity.Loadout entity) {
+        Session session = getSession();
+        Transaction transaction = session.beginTransaction();
+
+        session.createNativeQuery("DELETE FROM loadout_armor_piece WHERE loadout_id = :id")
+                .setParameter("id", entity.getId())
+                .executeUpdate();
+
+        session.createNativeQuery("DELETE FROM loadout_pa_frame WHERE loadout_id = :id")
+                .setParameter("id", entity.getId())
+                .executeUpdate();
+
+        session.createNativeQuery("DELETE FROM loadout WHERE loadout_id = :id")
+                .setParameter("id", entity.getId())
+                .executeUpdate();
+
+        transaction.commit();
+        session.close();
+    }
 }

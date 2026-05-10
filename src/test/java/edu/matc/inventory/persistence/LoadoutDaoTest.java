@@ -2,6 +2,7 @@ package edu.matc.inventory.persistence;
 
 import edu.matc.inventory.entity.AppUser;
 import edu.matc.inventory.entity.Loadout;
+import edu.matc.inventory.entity.LoadoutType;
 import edu.matc.inventory.entity.UserArmorPiece;
 import edu.matc.inventory.testutils.Database;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +69,7 @@ class LoadoutDaoTest {
         loadout.setUser(user);
         loadout.setName("New Loadout");
         loadout.setNotes("Some notes");
-        loadout.setType("STANDARD");
+        loadout.setType(LoadoutType.STANDARD);
         loadout.setArmorPieces(pieces);
 
         int id = dao.insert(loadout);
@@ -77,7 +78,7 @@ class LoadoutDaoTest {
         Loadout inserted = dao.getById(id);
         assertNotNull(inserted);
         assertEquals("New Loadout", inserted.getName());
-        assertEquals("STANDARD", inserted.getType());
+        assertEquals(LoadoutType.STANDARD, inserted.getType());
         assertEquals(1, inserted.getArmorPieces().size());
     }
 

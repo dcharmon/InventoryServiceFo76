@@ -127,7 +127,7 @@ public class AddLoadout extends HttpServlet {
         loadout.setUser(appUser);
         loadout.setName(name);
         loadout.setNotes(notes);
-        loadout.setType(type != null ? type : "STANDARD");
+        loadout.setType(type != null ? LoadoutType.valueOf(type) : LoadoutType.STANDARD);
 
         List<UserArmorPiece> selectedPieces = new ArrayList<>();
         if (pieceIds != null) {

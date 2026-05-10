@@ -1,6 +1,7 @@
 package edu.matc.inventory.persistence;
 
 import edu.matc.inventory.entity.ArmorType;
+import edu.matc.inventory.entity.WeightClass;
 import edu.matc.inventory.testutils.Database;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ class ArmorTypeDaoTest {
         ArmorType arcticMarine = dao.getById(1);
         assertNotNull(arcticMarine);
         assertEquals("Arctic Marine Armor", arcticMarine.getTypeName());
-        assertEquals("Sturdy", arcticMarine.getWeightClass());
+        assertEquals(WeightClass.Sturdy, arcticMarine.getWeightClass());
     }
 
     @Test

@@ -30,8 +30,9 @@ public class Loadout {
     @Column(name = "notes")
     private String notes;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private String type;
+    private LoadoutType type;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -130,7 +131,7 @@ public class Loadout {
      *
      * @return loadout type (STANDARD or POWER_ARMOR)
      */
-    public String getType() {
+    public LoadoutType getType() {
         return type;
     }
 
@@ -139,7 +140,7 @@ public class Loadout {
      *
      * @param type loadout type (STANDARD or POWER_ARMOR)
      */
-    public void setType(String type) {
+    public void setType(LoadoutType type) {
         this.type = type;
     }
 
