@@ -25,6 +25,11 @@ import java.io.IOException;
 )
 public final class EditUserArmorPiece extends HttpServlet {
 
+    private static final int STAR_1 = 1;
+    private static final int STAR_2 = 2;
+    private static final int STAR_3 = 3;
+    private static final int STAR_4 = 4;
+
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
     private final GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
@@ -42,10 +47,10 @@ public final class EditUserArmorPiece extends HttpServlet {
         req.setAttribute("piece", dao.getById(id));
         req.setAttribute("armorTypes", armorTypeDao.getAll());
         req.setAttribute("armorSlots", armorSlotDao.getAll());
-        req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", 1));
-        req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", 2));
-        req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", 3));
-        req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", 4));
+        req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_1));
+        req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_2));
+        req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_3));
+        req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_4));
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/editUserArmorPiece.jsp");
         dispatcher.forward(req, resp);

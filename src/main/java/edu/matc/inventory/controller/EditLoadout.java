@@ -22,6 +22,14 @@ import java.util.*;
 )
 public final class EditLoadout extends HttpServlet {
 
+    private static final int RESISTANCE_COUNT = 6;
+    private static final int DAMAGE_INDEX = 0;
+    private static final int ENERGY_INDEX = 1;
+    private static final int RADIATION_INDEX = 2;
+    private static final int POISON_INDEX = 3;
+    private static final int FIRE_INDEX = 4;
+    private static final int CRYO_INDEX = 5;
+
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final GenericDao<Loadout> loadoutDao = new GenericDao<>(Loadout.class);
     private final GenericDao<UserArmorPiece> pieceDao = new GenericDao<>(UserArmorPiece.class);
@@ -63,15 +71,15 @@ public final class EditLoadout extends HttpServlet {
         //Standard armor: resolve base resistances per piece
         Map<Integer, int[]> resolvedResistances = new HashMap<>();
         for (UserArmorPiece piece : userPieces) {
-            int[] res = new int[]{0, 0, 0, 0, 0, 0};
+            int[] res = new int[RESISTANCE_COUNT];
             for (ArmorBaseResistance r : piece.getArmorType().getBaseResistances()) {
                 if (r.getId().getSlotGroup().equals(piece.getArmorSlot().getSlotGroup())) {
-                    res[0] = r.getDamageResistance();
-                    res[1] = r.getEnergyResistance();
-                    res[2] = r.getRadiationResistance();
-                    res[3] = r.getPoisonResistance();
-                    res[4] = r.getFireResistance();
-                    res[5] = r.getCryoResistance();
+                    res[DAMAGE_INDEX]    = r.getDamageResistance();
+                    res[ENERGY_INDEX]    = r.getEnergyResistance();
+                    res[RADIATION_INDEX] = r.getRadiationResistance();
+                    res[POISON_INDEX]    = r.getPoisonResistance();
+                    res[FIRE_INDEX]      = r.getFireResistance();
+                    res[CRYO_INDEX]      = r.getCryoResistance();
                     break;
                 }
             }
@@ -82,15 +90,15 @@ public final class EditLoadout extends HttpServlet {
         Map<Integer, int[]> resolvedPaResistances = new HashMap<>();
         for (UserPaFrame frame : userFrames) {
             for (UserPaPiece paPiece : frame.getPieces()) {
-                int[] res = new int[]{0, 0, 0, 0, 0, 0};
+                int[] res = new int[RESISTANCE_COUNT];
                 for (PaBaseResistance r : paPiece.getPaType().getBaseResistances()) {
                     if (r.getId().getPaSlotId() == paPiece.getPaSlot().getId()) {
-                        res[0] = r.getDamageResistance();
-                        res[1] = r.getEnergyResistance();
-                        res[2] = r.getRadiationResistance();
-                        res[3] = r.getPoisonResistance();
-                        res[4] = r.getFireResistance();
-                        res[5] = r.getCryoResistance();
+                        res[DAMAGE_INDEX]    = r.getDamageResistance();
+                        res[ENERGY_INDEX]    = r.getEnergyResistance();
+                        res[RADIATION_INDEX] = r.getRadiationResistance();
+                        res[POISON_INDEX]    = r.getPoisonResistance();
+                        res[FIRE_INDEX]      = r.getFireResistance();
+                        res[CRYO_INDEX]      = r.getCryoResistance();
                         break;
                     }
                 }
