@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/viewLegendaryEffects"})
-public class ViewLegendaryEffects extends HttpServlet {
+public final class ViewLegendaryEffects extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 

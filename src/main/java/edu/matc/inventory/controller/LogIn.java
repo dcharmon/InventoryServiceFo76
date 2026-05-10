@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Begins the authentication process using AWS Cognito.
  */
-public class LogIn extends HttpServlet implements PropertiesLoader {
+public final class LogIn extends HttpServlet implements PropertiesLoader {
 
     private String clientId;
     private String loginUrl;

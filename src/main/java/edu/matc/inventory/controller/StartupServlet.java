@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import java.util.Properties;
 
 @WebServlet(urlPatterns = "/startup", loadOnStartup = 1)
-public class StartupServlet extends HttpServlet implements PropertiesLoader {
+public final class StartupServlet extends HttpServlet implements PropertiesLoader {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 

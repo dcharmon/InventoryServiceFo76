@@ -20,7 +20,7 @@ import java.util.List;
 @WebServlet(
         urlPatterns = {"/deleteUserPaFrame"}
 )
-public class DeleteUserPaFrame extends HttpServlet {
+public final class DeleteUserPaFrame extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 

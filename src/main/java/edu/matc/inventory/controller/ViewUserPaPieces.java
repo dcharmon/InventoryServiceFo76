@@ -22,7 +22,7 @@ import java.util.List;
 @WebServlet(
         urlPatterns = {"/viewUserPaPieces"}
 )
-public class ViewUserPaPieces extends HttpServlet {
+public final class ViewUserPaPieces extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 

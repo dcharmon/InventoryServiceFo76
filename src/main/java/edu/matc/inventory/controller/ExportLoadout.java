@@ -20,7 +20,7 @@ import java.io.PrintWriter;
  * Servlet that exports a loadout as a CSV file download.
  */
 @WebServlet("/exportLoadout")
-public class ExportLoadout extends HttpServlet {
+public final class ExportLoadout extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 

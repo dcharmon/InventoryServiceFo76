@@ -2,8 +2,6 @@ package edu.matc.inventory.controller;
 
 import edu.matc.inventory.entity.AppUser;
 import edu.matc.inventory.entity.Loadout;
-import edu.matc.inventory.entity.UserArmorPiece;
-import edu.matc.inventory.entity.UserPaFrame;
 import edu.matc.inventory.persistence.GenericDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +19,7 @@ import java.io.IOException;
 @WebServlet(
         urlPatterns = {"/deleteLoadout"}
 )
-public class DeleteLoadout extends HttpServlet {
+public final class DeleteLoadout extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 

@@ -18,7 +18,7 @@ import java.io.IOException;
 @WebServlet(
         urlPatterns = {"/deleteUserPaPiece"}
 )
-public class DeleteUserPaPiece extends HttpServlet {
+public final class DeleteUserPaPiece extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 

@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @param <T> the type parameter
  */
-public class GenericDao<T> {
+public final class GenericDao<T> {
 
     private Class<T> type;
     private final Logger logger = LogManager.getLogger(this.getClass());

@@ -20,7 +20,7 @@ import java.io.IOException;
 @WebServlet(
         urlPatterns = {"/editUserPaFrame"}
 )
-public class EditUserPaFrame extends HttpServlet {
+public final class EditUserPaFrame extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 

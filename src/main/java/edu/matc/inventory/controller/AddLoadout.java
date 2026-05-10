@@ -20,7 +20,7 @@ import java.util.*;
 @WebServlet(
         urlPatterns = {"/addLoadout"}
 )
-public class AddLoadout extends HttpServlet {
+public final class AddLoadout extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final GenericDao<Loadout> loadoutDao = new GenericDao<>(Loadout.class);

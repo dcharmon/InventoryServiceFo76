@@ -13,7 +13,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-public class LegendaryEffectDao {
+public final class LegendaryEffectDao {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
     private static final String API_URL = "http://inventory-api-fo76-env.eba-kvcd43xn.us-east-2.elasticbeanstalk.com/api/inventories/legendary-effects";

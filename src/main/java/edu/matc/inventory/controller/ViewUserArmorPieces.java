@@ -21,7 +21,7 @@ import java.util.List;
 @WebServlet(
         urlPatterns = {"/viewUserArmorPieces"}
 )
-public class ViewUserArmorPieces extends HttpServlet {
+public final class ViewUserArmorPieces extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final GenericDao<AppUser> userDao = new GenericDao<>(AppUser.class);

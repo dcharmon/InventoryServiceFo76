@@ -23,7 +23,7 @@ import java.io.IOException;
 @WebServlet(
         urlPatterns = {"/editUserArmorPiece"}
 )
-public class EditUserArmorPiece extends HttpServlet {
+public final class EditUserArmorPiece extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/logOut"})
-public class Logout extends HttpServlet {
+public final class Logout extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 

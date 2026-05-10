@@ -19,7 +19,7 @@ import java.io.IOException;
 @WebServlet(
         urlPatterns = {"/addUserPaPiece"}
 )
-public class AddUserPaPiece extends HttpServlet {
+public final class AddUserPaPiece extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final GenericDao<UserPaPiece> dao = new GenericDao<>(UserPaPiece.class);

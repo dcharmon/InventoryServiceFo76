@@ -21,7 +21,7 @@ import java.util.List;
 @WebServlet(
         urlPatterns = {"/viewLoadouts"}
 )
-public class ViewLoadouts extends HttpServlet {
+public final class ViewLoadouts extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final GenericDao<AppUser> userDao = new GenericDao<>(AppUser.class);

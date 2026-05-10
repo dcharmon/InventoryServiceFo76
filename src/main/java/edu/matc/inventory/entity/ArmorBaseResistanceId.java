@@ -9,7 +9,7 @@ import java.util.Objects;
  * Composite primary key for ArmorBaseResistance.
  */
 @Embeddable
-public class ArmorBaseResistanceId implements Serializable {
+public final class ArmorBaseResistanceId implements Serializable {
 
     @Column(name = "armor_type_id")
     private int armorTypeId;

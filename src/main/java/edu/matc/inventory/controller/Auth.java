@@ -54,7 +54,7 @@ import java.util.List;
  * Handles the Cognito callback, exchanges the authorization code for tokens,
  * validates the ID token, and stores user identity values in the session.
  */
-public class Auth extends HttpServlet implements PropertiesLoader {
+public final class Auth extends HttpServlet implements PropertiesLoader {
 
     private String clientId;
     private String clientSecret;

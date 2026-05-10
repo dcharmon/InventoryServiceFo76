@@ -9,7 +9,7 @@ import java.util.Objects;
  * Composite primary key for PaBaseResistance.
  */
 @Embeddable
-public class PaBaseResistanceId implements Serializable {
+public final class PaBaseResistanceId implements Serializable {
 
     @Column(name = "pa_type_id")
     private int paTypeId;

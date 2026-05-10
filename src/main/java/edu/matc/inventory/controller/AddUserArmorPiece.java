@@ -19,10 +19,10 @@ import java.io.IOException;
 @WebServlet(
         urlPatterns = {"/addUserArmorPiece"}
 )
-public class AddUserArmorPiece extends HttpServlet {
+public final class AddUserArmorPiece extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
-    GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
+    private final GenericDao<UserArmorPiece> dao = new GenericDao<>(UserArmorPiece.class);
     private final GenericDao<ArmorType> armorTypeDao = new GenericDao<>(ArmorType.class);
     private final GenericDao<ArmorSlot> armorSlotDao = new GenericDao<>(ArmorSlot.class);
     private final GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
