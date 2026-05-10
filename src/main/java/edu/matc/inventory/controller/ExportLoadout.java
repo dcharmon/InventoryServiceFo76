@@ -1,6 +1,7 @@
 package edu.matc.inventory.controller;
 
 import edu.matc.inventory.entity.Loadout;
+import edu.matc.inventory.entity.LoadoutType;
 import edu.matc.inventory.entity.UserArmorPiece;
 import edu.matc.inventory.entity.UserPaFrame;
 import edu.matc.inventory.entity.UserPaPiece;
@@ -23,6 +24,7 @@ import java.io.PrintWriter;
 public final class ExportLoadout extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
+    private final GenericDao<Loadout> dao = new GenericDao<>(Loadout.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,7 +36,6 @@ public final class ExportLoadout extends HttpServlet {
             return;
         }
 
-        GenericDao<Loadout> dao = new GenericDao<>(Loadout.class);
         Loadout loadout = dao.getById(Integer.parseInt(idParam));
 
         if (loadout == null) {
@@ -47,46 +48,75 @@ public final class ExportLoadout extends HttpServlet {
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 
         PrintWriter writer = response.getWriter();
+        writeHeader(writer, loadout);
 
+        if (loadout.getType() == LoadoutType.STANDARD) {
+            writeStandardArmor(writer, loadout);
+        } else if (loadout.getType() == LoadoutType.POWER_ARMOR) {
+            writePowerArmor(writer, loadout);
+        }
+
+        writer.flush();
+        logger.info("Exported loadout {} as CSV", loadout.getId());
+    }
+
+    /**
+     * Writes the loadout header to the CSV.
+     *
+     * @param writer the print writer
+     * @param loadout the loadout
+     */
+    private void writeHeader(PrintWriter writer, Loadout loadout) {
         writer.println("Loadout: " + loadout.getName());
         if (loadout.getNotes() != null && !loadout.getNotes().isEmpty()) {
             writer.println("Notes: " + loadout.getNotes());
         }
         writer.println("Type: " + loadout.getType());
         writer.println();
+    }
 
-        if ("STANDARD".equals(loadout.getType())) {
-            writer.println("Slot,Armor Type,1-Star,2-Star,3-Star,4-Star");
-            for (UserArmorPiece piece : loadout.getArmorPieces()) {
+    /**
+     * Writes standard armor pieces to the CSV.
+     *
+     * @param writer the print writer
+     * @param loadout the loadout
+     */
+    private void writeStandardArmor(PrintWriter writer, Loadout loadout) {
+        writer.println("Slot,Armor Type,1-Star,2-Star,3-Star,4-Star");
+        for (UserArmorPiece piece : loadout.getArmorPieces()) {
+            writer.println(String.join(",",
+                    piece.getArmorSlot().getSlotName(),
+                    piece.getArmorType().getTypeName(),
+                    piece.getStar1Effect() != null ? piece.getStar1Effect().getName() : "--",
+                    piece.getStar2Effect() != null ? piece.getStar2Effect().getName() : "--",
+                    piece.getStar3Effect() != null ? piece.getStar3Effect().getName() : "--",
+                    piece.getStar4Effect() != null ? piece.getStar4Effect().getName() : "--"
+            ));
+        }
+    }
+
+    /**
+     * Writes power armor frames and pieces to the CSV.
+     *
+     * @param writer the print writer
+     * @param loadout the loadout
+     */
+    private void writePowerArmor(PrintWriter writer, Loadout loadout) {
+        for (UserPaFrame frame : loadout.getPaFrames()) {
+            String frameName = frame.getFrameName() != null ? frame.getFrameName() : "Frame #" + frame.getId();
+            writer.println("Frame: " + frameName);
+            writer.println("Slot,PA Type,1-Star,2-Star,3-Star,4-Star");
+            for (UserPaPiece piece : frame.getPieces()) {
                 writer.println(String.join(",",
-                        piece.getArmorSlot().getSlotName(),
-                        piece.getArmorType().getTypeName(),
+                        piece.getPaSlot().getSlotName(),
+                        piece.getPaType().getTypeName(),
                         piece.getStar1Effect() != null ? piece.getStar1Effect().getName() : "--",
                         piece.getStar2Effect() != null ? piece.getStar2Effect().getName() : "--",
                         piece.getStar3Effect() != null ? piece.getStar3Effect().getName() : "--",
                         piece.getStar4Effect() != null ? piece.getStar4Effect().getName() : "--"
                 ));
             }
-        } else if ("POWER_ARMOR".equals(loadout.getType())) {
-            for (UserPaFrame frame : loadout.getPaFrames()) {
-                String frameName = frame.getFrameName() != null ? frame.getFrameName() : "Frame #" + frame.getId();
-                writer.println("Frame: " + frameName);
-                writer.println("Slot,PA Type,1-Star,2-Star,3-Star,4-Star");
-                for (UserPaPiece piece : frame.getPieces()) {
-                    writer.println(String.join(",",
-                            piece.getPaSlot().getSlotName(),
-                            piece.getPaType().getTypeName(),
-                            piece.getStar1Effect() != null ? piece.getStar1Effect().getName() : "--",
-                            piece.getStar2Effect() != null ? piece.getStar2Effect().getName() : "--",
-                            piece.getStar3Effect() != null ? piece.getStar3Effect().getName() : "--",
-                            piece.getStar4Effect() != null ? piece.getStar4Effect().getName() : "--"
-                    ));
-                }
-                writer.println();
-            }
+            writer.println();
         }
-
-        writer.flush();
-        logger.info("Exported loadout {} as CSV", loadout.getId());
     }
 }
