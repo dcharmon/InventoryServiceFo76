@@ -56,3 +56,4 @@ dba/
 
 # props files that I do not want shared
 cognito.properties
+database.properties
