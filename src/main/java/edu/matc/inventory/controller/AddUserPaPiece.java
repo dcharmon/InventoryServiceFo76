@@ -46,13 +46,7 @@ public final class AddUserPaPiece extends HttpServlet {
             return;
         }
 
-        req.setAttribute("paTypes", paTypeDao.getAll());
-        req.setAttribute("paSlots", paSlotDao.getAll());
-        req.setAttribute("userFrames", paFrameDao.getByPropertyEqual("user", appUser));
-        req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_1));
-        req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_2));
-        req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_3));
-        req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_4));
+        populateFormAttributes(req, appUser);
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/addUserPaPiece.jsp");
         dispatcher.forward(req, resp);
@@ -97,19 +91,54 @@ public final class AddUserPaPiece extends HttpServlet {
             if (slotTaken) {
                 logger.warn("Slot {} already occupied on frame {}", paSlotId, frame.getId());
                 req.setAttribute("errorMessage", "That slot is already occupied on this frame.");
-                req.setAttribute("paTypes", paTypeDao.getAll());
-                req.setAttribute("paSlots", paSlotDao.getAll());
-                req.setAttribute("userFrames", paFrameDao.getByPropertyEqual("user", appUser));
-                req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_1));
-                req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_2));
-                req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_3));
-                req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_4));
+                populateFormAttributes(req, appUser);
                 req.getRequestDispatcher("/addUserPaPiece.jsp").forward(req, resp);
                 return;
             }
 
             piece.setPaFrame(frame);
         }
+
+        applyStarEffects(piece, slot, star1IdParam, star2IdParam, star3IdParam, star4IdParam);
+
+        int id = dao.insert(piece);
+        logger.info("Added UserPaPiece with id {}", id);
+
+        resp.sendRedirect(req.getContextPath() + "/viewUserPaPieces");
+    }
+
+    /**
+     * Populates form attributes for the add PA piece form.
+     *
+     * @param req the HTTP request
+     * @param appUser the authenticated app user
+     */
+    private void populateFormAttributes(HttpServletRequest req, AppUser appUser) {
+        req.setAttribute("paTypes", paTypeDao.getAll());
+        req.setAttribute("paSlots", paSlotDao.getAll());
+        req.setAttribute("userFrames", paFrameDao.getByPropertyEqual("user", appUser));
+        req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_1));
+        req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_2));
+        req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_3));
+        req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_4));
+    }
+
+    /**
+     * Clears and re-applies star legendary effects to a PA piece if the slot allows it.
+     *
+     * @param piece the PA piece to update
+     * @param slot the PA slot to check for legendary eligibility
+     * @param star1IdParam the star 1 effect id string
+     * @param star2IdParam the star 2 effect id string
+     * @param star3IdParam the star 3 effect id string
+     * @param star4IdParam the star 4 effect id string
+     */
+    private void applyStarEffects(UserPaPiece piece, PaSlot slot, String star1IdParam, String star2IdParam,
+                                  String star3IdParam, String star4IdParam) {
+        piece.setStar1Effect(null);
+        piece.setStar2Effect(null);
+        piece.setStar3Effect(null);
+        piece.setStar4Effect(null);
 
         if (slot.isAllowsLegendary()) {
             if (star1IdParam != null && !star1IdParam.isEmpty()) {
@@ -125,10 +154,5 @@ public final class AddUserPaPiece extends HttpServlet {
                 piece.setStar4Effect(legendaryEffectDao.getById(Integer.parseInt(star4IdParam)));
             }
         }
-
-        int id = dao.insert(piece);
-        logger.info("Added UserPaPiece with id {}", id);
-
-        resp.sendRedirect(req.getContextPath() + "/viewUserPaPieces");
     }
 }

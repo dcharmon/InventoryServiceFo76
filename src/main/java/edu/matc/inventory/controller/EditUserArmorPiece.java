@@ -37,20 +37,14 @@ public final class EditUserArmorPiece extends HttpServlet {
     private final GenericDao<LegendaryEffect> legendaryEffectDao = new GenericDao<>(LegendaryEffect.class);
 
     @Override
-    protected void doGet(HttpServletRequest req,
-                         HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         int id = Integer.parseInt(req.getParameter("id"));
         logger.debug("Loading edit form for UserArmorPiece id {}", id);
 
         req.setAttribute("piece", dao.getById(id));
-        req.setAttribute("armorTypes", armorTypeDao.getAll());
-        req.setAttribute("armorSlots", armorSlotDao.getAll());
-        req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_1));
-        req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_2));
-        req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_3));
-        req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_4));
+        populateFormAttributes(req);
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/editUserArmorPiece.jsp");
         dispatcher.forward(req, resp);
@@ -86,26 +80,7 @@ public final class EditUserArmorPiece extends HttpServlet {
             piece.setUser(appUser);
             piece.setArmorType(armorTypeDao.getById(armorTypeId));
             piece.setArmorSlot(armorSlotDao.getById(armorSlotId));
-
-            // Clear all effects first then re-apply submitted values
-            piece.setStar1Effect(null);
-            piece.setStar2Effect(null);
-            piece.setStar3Effect(null);
-            piece.setStar4Effect(null);
-
-            if (star1IdParam != null && !star1IdParam.isEmpty()) {
-                piece.setStar1Effect(legendaryEffectDao.getById(Integer.parseInt(star1IdParam)));
-            }
-            if (star2IdParam != null && !star2IdParam.isEmpty()) {
-                piece.setStar2Effect(legendaryEffectDao.getById(Integer.parseInt(star2IdParam)));
-            }
-            if (star3IdParam != null && !star3IdParam.isEmpty()) {
-                piece.setStar3Effect(legendaryEffectDao.getById(Integer.parseInt(star3IdParam)));
-            }
-            if (star4IdParam != null && !star4IdParam.isEmpty()) {
-                piece.setStar4Effect(legendaryEffectDao.getById(Integer.parseInt(star4IdParam)));
-            }
-
+            applyStarEffects(piece, star1IdParam, star2IdParam, star3IdParam, star4IdParam);
             dao.update(piece);
             logger.info("UserArmorPiece id {} successfully updated", id);
         } else {
@@ -113,5 +88,49 @@ public final class EditUserArmorPiece extends HttpServlet {
         }
 
         resp.sendRedirect(req.getContextPath() + "/viewUserArmorPieces");
+    }
+
+    /**
+     * Clears and re-applies star legendary effects to an armor piece.
+     *
+     * @param piece the armor piece to update
+     * @param star1IdParam the star 1 effect id string
+     * @param star2IdParam the star 2 effect id string
+     * @param star3IdParam the star 3 effect id string
+     * @param star4IdParam the star 4 effect id string
+     */
+    private void applyStarEffects(UserArmorPiece piece, String star1IdParam, String star2IdParam,
+                                  String star3IdParam, String star4IdParam) {
+        piece.setStar1Effect(null);
+        piece.setStar2Effect(null);
+        piece.setStar3Effect(null);
+        piece.setStar4Effect(null);
+
+        if (star1IdParam != null && !star1IdParam.isEmpty()) {
+            piece.setStar1Effect(legendaryEffectDao.getById(Integer.parseInt(star1IdParam)));
+        }
+        if (star2IdParam != null && !star2IdParam.isEmpty()) {
+            piece.setStar2Effect(legendaryEffectDao.getById(Integer.parseInt(star2IdParam)));
+        }
+        if (star3IdParam != null && !star3IdParam.isEmpty()) {
+            piece.setStar3Effect(legendaryEffectDao.getById(Integer.parseInt(star3IdParam)));
+        }
+        if (star4IdParam != null && !star4IdParam.isEmpty()) {
+            piece.setStar4Effect(legendaryEffectDao.getById(Integer.parseInt(star4IdParam)));
+        }
+    }
+
+    /**
+     * Populates form attributes for the edit armor piece form.
+     *
+     * @param req the HTTP request
+     */
+    private void populateFormAttributes(HttpServletRequest req) {
+        req.setAttribute("armorTypes", armorTypeDao.getAll());
+        req.setAttribute("armorSlots", armorSlotDao.getAll());
+        req.setAttribute("star1Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_1));
+        req.setAttribute("star2Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_2));
+        req.setAttribute("star3Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_3));
+        req.setAttribute("star4Effects", legendaryEffectDao.getByPropertyEqual("star", STAR_4));
     }
 }
