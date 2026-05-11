@@ -1,5 +1,6 @@
 package edu.matc.inventory.persistence;
 
+import edu.matc.inventory.entity.UserArmorPiece;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -162,6 +163,14 @@ public final class GenericDao<T> {
         return SessionFactoryProvider.getSessionFactory().openSession();
     }
 
+
+    /**
+     * Deletes a Loadout and removes all join table associations.
+     * Uses native SQL to avoid Hibernate cascade conflicts with
+     * loadout_armor_piece and loadout_pa_frame join tables.
+     *
+     * @param entity the Loadout to delete
+     */
     public void deleteLoadout(edu.matc.inventory.entity.Loadout entity) {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
@@ -175,6 +184,29 @@ public final class GenericDao<T> {
                 .executeUpdate();
 
         session.createNativeQuery("DELETE FROM loadout WHERE loadout_id = :id")
+                .setParameter("id", entity.getId())
+                .executeUpdate();
+
+        transaction.commit();
+        session.close();
+    }
+
+    /**
+     * Deletes a UserArmorPiece and removes it from any loadout associations.
+     * Uses native SQL to avoid Hibernate cascade conflicts.
+     *
+     * @param entity the UserArmorPiece to delete
+     */
+
+    public void deleteUserArmorPiece(UserArmorPiece entity) {
+        Session session = getSession();
+        Transaction transaction = session.beginTransaction();
+
+        session.createNativeQuery("DELETE FROM loadout_armor_piece WHERE user_armor_piece_id = :id")
+                .setParameter("id", entity.getId())
+                .executeUpdate();
+
+        session.createNativeQuery("DELETE FROM user_armor_piece WHERE user_armor_piece_id = :id")
                 .setParameter("id", entity.getId())
                 .executeUpdate();
 

@@ -39,8 +39,12 @@ public final class DeleteUserArmorPiece extends HttpServlet {
             UserArmorPiece piece = dao.getById(id);
 
             if (piece != null) {
-                dao.delete(piece);
-                logger.info("Deleted UserArmorPiece with id {}", id);
+                try {
+                    dao.deleteUserArmorPiece(piece);
+                    logger.info("Deleted UserArmorPiece with id {}", id);
+                } catch (Exception e) {
+                    logger.error("Error deleting UserArmorPiece with id {}: {}", id, e.getMessage(), e);
+                }
             } else {
                 logger.warn("UserArmorPiece with id {} not found", id);
             }
