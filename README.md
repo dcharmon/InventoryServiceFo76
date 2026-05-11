@@ -4,7 +4,9 @@
 
 Managing gear across different sets is a common challenge in inventory heavy games. Players often end up relying on spreadsheets or external notes to keep track of what they own, which pieces belong to which set, and how close they are to completing a full loadout. For my project, I’d like to build a web application that lets players log in, track their gear, organize sets, and identify missing pieces for their loadout, using Fallout 76 as the example game.
 
+### Link
 
+[Fallout 76 Inventory Service](https://inventory-service-fo76-env.eba-yppkmus2.us-east-2.elasticbeanstalk.com/)
 
 ### Project Technologies/Techniques
 
