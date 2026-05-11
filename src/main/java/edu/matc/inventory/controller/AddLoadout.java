@@ -86,7 +86,7 @@ public final class AddLoadout extends HttpServlet {
 
         int id = loadoutDao.insert(loadout);
         logger.info("Added loadout with id {}", id);
-
+        req.getSession().setAttribute("flashMessage", "Loadout added successfully");
         resp.sendRedirect(req.getContextPath() + "/viewLoadouts");
     }
 }

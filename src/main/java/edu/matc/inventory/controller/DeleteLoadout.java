@@ -49,6 +49,7 @@ public final class DeleteLoadout extends HttpServlet {
             if (loadout != null) {
                 dao.deleteLoadout(loadout);
                 logger.info("Deleted Loadout with id {}", id);
+                req.getSession().setAttribute("flashMessage", "Loadout deleted successfully.");
             } else {
                 logger.warn("Loadout with id {} not found", id);
             }

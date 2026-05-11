@@ -13,6 +13,14 @@
 
 <h2>My Loadouts</h2>
 
+<c:if test="${not empty sessionScope.flashMessage}">
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+            ${sessionScope.flashMessage}
+    </div>
+    <c:remove var="flashMessage" scope="session" />
+</c:if>
+
 <%-- Filter bar --%>
 <div class="row" style="margin-bottom: 15px;">
     <div class="col-xs-8">

@@ -13,6 +13,14 @@
 
 <h2>My Power Armor Pieces</h2>
 
+<c:if test="${not empty sessionScope.flashMessage}">
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+      ${sessionScope.flashMessage}
+  </div>
+  <c:remove var="flashMessage" scope="session" />
+</c:if>
+
 <a class="btn btn-primary" href="${pageContext.request.contextPath}/addUserPaPiece">Add PA Piece</a>
 <a class="btn btn-default" href="${pageContext.request.contextPath}/addUserPaFrame">Add Frame</a>
 

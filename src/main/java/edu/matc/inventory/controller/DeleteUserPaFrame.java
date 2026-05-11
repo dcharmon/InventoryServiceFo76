@@ -51,6 +51,7 @@ public final class DeleteUserPaFrame extends HttpServlet {
 
                 frameDao.delete(frame);
                 logger.info("Deleted UserPaFrame with id {}", id);
+                req.getSession().setAttribute("flashMessage", "Frame deleted successfully.");
             } else {
                 logger.warn("UserPaFrame with id {} not found", id);
             }

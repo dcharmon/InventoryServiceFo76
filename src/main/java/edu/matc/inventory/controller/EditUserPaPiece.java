@@ -111,6 +111,7 @@ public final class EditUserPaPiece extends HttpServlet {
 
             dao.update(piece);
             logger.info("UserPaPiece id {} successfully updated", id);
+            req.getSession().setAttribute("flashMessage", "PA piece updated successfully");
         } else {
             logger.warn("UserPaPiece id {} not found for update", id);
         }

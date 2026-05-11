@@ -103,7 +103,7 @@ public final class AddUserPaPiece extends HttpServlet {
 
         int id = dao.insert(piece);
         logger.info("Added UserPaPiece with id {}", id);
-
+        req.getSession().setAttribute("flashMessage", "PA piece added successfully.");
         resp.sendRedirect(req.getContextPath() + "/viewUserPaPieces");
     }
 

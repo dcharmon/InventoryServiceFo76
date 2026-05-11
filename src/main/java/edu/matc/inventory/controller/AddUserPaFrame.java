@@ -68,7 +68,7 @@ public final class AddUserPaFrame extends HttpServlet {
         GenericDao<UserPaFrame> dao = new GenericDao<>(UserPaFrame.class);
         int id = dao.insert(frame);
         logger.info("Added UserPaFrame with id {}", id);
-
+        req.getSession().setAttribute("flashMessage", "Frame added successfully.");
         resp.sendRedirect(req.getContextPath() + "/viewUserPaPieces");
     }
 }

@@ -97,7 +97,7 @@ public final class AddUserArmorPiece extends HttpServlet {
 
         int id = dao.insert(piece);
         logger.info("Added UserArmorPiece with id {}", id);
-
+        req.getSession().setAttribute("flashMessage", "Armor piece added successfully.");
         resp.sendRedirect(req.getContextPath() + "/viewUserArmorPieces");
     }
 }

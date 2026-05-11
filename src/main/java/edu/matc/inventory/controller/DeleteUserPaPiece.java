@@ -39,6 +39,7 @@ public final class DeleteUserPaPiece extends HttpServlet {
             if (piece != null) {
                 dao.delete(piece);
                 logger.info("Deleted UserPaPiece with id {}", id);
+                req.getSession().setAttribute("flashMessage", "PA piece deleted successfully.");
             } else {
                 logger.warn("UserPaPiece with id {} not found", id);
             }

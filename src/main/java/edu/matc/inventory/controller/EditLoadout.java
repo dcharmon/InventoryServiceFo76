@@ -123,6 +123,7 @@ public final class EditLoadout extends HttpServlet {
 
             loadoutDao.update(loadout);
             logger.info("Loadout id {} successfully updated", id);
+            req.getSession().setAttribute("flashMessage", "Loadout updated successfully.");
         } else {
             logger.warn("Loadout id {} not found for update", id);
         }

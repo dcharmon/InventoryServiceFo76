@@ -83,6 +83,7 @@ public final class EditUserArmorPiece extends HttpServlet {
             applyStarEffects(piece, star1IdParam, star2IdParam, star3IdParam, star4IdParam);
             dao.update(piece);
             logger.info("UserArmorPiece id {} successfully updated", id);
+            req.getSession().setAttribute("flashMessage", "Armor piece updated successfully.");
         } else {
             logger.warn("UserArmorPiece id {} not found for update", id);
         }

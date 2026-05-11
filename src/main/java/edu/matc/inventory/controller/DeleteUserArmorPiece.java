@@ -42,6 +42,7 @@ public final class DeleteUserArmorPiece extends HttpServlet {
                 try {
                     dao.deleteUserArmorPiece(piece);
                     logger.info("Deleted UserArmorPiece with id {}", id);
+                    req.getSession().setAttribute("flashMessage", "Armor piece deleted successfully.");
                 } catch (Exception e) {
                     logger.error("Error deleting UserArmorPiece with id {}: {}", id, e.getMessage(), e);
                 }

@@ -74,6 +74,7 @@ public final class EditUserPaFrame extends HttpServlet {
 
             dao.update(frame);
             logger.info("UserPaFrame id {} successfully updated", id);
+            req.getSession().setAttribute("flashMessage", "Frame updated successfully");
         } else {
             logger.warn("UserPaFrame id {} not found for update", id);
         }
