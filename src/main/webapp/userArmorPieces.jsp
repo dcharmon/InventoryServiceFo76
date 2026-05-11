@@ -21,6 +21,8 @@
     <c:remove var="flashMessage" scope="session" />
 </c:if>
 
+<a class="btn btn-primary" style="margin-bottom: 10px;" href="${pageContext.request.contextPath}/addUserArmorPiece">Add Armor Piece</a>
+
 <table id="armorTable" class="table table-striped table-bordered">
     <thead>
     <tr>
