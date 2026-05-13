@@ -151,11 +151,7 @@
   - [x] Reduce cyclomatic complexity by extracting helper methods
   - [x] Extract LoadoutHelper utility class to eliminate code duplication
   - [x] Fix slotGroup String vs enum comparison bug uncovered during refactoring
-- [ ] Finalize all documentation
-- [ ] Weekly journal entry
 
 ### Week 16
-- [ ] Final Presentation
-- [ ] Create video, add video link to readme.md
-- [ ] Weekly journal entry
-- [ ] Final touches before code complete
+- [x] Final Presentation
+- [x] Create video, add video link to readme.md

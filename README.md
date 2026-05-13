@@ -8,6 +8,10 @@ Managing gear across different sets is a common challenge in inventory heavy gam
 
 [Fallout 76 Inventory Service](https://inventory-service-fo76-env.eba-yppkmus2.us-east-2.elasticbeanstalk.com/)
 
+### Video
+
+[Demo/Walkthrough](https://youtu.be/dq19OGLfZzI)
+
 ### Project Technologies/Techniques
 
 * Security/Authentication
@@ -40,8 +44,6 @@ Managing gear across different sets is a common challenge in inventory heavy gam
   * IntelliJ IDEA
 * Web Services consumed using Java
   * FO76 Inventory API (team project REST API)
-  * Jackson 2.15.2 for JSON deserialization
-  * Apache Commons IO 2.11.0 for HTTP response handling
 * Code Quality
   * QAPlug (Checkstyle / PMD) run on the project in Week 15 to identify and address best practice violations
 
@@ -69,5 +71,3 @@ Managing gear across different sets is a common challenge in inventory heavy gam
 - Replace DataTables initialization with a compatible implementation — current table structure causes _DT_CellIndex errors
 - Replace native SQL in deleteLoadout with a proper Hibernate cascade configuration using CascadeType.REMOVE
 
-### UI
-- Add success/error flash messages after saving, editing, or deleting a loadout
